@@ -48,7 +48,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
     // Required parameters
     name: 'wsfmin001'
     skuCapacity: 2
-    skuName: 'S1'
+    skuName: 'P1v3'
     // Non-required parameters
     location: '<location>'
   }
@@ -75,7 +75,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
       "value": 2
     },
     "skuName": {
-      "value": "S1"
+      "value": "P1v3"
     },
     // Non-required parameters
     "location": {
@@ -287,7 +287,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
       'hidden-title': 'This is visible in the resource name'
       Role: 'DeploymentValidation'
     }
-    zoneRedundant: false
+    zoneRedundant: true
   }
 }
 ```
@@ -351,7 +351,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
       }
     },
     "zoneRedundant": {
-      "value": false
+      "value": true
     }
   }
 }
