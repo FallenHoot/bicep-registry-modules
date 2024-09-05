@@ -47,7 +47,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
   params: {
     // Required parameters
     name: 'wsfmin001'
-    skuCapacity: 2
+    skuCapacity: 3
     skuName: 'P1v3'
     // Non-required parameters
     location: '<location>'
@@ -72,7 +72,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
       "value": "wsfmin001"
     },
     "skuCapacity": {
-      "value": 2
+      "value": 3
     },
     "skuName": {
       "value": "P1v3"
@@ -259,7 +259,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
   params: {
     // Required parameters
     name: 'wsfwaf001'
-    skuCapacity: 2
+    skuCapacity: 3
     skuName: 'P1v3'
     // Non-required parameters
     diagnosticSettings: [
@@ -309,7 +309,7 @@ module serverfarm 'br/public:avm/res/web/serverfarm:<version>' = {
       "value": "wsfwaf001"
     },
     "skuCapacity": {
-      "value": 2
+      "value": 3
     },
     "skuName": {
       "value": "P1v3"
