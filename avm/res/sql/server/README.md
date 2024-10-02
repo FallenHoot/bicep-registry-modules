@@ -270,6 +270,7 @@ module server 'br/public:avm/res/sql/server:<version>' = {
         backupShortTermRetentionPolicy: {
           retentionDays: 14
         }
+        capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         diagnosticSettings: [
           {
@@ -288,7 +289,6 @@ module server 'br/public:avm/res/sql/server:<version>' = {
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: 'sqlsmaxdb-001'
-        skuCapacity: 0
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -438,6 +438,7 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           "backupShortTermRetentionPolicy": {
             "retentionDays": 14
           },
+          "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
           "diagnosticSettings": [
             {
@@ -456,7 +457,6 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "sqlsmaxdb-001",
-          "skuCapacity": 0,
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }
@@ -857,6 +857,7 @@ module server 'br/public:avm/res/sql/server:<version>' = {
         backupShortTermRetentionPolicy: {
           retentionDays: 14
         }
+        capacity: 0
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         diagnosticSettings: [
           {
@@ -875,7 +876,6 @@ module server 'br/public:avm/res/sql/server:<version>' = {
         licenseType: 'LicenseIncluded'
         maxSizeBytes: 34359738368
         name: 'sqlswafdb-001'
-        skuCapacity: 0
         skuName: 'ElasticPool'
         skuTier: 'GeneralPurpose'
       }
@@ -988,6 +988,7 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           "backupShortTermRetentionPolicy": {
             "retentionDays": 14
           },
+          "capacity": 0,
           "collation": "SQL_Latin1_General_CP1_CI_AS",
           "diagnosticSettings": [
             {
@@ -1006,7 +1007,6 @@ module server 'br/public:avm/res/sql/server:<version>' = {
           "licenseType": "LicenseIncluded",
           "maxSizeBytes": 34359738368,
           "name": "sqlswafdb-001",
-          "skuCapacity": 0,
           "skuName": "ElasticPool",
           "skuTier": "GeneralPurpose"
         }

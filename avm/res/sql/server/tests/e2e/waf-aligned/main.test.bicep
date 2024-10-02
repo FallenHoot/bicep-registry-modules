@@ -11,7 +11,7 @@ metadata description = 'This instance deploys the module in alignment with the b
 @maxLength(90)
 param resourceGroupName string = 'dep-${namePrefix}-sql.servers-${serviceShort}-rg'
 
-// Enforce uksouth to avoid redundancy availability issues in certain regions
+// Enforce uksouth to avoid restrictions around zone redundancy in certain regions
 #disable-next-line no-hardcoded-location
 var enforcedLocation = 'uksouth'
 
@@ -101,7 +101,7 @@ module testDeployment '../../../main.bicep' = {
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         skuTier: 'GeneralPurpose'
         skuName: 'ElasticPool'
-        skuCapacity: 0
+        capacity: 0
         maxSizeBytes: 34359738368
         licenseType: 'LicenseIncluded'
         diagnosticSettings: [
