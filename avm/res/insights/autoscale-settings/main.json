@@ -1,0 +1,149 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "name": "autoscale-settings",
+    "description": "This resource is used to configure autoscale settings for an Azure resource, such as a Virtual Machine Scale Set or an App Service.",
+    "owner": "Azure/module-maintainers"
+  },
+  "parameters": {
+    "autoscaleSettingResourceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Required. The resource name."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "eastus",
+      "metadata": {
+        "description": "Required. The name of the autoscale setting. The value should be a valid Azure region, such as 'eastus' or 'swedencentral'."
+      }
+    },
+    "profiles": {
+      "type": "array",
+      "defaultValue": [
+        {
+          "name": "profileName",
+          "capacity": {
+            "default": "1",
+            "maximum": "10",
+            "minimum": "1"
+          },
+          "rules": [
+            {
+              "metricTrigger": {
+                "dimensions": [
+                  {
+                    "DimensionName": "dimensionName",
+                    "Operator": "Equals",
+                    "Values": ["value1"]
+                  }
+                ],
+                "dividePerInstance": true,
+                "metricName": "Percentage CPU",
+                "metricNamespace": "Microsoft.Compute/virtualMachines",
+                "metricResourceLocation": "eastus",
+                "metricResourceUri": "resourceUri",
+                "operator": "GreaterThan",
+                "statistic": "Average",
+                "threshold": 75,
+                "timeAggregation": "Average",
+                "timeGrain": "PT1M",
+                "timeWindow": "PT5M"
+              },
+              "scaleAction": {
+                "cooldown": "PT5M",
+                "direction": "Increase",
+                "type": "ChangeCount",
+                "value": "1"
+              }
+            }
+          ]
+        }
+      ],
+      "metadata": {
+        "description": "Required. The profiles to use for autoscaling. The values provided are examples."
+      }
+    },
+    "autoscaleSettingName": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The name of the autoscale setting."
+      },
+      "defaultValue": null
+    },
+    "enabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "allowedValues": [true, false],
+      "metadata": {
+        "description": "Optional. Indicates whether the autoscale setting is enabled. Default is false."
+      }
+    },
+    "notifications": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. The notifications to send when the autoscale setting is triggered."
+      }
+    },
+    "scaleMode": {
+      "type": "string",
+      "defaultValue": "Disabled",
+      "allowedValues": ["Disabled", "Enabled", "ForecastOnly"],
+      "metadata": {
+        "description": "Optional. The predictive autoscale mode to use."
+      }
+    },
+    "scaleLookAheadTime": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The predictive autoscale policy to use. The value should be an ISO 8601 duration format string, such as 'PT1H' for 1 hour."
+      },
+      "defaultValue": null
+    },
+    "targetResourceLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The target resource location. The value should be a valid Azure region, such as 'eastus' or 'swedencentral'."
+      },
+      "defaultValue": null
+    },
+    "targetResourceUri": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The target resource URI."
+      },
+      "defaultValue": null
+    },
+    "tags": {
+      "type": "object",
+      "metadata": {
+        "description": "Optional. The tags to assign to the autoscale setting."
+      },
+      "defaultValue": null
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Insights/autoscalesettings",
+      "apiVersion": "2022-10-01",
+      "name": "[parameters('autoscaleSettingResourceName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "name": "[if(empty(parameters('autoscaleSettingName')), json('null'), parameters('autoscaleSettingName'))]",
+        "profiles": "[parameters('profiles')]",
+        "enabled": "[parameters('enabled')]",
+        "notifications": "[if(empty(parameters('notifications')), json('null'), parameters('notifications'))]",
+        "predictiveAutoscalePolicy": {
+          "scaleMode": "[if(empty(parameters('scaleLookAheadTime')), 'Disabled', parameters('scaleMode'))]",
+          "scaleLookAheadTime": "[if(empty(parameters('scaleLookAheadTime')), json('null'), parameters('scaleLookAheadTime'))]"
+        },
+        "targetResourceLocation": "[if(empty(parameters('targetResourceLocation')), json('null'), parameters('targetResourceLocation'))]",
+        "targetResourceUri": "[if(empty(parameters('targetResourceUri')), json('null'), parameters('targetResourceUri'))]"
+      },
+      "tags": "[if(empty(parameters('tags')), json('null'), parameters('tags'))]"
+    }
+  ]
+}
