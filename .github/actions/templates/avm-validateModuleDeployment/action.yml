@@ -78,6 +78,16 @@ runs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
 
+    # Azure login using OIDC
+    - name: Azure Login with OIDC
+      if: env.sp_creds == 'oidc'
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true
+
     # [Set Deployment Location] task(s)
     # ---------------------------
     - name: "Get Resource Location"
