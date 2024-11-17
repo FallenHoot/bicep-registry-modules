@@ -17,11 +17,15 @@
 ##   | modulePath                 | true     | ''      | The path to the module file directory                 | 'modules/api-management/service/main.bicep'                                |
 ##   | templateFilePath           | true     | ''      | The path to the template file to use for deployment   | 'modules/api-management/service/tests/e2e/maix/main.test.bicep'            |
 ##   | deploymentMetadataLocation | true     | ''      | The location to store the deployment metadata         | 'WestEurope'                                                               |
-##   | subscriptionId             | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
 ##   | managementGroupId          | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                                     |
 ##   | customTokens               | false    | ''      | Additional token pairs in json format.                | '{"tokenName":"tokenValue"}'                                               |
 ##   | removeDeployment           | false    | 'true'  | Set "true" to set module up for removal               | 'true'                                                                     |
 ##   | customLocation             | false    |         | Custom location overwrite, if needed                  | 'WestEurope'                                                               |
+##   | azure_client_id            | true     | ''      | Azure Client ID                                       | 'your-client-id'                                                           |
+##   | azure_tenant_id            | true     | ''      | Azure Tenant ID                                       | 'your-tenant-id'                                                           |
+##   | azure_subscription_id      | true     | ''      | Azure Subscription ID                                 | 'your-subscription-id'                                                     |
+##   | azure_credentials          | true     | ''      | Azure Credentials                                     | 'your-azure-credentials'                                                   |
+##   | auth_method                | true     | ''      | Authentication Method                                 | 'service_principal' or 'managed_identity' or 'oidc'                                                      |
 ##   |======================================================================================================================================================================================|
 ##
 #########################################################
@@ -39,9 +43,6 @@ inputs:
   deploymentMetadataLocation:
     description: "The location to store the deployment metadata"
     required: true
-  subscriptionId:
-    description: "The subscription ID to deploy to"
-    required: false
   managementGroupId:
     description: "The management group ID to deploy to"
     required: false
@@ -79,7 +80,7 @@ runs:
       if: inputs.auth_method == 'service_principal'
       uses: azure/login@v2
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ inputs.azure_credentials }}
         enable-AzPSSession: true
 
     # Azure login using Managed Identity
@@ -87,9 +88,10 @@ runs:
       if: inputs.auth_method == 'managed_identity'
       uses: azure/login@v2
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.ARM_TENANT_ID }}
-        subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        auth-type: IDENTITY
+        client-id: ${{ inputs.azure_client_id }}
+        tenant-id: ${{ inputs.azure_tenant_id }}
+        subscription-id: ${{ inputs.azure_subscription_id }}
         enable-AzPSSession: true
 
     # Azure login using OIDC
@@ -97,9 +99,9 @@ runs:
       if: inputs.auth_method == 'oidc'
       uses: azure/login@v2
       with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.ARM_TENANT_ID }}
-        subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        client-id: ${{ inputs.azure_client_id }}
+        tenant-id: ${{ inputs.azure_tenant_id }}
+        subscription-id: ${{ inputs.azure_subscription_id }}
         enable-AzPSSession: true
 
     # [Set Deployment Location] task(s)
@@ -170,7 +172,7 @@ runs:
 
           # Add enforced tokens
           $ConvertTokensInputs.Tokens += @{
-            subscriptionId    = '${{ inputs.subscriptionId }}'
+            subscriptionId    = '${{ inputs.azure_subscription_id }}'
             managementGroupId = '${{ inputs.managementGroupId }}'
             tenantId          = '${{ env.ARM_TENANT_ID }}'
           }
@@ -219,7 +221,7 @@ runs:
           # Prepare general parameters
           # --------------------------
           # Fetching parameters
-          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $subscriptionId = '${{ inputs.azure_subscription_id }}'
           $managementGroupId = '${{ inputs.managementGroupId }}'
 
           # Resolve template file path
@@ -239,7 +241,7 @@ runs:
           $functionInput = @{
             TemplateFilePath           = $moduleTestFilePath
             DeploymentMetadataLocation = '${{ inputs.deploymentMetadataLocation }}'
-            SubscriptionId             = $subscriptionId
+            SubscriptionId             = '${{ inputs.azure_subscription_id }}'
             ManagementGroupId          = $managementGroupId
             RepoRoot                   = $env:GITHUB_WORKSPACE
             AdditionalParameters       = @{}
@@ -298,7 +300,7 @@ runs:
 
           # Prepare general parameters
           # --------------------------
-          $subscriptionId = '${{ inputs.subscriptionId }}'
+          $subscriptionId = '${{ inputs.azure_subscription_id }}'
           $managementGroupId = '${{ inputs.managementGroupId }}'
 
           # Resolve template file path
@@ -318,7 +320,7 @@ runs:
           $functionInput = @{
             TemplateFilePath           = $moduleTestFilePath
             DeploymentMetadataLocation = '${{ inputs.deploymentMetadataLocation }}'
-            SubscriptionId             = $subscriptionId
+            SubscriptionId             = '${{ inputs.azure_subscription_id }}'
             ManagementGroupId          = $managementGroupId
             DoNotThrow                 = $true
             RepoRoot                   = $env:GITHUB_WORKSPACE
@@ -486,8 +488,8 @@ runs:
             ManagementGroupId = '${{ inputs.managementGroupId }}'
           }
 
-          if (-not [String]::IsNullOrEmpty('${{ inputs.subscriptionId }}')) {
-              $functionInput['SubscriptionId'] = '${{ inputs.subscriptionId }}'
+          if (-not [String]::IsNullOrEmpty('${{ inputs.azure_subscription_id }}')) {
+              $functionInput['SubscriptionId'] = '${{ inputs.azure_subscription_id }}'
           }
 
           Write-Verbose 'Invoke task with' -Verbose
