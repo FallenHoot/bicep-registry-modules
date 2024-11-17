@@ -55,37 +55,51 @@ inputs:
   customLocation:
     description: "Custom location overwrite, if needed"
     required: false
+  azure_client_id:
+    description: 'Azure Client ID'
+    required: true
+  azure_tenant_id:
+    description: 'Azure Tenant ID'
+    required: true
+  azure_subscription_id:
+    description: 'Azure Subscription ID'
+    required: true
+  azure_credentials:
+    description: 'Azure Credentials'
+    required: true
+  auth_method:
+    description: 'Authentication Method (service principal, managed identity, or oidc)'
+    required: true
 
 runs:
   using: "composite"
   steps:
     # Azure login using Service Principal
     - name: Azure Login with Service Principal
-      if: env.sp_creds == 'true' || env.AZURE_CREDENTIALS != ''
+      if: inputs.auth_method == 'service_principal'
       uses: azure/login@v2
       with:
-        creds: ${{ env.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    # Azure login using User-Assigned Managed Identity
+    # Azure login using Managed Identity
     - name: Azure Login with Managed Identity
-      if: env.sp_creds == 'false' && env.AZURE_CREDENTIALS == ''
+      if: inputs.auth_method == 'managed_identity'
       uses: azure/login@v2
       with:
-        auth-type: IDENTITY
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        tenant-id: ${{ secrets.ARM_TENANT_ID }}
+        subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
 
     # Azure login using OIDC
     - name: Azure Login with OIDC
-      if: env.sp_creds == 'oidc'
+      if: inputs.auth_method == 'oidc'
       uses: azure/login@v2
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        tenant-id: ${{ secrets.ARM_TENANT_ID }}
+        subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
 
     # [Set Deployment Location] task(s)
