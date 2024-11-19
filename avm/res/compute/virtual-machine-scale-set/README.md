@@ -896,7 +896,7 @@ module virtualMachineScaleSet 'br/public:avm/res/compute/virtual-machine-scale-s
     ]
     disablePasswordAuthentication: true
     extensionMonitoringAgentConfig: {
-      auotUpgradeMinorVersion: true
+      autoUpgradeMinorVersion: true
       enabled: true
     }
     location: '<location>'
@@ -999,7 +999,7 @@ module virtualMachineScaleSet 'br/public:avm/res/compute/virtual-machine-scale-s
     },
     "extensionMonitoringAgentConfig": {
       "value": {
-        "auotUpgradeMinorVersion": true,
+        "autoUpgradeMinorVersion": true,
         "enabled": true
       }
     },
@@ -1084,7 +1084,7 @@ param dataDisks = [
 ]
 param disablePasswordAuthentication = true
 param extensionMonitoringAgentConfig = {
-  auotUpgradeMinorVersion: true
+  autoUpgradeMinorVersion: true
   enabled: true
 }
 param location = '<location>'
