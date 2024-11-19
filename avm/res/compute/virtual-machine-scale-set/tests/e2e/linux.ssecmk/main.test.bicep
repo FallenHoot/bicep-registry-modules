@@ -64,7 +64,7 @@ module testDeployment '../../../main.bicep' = [
     params: {
       extensionMonitoringAgentConfig: {
         enabled: true
-        auotUpgradeMinorVersion: true
+        autoUpgradeMinorVersion: true
       }
       location: resourceLocation
       name: '${namePrefix}${serviceShort}001'
