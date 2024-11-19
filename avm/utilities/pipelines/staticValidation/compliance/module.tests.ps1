@@ -13,6 +13,9 @@ param (
     [bool] $AllowPreviewVersionsInAPITests = $true
 )
 
+# Set the security protocol to TLS 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 Write-Verbose ("repoRootPath: $repoRootPath") -Verbose
 Write-Verbose ("moduleFolderPaths: $($moduleFolderPaths.count)") -Verbose
 
@@ -28,6 +31,15 @@ $script:moduleFolderPaths = $moduleFolderPaths
 # Shared exception messages
 $script:bicepTemplateCompilationFailedException = "Unable to compile the main.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command ``bicep build {0} --stdout | ConvertFrom-Json -AsHashtable``." # -f $templateFilePath
 $script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
+
+# Fetch CSV
+try {
+    $rawData = Invoke-WebRequest -Uri $script:telemetryResCsvLink
+} catch {
+    $errorMessage = "Failed to download telemetry CSV file from [$script:telemetryResCsvLink] due to [{0}]." -f $_.Exception.Message
+    Write-Error $errorMessage
+    Set-ItResult -Skipped -Because $errorMessage
+}
 
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'helper' 'helper.psm1') -Force
