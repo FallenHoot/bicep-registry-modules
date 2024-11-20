@@ -205,12 +205,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    managedIdentities: {
-      userAssignedResourceIds: [
-        '<geoBackupManagedIdentityResourceId>'
-        '<managedIdentityResourceId>'
-      ]
-    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     publicNetworkAccess: 'Disabled'
     roleAssignments: [
@@ -241,6 +235,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsmax001'
     }
+    userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
     version: '8.0.21'
   }
 }
@@ -360,14 +355,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "name": "myCustomLockName"
       }
     },
-    "managedIdentities": {
-      "value": {
-        "userAssignedResourceIds": [
-          "<geoBackupManagedIdentityResourceId>",
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -413,6 +400,9 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsmax001"
       }
+    },
+    "userAssignedIdentityResourceId": {
+      "value": "<userAssignedIdentityResourceId>"
     },
     "version": {
       "value": "8.0.21"
@@ -499,12 +489,6 @@ param lock = {
   kind: 'CanNotDelete'
   name: 'myCustomLockName'
 }
-param managedIdentities = {
-  userAssignedResourceIds: [
-    '<geoBackupManagedIdentityResourceId>'
-    '<managedIdentityResourceId>'
-  ]
-}
 param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
 param publicNetworkAccess = 'Disabled'
 param roleAssignments = [
@@ -535,6 +519,7 @@ param tags = {
   resourceType: 'MySQL Flexible Server'
   serverName: 'dfmsmax001'
 }
+param userAssignedIdentityResourceId = '<userAssignedIdentityResourceId>'
 param version = '8.0.21'
 ```
 
@@ -577,16 +562,12 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
     highAvailability: 'SameZone'
     location: '<location>'
-    managedIdentities: {
-      userAssignedResourceIds: [
-        '<managedIdentityResourceId>'
-      ]
-    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     storageAutoGrow: 'Enabled'
     storageAutoIoScaling: 'Enabled'
     storageIOPS: 400
     storageSizeGB: 64
+    userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
   }
 }
 ```
@@ -648,13 +629,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     "location": {
       "value": "<location>"
     },
-    "managedIdentities": {
-      "value": {
-        "userAssignedResourceIds": [
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -669,6 +643,9 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     },
     "storageSizeGB": {
       "value": 64
+    },
+    "userAssignedIdentityResourceId": {
+      "value": "<userAssignedIdentityResourceId>"
     }
   }
 }
@@ -707,16 +684,12 @@ param databases = [
 param delegatedSubnetResourceId = '<delegatedSubnetResourceId>'
 param highAvailability = 'SameZone'
 param location = '<location>'
-param managedIdentities = {
-  userAssignedResourceIds: [
-    '<managedIdentityResourceId>'
-  ]
-}
 param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
 param storageAutoGrow = 'Enabled'
 param storageAutoIoScaling = 'Enabled'
 param storageIOPS = 400
 param storageSizeGB = 64
+param userAssignedIdentityResourceId = '<userAssignedIdentityResourceId>'
 ```
 
 </details>
@@ -871,7 +844,6 @@ param tags = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'customerManagedKey' is not empty. |
 | [`privateDnsZoneResourceId`](#parameter-privatednszoneresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
 | [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
@@ -907,6 +879,7 @@ param tags = {
 | [`storageIOPS`](#parameter-storageiops) | int | Storage IOPS for a server. Max IOPS are determined by compute size. |
 | [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`userAssignedIdentityResourceId`](#parameter-userassignedidentityresourceid) | string | Resource ID of the user-assigned managed identity |
 | [`version`](#parameter-version) | string | MySQL Server version. |
 
 ### Parameter: `name`
@@ -937,26 +910,6 @@ The tier of the particular SKU. Tier must align with the "skuName" property. Exa
     'MemoryOptimized'
   ]
   ```
-
-### Parameter: `managedIdentities`
-
-The managed identity definition for this resource. Required if 'customerManagedKey' is not empty.
-
-- Required: No
-- Type: object
-
-**Optional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
-
-### Parameter: `managedIdentities.userAssignedResourceIds`
-
-The resource ID(s) to assign to the resource.
-
-- Required: Yes
-- Type: array
 
 ### Parameter: `privateDnsZoneResourceId`
 
@@ -1611,6 +1564,14 @@ Tags of the resource.
 
 - Required: No
 - Type: object
+
+### Parameter: `userAssignedIdentityResourceId`
+
+Resource ID of the user-assigned managed identity
+
+- Required: No
+- Type: string
+- Default: `''`
 
 ### Parameter: `version`
 

@@ -69,7 +69,7 @@ param geoRedundantBackup string = 'Enabled'
 param createMode string = 'Default'
 
 @description('Optional. Resource ID of the user-assigned managed identity')
-param userAssignedIdentityResourceId string
+param userAssignedIdentityResourceId string = ''
 
 @description('Optional. The customer managed key definition to use for the managed service.')
 param customerManagedKey customerManagedKeyType
