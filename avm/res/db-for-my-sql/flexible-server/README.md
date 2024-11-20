@@ -166,6 +166,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         name: 'testdb2'
       }
     ]
+    delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
     diagnosticSettings: [
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -180,9 +181,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         workspaceResourceId: '<workspaceResourceId>'
       }
     ]
-    delegatedSubnetResourceId: <mysqlSubnetId>
-    privateDnsZoneResourceId: <dnszoneid>
-    publicNetworkAccess: 'Enabled'
     firewallRules: [
       {
         endIpAddress: '0.0.0.0'
@@ -213,6 +211,8 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         '<managedIdentityResourceId>'
       ]
     }
+    privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
+    publicNetworkAccess: 'Disabled'
     roleAssignments: [
       {
         name: '2478b63b-0cae-457f-9bd3-9feb00e1925b'
@@ -307,6 +307,9 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         }
       ]
     },
+    "delegatedSubnetResourceId": {
+      "value": "<delegatedSubnetResourceId>"
+    },
     "diagnosticSettings": {
       "value": [
         {
@@ -364,6 +367,12 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
           "<managedIdentityResourceId>"
         ]
       }
+    },
+    "privateDnsZoneResourceId": {
+      "value": "<privateDnsZoneResourceId>"
+    },
+    "publicNetworkAccess": {
+      "value": "Disabled"
     },
     "roleAssignments": {
       "value": [
@@ -451,6 +460,7 @@ param databases = [
     name: 'testdb2'
   }
 ]
+param delegatedSubnetResourceId = '<delegatedSubnetResourceId>'
 param diagnosticSettings = [
   {
     eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -495,6 +505,8 @@ param managedIdentities = {
     '<managedIdentityResourceId>'
   ]
 }
+param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
+param publicNetworkAccess = 'Disabled'
 param roleAssignments = [
   {
     name: '2478b63b-0cae-457f-9bd3-9feb00e1925b'
@@ -888,6 +900,7 @@ param tags = {
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
+| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Specifies whether public network access is allowed for this server. Set to "Enabled" to allow public access, or "Disabled" (default) when the server has VNet integration. |
 | [`replicationRole`](#parameter-replicationrole) | string | The replication role. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`storageAutoIoScaling`](#parameter-storageautoioscaling) | string | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs. |
@@ -944,23 +957,6 @@ The resource ID(s) to assign to the resource.
 
 - Required: Yes
 - Type: array
-
-### Parameter: `publicNetworkAccess`
-
-Public Network Access determines whether a resource can be accessed over the public internet.
-Enabled: The resource is accessible from the internet.
-Disabled: The resource is only accessible within a private network, enhancing security.
-
-- Required: No
-- Type: string
-- Default: `'Disabled'`
-- Allowed:
-  ```Bicep
-  [
-    'Disabled'
-    'Enabled'
-  ]
-  ```
 
 ### Parameter: `privateDnsZoneResourceId`
 
@@ -1433,6 +1429,14 @@ Properties for the maintenence window. If provided, "customWindow" property must
 - Required: No
 - Type: object
 - Default: `{}`
+
+### Parameter: `publicNetworkAccess`
+
+Specifies whether public network access is allowed for this server. Set to "Enabled" to allow public access, or "Disabled" (default) when the server has VNet integration.
+
+- Required: No
+- Type: string
+- Default: `'Disabled'`
 
 ### Parameter: `replicationRole`
 
