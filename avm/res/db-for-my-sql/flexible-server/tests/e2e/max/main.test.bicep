@@ -202,6 +202,7 @@ module testDeployment '../../../main.bicep' = [
     dependsOn: [
       nestedDependencies1
       nestedDependencies2
+      nestedDependencies3
       diagnosticDependencies
     ]
   }
