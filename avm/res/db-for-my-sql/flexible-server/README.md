@@ -879,8 +879,13 @@ param tags = {
 | [`storageIOPS`](#parameter-storageiops) | int | Storage IOPS for a server. Max IOPS are determined by compute size. |
 | [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentityResourceId`](#parameter-userassignedidentityresourceid) | string | Resource ID of the user-assigned managed identity |
 | [`version`](#parameter-version) | string | MySQL Server version. |
+
+**Category parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`userAssignedIdentityResourceId`](#parameter-userassignedidentityresourceid) | string | Optional. Resource ID of the user-assigned managed identity. |
 
 ### Parameter: `name`
 
@@ -1565,14 +1570,6 @@ Tags of the resource.
 - Required: No
 - Type: object
 
-### Parameter: `userAssignedIdentityResourceId`
-
-Resource ID of the user-assigned managed identity
-
-- Required: No
-- Type: string
-- Default: `''`
-
 ### Parameter: `version`
 
 MySQL Server version.
@@ -1587,6 +1584,14 @@ MySQL Server version.
     '8.0.21'
   ]
   ```
+
+### Parameter: `userAssignedIdentityResourceId`
+
+Optional. Resource ID of the user-assigned managed identity.
+
+- Required: No
+- Type: string
+- Default: `''`
 
 ## Outputs
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.31.92.45157",
-      "templateHash": "2001928999043728075"
+      "templateHash": "8698660278089840067"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
@@ -385,7 +385,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. Resource ID of the user-assigned managed identity"
+        "description": "Category. Optional. Resource ID of the user-assigned managed identity."
       }
     },
     "customerManagedKey": {
