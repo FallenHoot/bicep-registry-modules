@@ -68,8 +68,8 @@ param geoRedundantBackup string = 'Enabled'
 @description('Optional. The mode to create a new MySQL server.')
 param createMode string = 'Default'
 
-@description('Category. Optional. Resource ID of the user-assigned managed identity.')
-param userAssignedIdentityResourceId string = ''
+@description('Category. Optional. The managed identity definition for this resource. Required if \'customerManagedKey\' is not empty.')
+param managedIdentities managedIdentitiesType
 
 @description('Optional. The customer managed key definition to use for the managed service.')
 param customerManagedKey customerManagedKeyType
@@ -176,6 +176,19 @@ var standByAvailabilityZoneTable = {
 
 var standByAvailabilityZone = standByAvailabilityZoneTable[?highAvailability]
 
+var formattedUserAssignedIdentities = reduce(
+  map((managedIdentities.?userAssignedResourceIds ?? []), (id) => { '${id}': {} }),
+  {},
+  (cur, next) => union(cur, next)
+) // Converts the flat array to an object like { '${id1}': {}, '${id2}': {} }
+
+var identity = !empty(managedIdentities)
+  ? {
+      type: !empty(managedIdentities.?userAssignedResourceIds ?? {}) ? 'UserAssigned' : null
+      userAssignedIdentities: !empty(formattedUserAssignedIdentities) ? formattedUserAssignedIdentities : null
+    }
+  : null
+
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'MySQL Backup And Export Operator': subscriptionResourceId(
@@ -272,14 +285,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2023-12-30' = {
     name: skuName
     tier: tier
   }
-  identity: empty(userAssignedIdentityResourceId)
-    ? null
-    : {
-        type: 'UserAssigned'
-        userAssignedIdentities: {
-          '${userAssignedIdentityResourceId}': {}
-        }
-      }
+  identity: identity
   properties: {
     administratorLogin: !empty(administratorLogin) ? administratorLogin : null
     administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
@@ -455,6 +461,11 @@ output fqdn string = flexibleServer.properties.fullyQualifiedDomainName
 // =============== //
 //   Definitions   //
 // =============== //
+
+type managedIdentitiesType = {
+  @description('Optional. The resource ID(s) to assign to the resource.')
+  userAssignedResourceIds: string[]
+}?
 
 type lockType = {
   @description('Optional. Specify the name of lock.')

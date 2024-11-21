@@ -75,7 +75,6 @@ module testDeployment '../../../main.bicep' = [
       ]
       highAvailability: 'SameZone'
       storageAutoGrow: 'Enabled'
-      userAssignedIdentityResourceId: nestedDependencies.outputs.managedIdentityResourceId
       administrators: [
         {
           identityResourceId: nestedDependencies.outputs.managedIdentityResourceId

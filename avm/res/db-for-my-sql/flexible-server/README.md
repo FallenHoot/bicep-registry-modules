@@ -205,6 +205,12 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<geoBackupManagedIdentityResourceId>'
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     publicNetworkAccess: 'Disabled'
     roleAssignments: [
@@ -235,7 +241,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsmax001'
     }
-    userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
     version: '8.0.21'
   }
 }
@@ -355,6 +360,14 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "name": "myCustomLockName"
       }
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<geoBackupManagedIdentityResourceId>",
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -400,9 +413,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsmax001"
       }
-    },
-    "userAssignedIdentityResourceId": {
-      "value": "<userAssignedIdentityResourceId>"
     },
     "version": {
       "value": "8.0.21"
@@ -489,6 +499,12 @@ param lock = {
   kind: 'CanNotDelete'
   name: 'myCustomLockName'
 }
+param managedIdentities = {
+  userAssignedResourceIds: [
+    '<geoBackupManagedIdentityResourceId>'
+    '<managedIdentityResourceId>'
+  ]
+}
 param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
 param publicNetworkAccess = 'Disabled'
 param roleAssignments = [
@@ -519,7 +535,6 @@ param tags = {
   resourceType: 'MySQL Flexible Server'
   serverName: 'dfmsmax001'
 }
-param userAssignedIdentityResourceId = '<userAssignedIdentityResourceId>'
 param version = '8.0.21'
 ```
 
@@ -567,7 +582,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     storageAutoIoScaling: 'Enabled'
     storageIOPS: 400
     storageSizeGB: 64
-    userAssignedIdentityResourceId: '<userAssignedIdentityResourceId>'
   }
 }
 ```
@@ -643,9 +657,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     },
     "storageSizeGB": {
       "value": 64
-    },
-    "userAssignedIdentityResourceId": {
-      "value": "<userAssignedIdentityResourceId>"
     }
   }
 }
@@ -689,7 +700,6 @@ param storageAutoGrow = 'Enabled'
 param storageAutoIoScaling = 'Enabled'
 param storageIOPS = 400
 param storageSizeGB = 64
-param userAssignedIdentityResourceId = '<userAssignedIdentityResourceId>'
 ```
 
 </details>
@@ -885,7 +895,7 @@ param tags = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
-| [`userAssignedIdentityResourceId`](#parameter-userassignedidentityresourceid) | string | Optional. Resource ID of the user-assigned managed identity. |
+| [`managedIdentities`](#parameter-managedidentities) | object | Optional. The managed identity definition for this resource. Required if 'customerManagedKey' is not empty. |
 
 ### Parameter: `name`
 
@@ -1585,13 +1595,25 @@ MySQL Server version.
   ]
   ```
 
-### Parameter: `userAssignedIdentityResourceId`
+### Parameter: `managedIdentities`
 
-Optional. Resource ID of the user-assigned managed identity.
+Optional. The managed identity definition for this resource. Required if 'customerManagedKey' is not empty.
 
 - Required: No
-- Type: string
-- Default: `''`
+- Type: object
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
 
 ## Outputs
 
