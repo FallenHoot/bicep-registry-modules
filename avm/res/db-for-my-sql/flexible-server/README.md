@@ -205,12 +205,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    managedIdentities: {
-      userAssignedResourceIds: [
-        '<geoBackupManagedIdentityResourceId>'
-        '<managedIdentityResourceId>'
-      ]
-    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     publicNetworkAccess: 'Disabled'
     roleAssignments: [
@@ -240,6 +234,10 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsmax001'
+    }
+    userAssignedIdentities: {
+      '<geoBackupManagedIdentityResourceId>': {}
+      '<managedIdentityResourceId>': {}
     }
     version: '8.0.21'
   }
@@ -360,14 +358,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "name": "myCustomLockName"
       }
     },
-    "managedIdentities": {
-      "value": {
-        "userAssignedResourceIds": [
-          "<geoBackupManagedIdentityResourceId>",
-          "<managedIdentityResourceId>"
-        ]
-      }
-    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -412,6 +402,12 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsmax001"
+      }
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<geoBackupManagedIdentityResourceId>": {},
+        "<managedIdentityResourceId>": {}
       }
     },
     "version": {
@@ -499,12 +495,6 @@ param lock = {
   kind: 'CanNotDelete'
   name: 'myCustomLockName'
 }
-param managedIdentities = {
-  userAssignedResourceIds: [
-    '<geoBackupManagedIdentityResourceId>'
-    '<managedIdentityResourceId>'
-  ]
-}
 param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
 param publicNetworkAccess = 'Disabled'
 param roleAssignments = [
@@ -534,6 +524,10 @@ param tags = {
   'hidden-title': 'This is visible in the resource name'
   resourceType: 'MySQL Flexible Server'
   serverName: 'dfmsmax001'
+}
+param userAssignedIdentities = {
+  '<geoBackupManagedIdentityResourceId>': {}
+  '<managedIdentityResourceId>': {}
 }
 param version = '8.0.21'
 ```
@@ -889,13 +883,8 @@ param tags = {
 | [`storageIOPS`](#parameter-storageiops) | int | Storage IOPS for a server. Max IOPS are determined by compute size. |
 | [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
+| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The managed identity definition for this resource. |
 | [`version`](#parameter-version) | string | MySQL Server version. |
-
-**Category parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`managedIdentities`](#parameter-managedidentities) | object | Optional. The managed identity definition for this resource. Required if 'customerManagedKey' is not empty. |
 
 ### Parameter: `name`
 
@@ -1580,6 +1569,14 @@ Tags of the resource.
 - Required: No
 - Type: object
 
+### Parameter: `userAssignedIdentities`
+
+The managed identity definition for this resource.
+
+- Required: No
+- Type: object
+- Default: `{}`
+
 ### Parameter: `version`
 
 MySQL Server version.
@@ -1594,26 +1591,6 @@ MySQL Server version.
     '8.0.21'
   ]
   ```
-
-### Parameter: `managedIdentities`
-
-Optional. The managed identity definition for this resource. Required if 'customerManagedKey' is not empty.
-
-- Required: No
-- Type: object
-
-**Optional parameters**
-
-| Parameter | Type | Description |
-| :-- | :-- | :-- |
-| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
-
-### Parameter: `managedIdentities.userAssignedResourceIds`
-
-The resource ID(s) to assign to the resource.
-
-- Required: Yes
-- Type: array
 
 ## Outputs
 
