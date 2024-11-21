@@ -461,7 +461,6 @@ output fqdn string = flexibleServer.properties.fullyQualifiedDomainName
 // =============== //
 //   Definitions   //
 // =============== //
-
 type managedIdentitiesType = {
   @description('Optional. The resource ID(s) to assign to the resource.')
   userAssignedResourceIds: string[]
