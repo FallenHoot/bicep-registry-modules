@@ -85,6 +85,14 @@ param customerManagedKeyGeo customerManagedKeyType
 @description('Optional. The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning.')
 param highAvailability string = 'ZoneRedundant'
 
+// Ensure highAvailability is set to 'Disabled' if tier is 'Burstable'
+var effectiveHighAvailability = (tier == 'Burstable') ? 'Disabled' : highAvailability
+
+// Ensure storageAutoGrow is disabled if tier is 'Burstable' and highAvailability is 'SameZone' or 'ZoneRedundant'
+var effectiveStorageAutoGrow = (tier == 'Burstable' && (highAvailability == 'SameZone' || highAvailability == 'ZoneRedundant'))
+  ? 'Disabled'
+  : storageAutoGrow
+
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
@@ -174,7 +182,7 @@ var standByAvailabilityZoneTable = {
   ZoneRedundant: highAvailabilityZone
 }
 
-var standByAvailabilityZone = standByAvailabilityZoneTable[?highAvailability]
+var standByAvailabilityZone = standByAvailabilityZoneTable[effectiveHighAvailability]
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
@@ -302,10 +310,12 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2023-12-30' = {
           primaryUserAssignedIdentityId: cMKUserAssignedIdentity.id
         }
       : null
-    highAvailability: {
-      mode: highAvailability
-      standbyAvailabilityZone: standByAvailabilityZone
-    }
+    highAvailability: (effectiveHighAvailability != 'Disabled')
+      ? {
+          mode: effectiveHighAvailability
+          standbyAvailabilityZone: standByAvailabilityZone
+        }
+      : null
     maintenanceWindow: !empty(maintenanceWindow)
       ? {
           customWindow: maintenanceWindow.customWindow
@@ -333,7 +343,7 @@ resource flexibleServer 'Microsoft.DBforMySQL/flexibleServers@2023-12-30' = {
     restorePointInTime: restorePointInTime
     sourceServerResourceId: !empty(sourceServerResourceId) ? sourceServerResourceId : null
     storage: {
-      autoGrow: storageAutoGrow
+      autoGrow: effectiveStorageAutoGrow
       autoIoScaling: storageAutoIoScaling
       iops: storageIOPS
       storageSizeGB: storageSizeGB
