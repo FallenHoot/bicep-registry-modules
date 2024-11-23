@@ -56,7 +56,7 @@ module testDeployment '../../../main.bicep' = [
     scope: resourceGroup
     name: '${uniqueString(deployment().name, enforcedLocation)}-test-${serviceShort}-${iteration}'
     params: {
-      name: '${namePrefix}${serviceShort}001'
+      name: 'mysql${namePrefix}${serviceShort}001'
       location: enforcedLocation
       administratorLogin: 'adminUserName'
       administratorLoginPassword: password

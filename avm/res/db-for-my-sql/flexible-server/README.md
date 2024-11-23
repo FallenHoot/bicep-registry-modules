@@ -549,7 +549,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
   name: 'flexibleServerDeployment'
   params: {
     // Required parameters
-    name: 'dfmspvt001'
+    name: 'mysqldfmspvt001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -594,7 +594,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
   "parameters": {
     // Required parameters
     "name": {
-      "value": "dfmspvt001"
+      "value": "mysqldfmspvt001"
     },
     "skuName": {
       "value": "Standard_D2ds_v4"
@@ -667,7 +667,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
 using 'br/public:avm/res/db-for-my-sql/flexible-server:<version>'
 
 // Required parameters
-param name = 'dfmspvt001'
+param name = 'mysqldfmspvt001'
 param skuName = 'Standard_D2ds_v4'
 param tier = 'GeneralPurpose'
 // Non-required parameters
