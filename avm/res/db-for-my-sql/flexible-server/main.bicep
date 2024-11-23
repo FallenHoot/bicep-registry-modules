@@ -85,14 +85,6 @@ param customerManagedKeyGeo customerManagedKeyType
 @description('Optional. The mode for High Availability (HA). It is not supported for the Burstable pricing tier and Zone redundant HA can only be set during server provisioning.')
 param highAvailability string = 'ZoneRedundant'
 
-// Ensure highAvailability is set to 'Disabled' if tier is 'Burstable'
-var effectiveHighAvailability = (tier == 'Burstable') ? 'Disabled' : highAvailability
-
-// Ensure storageAutoGrow is disabled if tier is 'Burstable' and highAvailability is 'SameZone' or 'ZoneRedundant'
-var effectiveStorageAutoGrow = (tier == 'Burstable' && (highAvailability == 'SameZone' || highAvailability == 'ZoneRedundant'))
-  ? 'Disabled'
-  : storageAutoGrow
-
 @description('Optional. Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled".')
 param maintenanceWindow object = {}
 
@@ -182,7 +174,15 @@ var standByAvailabilityZoneTable = {
   ZoneRedundant: highAvailabilityZone
 }
 
+@description('Ensure highAvailability is set to \'Disabled\' if tier is \'Burstable\'')
+var effectiveHighAvailability = (tier == 'Burstable') ? 'Disabled' : highAvailability
+
 var standByAvailabilityZone = standByAvailabilityZoneTable[effectiveHighAvailability]
+
+@description('Ensure storageAutoGrow is disabled if tier is \'Burstable\' and highAvailability is \'SameZone\' or \'ZoneRedundant\'')
+var effectiveStorageAutoGrow = (tier == 'Burstable' && (highAvailability == 'SameZone' || highAvailability == 'ZoneRedundant'))
+  ? 'Disabled'
+  : storageAutoGrow
 
 var builtInRoleNames = {
   Contributor: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
