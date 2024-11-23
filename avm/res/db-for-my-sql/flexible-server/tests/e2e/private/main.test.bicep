@@ -58,6 +58,9 @@ module testDeployment '../../../main.bicep' = [
     params: {
       name: 'mysql${namePrefix}${serviceShort}001'
       location: enforcedLocation
+      userAssignedIdentities: {
+        '${nestedDependencies.outputs.managedIdentityResourceId}': {}
+      }
       administratorLogin: 'adminUserName'
       administratorLoginPassword: password
       skuName: 'Standard_D2ds_v4'

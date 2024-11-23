@@ -21,7 +21,7 @@ param administratorLogin string = ''
 @secure()
 param administratorLoginPassword string = ''
 
-@description('Optional. The Azure AD administrators when AAD authentication enabled.')
+@description('Optional. The Azure AD administrators when AAD authentication is enabled. Requires the assignment of userAssignedIdentities.')
 param administrators array = []
 
 @description('Required. The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.')

@@ -576,6 +576,9 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     storageAutoIoScaling: 'Enabled'
     storageIOPS: 400
     storageSizeGB: 64
+    userAssignedIdentities: {
+      '<managedIdentityResourceId>': {}
+    }
   }
 }
 ```
@@ -651,6 +654,11 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     },
     "storageSizeGB": {
       "value": 64
+    },
+    "userAssignedIdentities": {
+      "value": {
+        "<managedIdentityResourceId>": {}
+      }
     }
   }
 }
@@ -694,6 +702,9 @@ param storageAutoGrow = 'Enabled'
 param storageAutoIoScaling = 'Enabled'
 param storageIOPS = 400
 param storageSizeGB = 64
+param userAssignedIdentities = {
+  '<managedIdentityResourceId>': {}
+}
 ```
 
 </details>
@@ -859,7 +870,7 @@ param tags = {
 | :-- | :-- | :-- |
 | [`administratorLogin`](#parameter-administratorlogin) | string | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
 | [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The administrator login password. |
-| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
+| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication is enabled. Requires the assignment of userAssignedIdentities. |
 | [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
 | [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
 | [`createMode`](#parameter-createmode) | string | The mode to create a new MySQL server. |
@@ -972,7 +983,7 @@ The administrator login password.
 
 ### Parameter: `administrators`
 
-The Azure AD administrators when AAD authentication enabled.
+The Azure AD administrators when AAD authentication is enabled. Requires the assignment of userAssignedIdentities.
 
 - Required: No
 - Type: array

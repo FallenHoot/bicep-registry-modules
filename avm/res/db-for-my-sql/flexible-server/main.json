@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.31.92.45157",
-      "templateHash": "1012567304823881047"
+      "templateHash": "2716249682196909158"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
@@ -308,7 +308,7 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. The Azure AD administrators when AAD authentication enabled."
+        "description": "Optional. The Azure AD administrators when AAD authentication is enabled. Requires the assignment of userAssignedIdentities."
       }
     },
     "skuName": {
