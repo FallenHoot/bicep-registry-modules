@@ -166,7 +166,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         name: 'testdb2'
       }
     ]
-    delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
     diagnosticSettings: [
       {
         eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -205,8 +204,12 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       kind: 'CanNotDelete'
       name: 'myCustomLockName'
     }
-    privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
-    publicNetworkAccess: 'Disabled'
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<geoBackupManagedIdentityResourceId>'
+        '<managedIdentityResourceId>'
+      ]
+    }
     roleAssignments: [
       {
         name: '2478b63b-0cae-457f-9bd3-9feb00e1925b'
@@ -234,10 +237,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
       'hidden-title': 'This is visible in the resource name'
       resourceType: 'MySQL Flexible Server'
       serverName: 'dfmsmax001'
-    }
-    userAssignedIdentities: {
-      '<geoBackupManagedIdentityResourceId>': {}
-      '<managedIdentityResourceId>': {}
     }
     version: '8.0.21'
   }
@@ -305,9 +304,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         }
       ]
     },
-    "delegatedSubnetResourceId": {
-      "value": "<delegatedSubnetResourceId>"
-    },
     "diagnosticSettings": {
       "value": [
         {
@@ -358,11 +354,13 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "name": "myCustomLockName"
       }
     },
-    "privateDnsZoneResourceId": {
-      "value": "<privateDnsZoneResourceId>"
-    },
-    "publicNetworkAccess": {
-      "value": "Disabled"
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<geoBackupManagedIdentityResourceId>",
+          "<managedIdentityResourceId>"
+        ]
+      }
     },
     "roleAssignments": {
       "value": [
@@ -402,12 +400,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
         "hidden-title": "This is visible in the resource name",
         "resourceType": "MySQL Flexible Server",
         "serverName": "dfmsmax001"
-      }
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<geoBackupManagedIdentityResourceId>": {},
-        "<managedIdentityResourceId>": {}
       }
     },
     "version": {
@@ -456,7 +448,6 @@ param databases = [
     name: 'testdb2'
   }
 ]
-param delegatedSubnetResourceId = '<delegatedSubnetResourceId>'
 param diagnosticSettings = [
   {
     eventHubAuthorizationRuleResourceId: '<eventHubAuthorizationRuleResourceId>'
@@ -495,8 +486,12 @@ param lock = {
   kind: 'CanNotDelete'
   name: 'myCustomLockName'
 }
-param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
-param publicNetworkAccess = 'Disabled'
+param managedIdentities = {
+  userAssignedResourceIds: [
+    '<geoBackupManagedIdentityResourceId>'
+    '<managedIdentityResourceId>'
+  ]
+}
 param roleAssignments = [
   {
     name: '2478b63b-0cae-457f-9bd3-9feb00e1925b'
@@ -525,10 +520,6 @@ param tags = {
   resourceType: 'MySQL Flexible Server'
   serverName: 'dfmsmax001'
 }
-param userAssignedIdentities = {
-  '<geoBackupManagedIdentityResourceId>': {}
-  '<managedIdentityResourceId>': {}
-}
 param version = '8.0.21'
 ```
 
@@ -549,7 +540,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
   name: 'flexibleServerDeployment'
   params: {
     // Required parameters
-    name: 'mysqldfmspvt001'
+    name: 'dfmspvt001'
     skuName: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
     // Non-required parameters
@@ -571,14 +562,16 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     delegatedSubnetResourceId: '<delegatedSubnetResourceId>'
     highAvailability: 'SameZone'
     location: '<location>'
+    managedIdentities: {
+      userAssignedResourceIds: [
+        '<managedIdentityResourceId>'
+      ]
+    }
     privateDnsZoneResourceId: '<privateDnsZoneResourceId>'
     storageAutoGrow: 'Enabled'
     storageAutoIoScaling: 'Enabled'
     storageIOPS: 400
     storageSizeGB: 64
-    userAssignedIdentities: {
-      '<managedIdentityResourceId>': {}
-    }
   }
 }
 ```
@@ -597,7 +590,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
   "parameters": {
     // Required parameters
     "name": {
-      "value": "mysqldfmspvt001"
+      "value": "dfmspvt001"
     },
     "skuName": {
       "value": "Standard_D2ds_v4"
@@ -640,6 +633,13 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     "location": {
       "value": "<location>"
     },
+    "managedIdentities": {
+      "value": {
+        "userAssignedResourceIds": [
+          "<managedIdentityResourceId>"
+        ]
+      }
+    },
     "privateDnsZoneResourceId": {
       "value": "<privateDnsZoneResourceId>"
     },
@@ -654,11 +654,6 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
     },
     "storageSizeGB": {
       "value": 64
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "<managedIdentityResourceId>": {}
-      }
     }
   }
 }
@@ -675,7 +670,7 @@ module flexibleServer 'br/public:avm/res/db-for-my-sql/flexible-server:<version>
 using 'br/public:avm/res/db-for-my-sql/flexible-server:<version>'
 
 // Required parameters
-param name = 'mysqldfmspvt001'
+param name = 'dfmspvt001'
 param skuName = 'Standard_D2ds_v4'
 param tier = 'GeneralPurpose'
 // Non-required parameters
@@ -697,14 +692,16 @@ param databases = [
 param delegatedSubnetResourceId = '<delegatedSubnetResourceId>'
 param highAvailability = 'SameZone'
 param location = '<location>'
+param managedIdentities = {
+  userAssignedResourceIds: [
+    '<managedIdentityResourceId>'
+  ]
+}
 param privateDnsZoneResourceId = '<privateDnsZoneResourceId>'
 param storageAutoGrow = 'Enabled'
 param storageAutoIoScaling = 'Enabled'
 param storageIOPS = 400
 param storageSizeGB = 64
-param userAssignedIdentities = {
-  '<managedIdentityResourceId>': {}
-}
 ```
 
 </details>
@@ -859,6 +856,7 @@ param tags = {
 
 | Parameter | Type | Description |
 | :-- | :-- | :-- |
+| [`managedIdentities`](#parameter-managedidentities) | object | The managed identity definition for this resource. Required if 'customerManagedKey' is not empty. |
 | [`privateDnsZoneResourceId`](#parameter-privatednszoneresourceid) | string | Private dns zone arm resource ID. Used when the desired connectivity mode is "Private Access". Required if "delegatedSubnetResourceId" is used and the Private DNS Zone name must end with mysql.database.azure.com in order to be linked to the MySQL Flexible Server. |
 | [`restorePointInTime`](#parameter-restorepointintime) | string | Restore point creation time (ISO8601 format), specifying the time to restore from. Required if "createMode" is set to "PointInTimeRestore". |
 | [`sourceServerResourceId`](#parameter-sourceserverresourceid) | string | The source MySQL server ID. Required if "createMode" is set to "PointInTimeRestore". |
@@ -870,7 +868,7 @@ param tags = {
 | :-- | :-- | :-- |
 | [`administratorLogin`](#parameter-administratorlogin) | string | The administrator login name of a server. Can only be specified when the MySQL server is being created. |
 | [`administratorLoginPassword`](#parameter-administratorloginpassword) | securestring | The administrator login password. |
-| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication is enabled. Requires the assignment of userAssignedIdentities. |
+| [`administrators`](#parameter-administrators) | array | The Azure AD administrators when AAD authentication enabled. |
 | [`availabilityZone`](#parameter-availabilityzone) | string | Availability zone information of the server. Default will have no preference set. |
 | [`backupRetentionDays`](#parameter-backupretentiondays) | int | Backup retention days for the server. |
 | [`createMode`](#parameter-createmode) | string | The mode to create a new MySQL server. |
@@ -887,14 +885,12 @@ param tags = {
 | [`location`](#parameter-location) | string | Location for all resources. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`maintenanceWindow`](#parameter-maintenancewindow) | object | Properties for the maintenence window. If provided, "customWindow" property must exist and set to "Enabled". |
-| [`publicNetworkAccess`](#parameter-publicnetworkaccess) | string | Specifies whether public network access is allowed for this server. Set to "Enabled" to allow public access, or "Disabled" (default) when the server has VNet integration. |
 | [`replicationRole`](#parameter-replicationrole) | string | The replication role. |
 | [`roleAssignments`](#parameter-roleassignments) | array | Array of role assignments to create. |
 | [`storageAutoIoScaling`](#parameter-storageautoioscaling) | string | Enable IO Auto Scaling or not. The server scales IOPs up or down automatically depending on your workload needs. |
 | [`storageIOPS`](#parameter-storageiops) | int | Storage IOPS for a server. Max IOPS are determined by compute size. |
 | [`storageSizeGB`](#parameter-storagesizegb) | int | Max storage allowed for a server. In all compute tiers, the minimum storage supported is 20 GiB and maximum is 16 TiB. |
 | [`tags`](#parameter-tags) | object | Tags of the resource. |
-| [`userAssignedIdentities`](#parameter-userassignedidentities) | object | The managed identity definition for this resource. |
 | [`version`](#parameter-version) | string | MySQL Server version. |
 
 ### Parameter: `name`
@@ -925,6 +921,26 @@ The tier of the particular SKU. Tier must align with the "skuName" property. Exa
     'MemoryOptimized'
   ]
   ```
+
+### Parameter: `managedIdentities`
+
+The managed identity definition for this resource. Required if 'customerManagedKey' is not empty.
+
+- Required: No
+- Type: object
+
+**Optional parameters**
+
+| Parameter | Type | Description |
+| :-- | :-- | :-- |
+| [`userAssignedResourceIds`](#parameter-managedidentitiesuserassignedresourceids) | array | The resource ID(s) to assign to the resource. |
+
+### Parameter: `managedIdentities.userAssignedResourceIds`
+
+The resource ID(s) to assign to the resource.
+
+- Required: Yes
+- Type: array
 
 ### Parameter: `privateDnsZoneResourceId`
 
@@ -983,7 +999,7 @@ The administrator login password.
 
 ### Parameter: `administrators`
 
-The Azure AD administrators when AAD authentication is enabled. Requires the assignment of userAssignedIdentities.
+The Azure AD administrators when AAD authentication enabled.
 
 - Required: No
 - Type: array
@@ -1398,14 +1414,6 @@ Properties for the maintenence window. If provided, "customWindow" property must
 - Type: object
 - Default: `{}`
 
-### Parameter: `publicNetworkAccess`
-
-Specifies whether public network access is allowed for this server. Set to "Enabled" to allow public access, or "Disabled" (default) when the server has VNet integration.
-
-- Required: No
-- Type: string
-- Default: `'Disabled'`
-
 ### Parameter: `replicationRole`
 
 The replication role.
@@ -1579,14 +1587,6 @@ Tags of the resource.
 
 - Required: No
 - Type: object
-
-### Parameter: `userAssignedIdentities`
-
-The managed identity definition for this resource.
-
-- Required: No
-- Type: object
-- Default: `{}`
 
 ### Parameter: `version`
 
