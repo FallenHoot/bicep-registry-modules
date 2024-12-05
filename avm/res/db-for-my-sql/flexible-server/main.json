@@ -5,8 +5,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.30.3.12046",
-      "templateHash": "17022862459992031093"
+      "version": "0.31.92.45157",
+      "templateHash": "5307795144874038033"
     },
     "name": "DBforMySQL Flexible Servers",
     "description": "This module deploys a DBforMySQL Flexible Server.",
@@ -323,7 +323,7 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Optional. The Azure AD administrators when AAD authentication enabled."
+        "description": "Optional. The Azure AD administrators when AAD authentication is enabled. Requires the assignment of identity (userAssignedIdentities)."
       }
     },
     "skuName": {
@@ -438,6 +438,13 @@
       "defaultValue": "",
       "metadata": {
         "description": "Optional. Delegated subnet arm resource ID. Used when the desired connectivity mode is \"Private Access\" - virtual network integration. Delegation must be enabled on the subnet for MySQL Flexible Servers and subnet CIDR size is /29."
+      }
+    },
+    "publicNetworkAccess": {
+      "type": "string",
+      "defaultValue": "Disabled",
+      "metadata": {
+        "description": "Optional. Specifies whether public network access is allowed for this server. Set to \"Enabled\" to allow public access, or \"Disabled\" (default) when the server has VNet integration."
       }
     },
     "privateDnsZoneResourceId": {
@@ -701,7 +708,7 @@
           "standbyAvailabilityZone": "[variables('standByAvailabilityZone')]"
         },
         "maintenanceWindow": "[if(not(empty(parameters('maintenanceWindow'))), createObject('customWindow', parameters('maintenanceWindow').customWindow, 'dayOfWeek', if(equals(parameters('maintenanceWindow').customWindow, 'Enabled'), parameters('maintenanceWindow').dayOfWeek, 0), 'startHour', if(equals(parameters('maintenanceWindow').customWindow, 'Enabled'), parameters('maintenanceWindow').startHour, 0), 'startMinute', if(equals(parameters('maintenanceWindow').customWindow, 'Enabled'), parameters('maintenanceWindow').startMinute, 0)), null())]",
-        "network": "[if(and(not(empty(parameters('delegatedSubnetResourceId'))), empty(parameters('firewallRules'))), createObject('delegatedSubnetResourceId', parameters('delegatedSubnetResourceId'), 'privateDnsZoneResourceId', parameters('privateDnsZoneResourceId')), null())]",
+        "network": "[if(equals(parameters('publicNetworkAccess'), 'Enabled'), if(or(not(empty(parameters('delegatedSubnetResourceId'))), empty(parameters('firewallRules'))), createObject('publicNetworkAccess', parameters('publicNetworkAccess'), 'delegatedSubnetResourceId', parameters('delegatedSubnetResourceId'), 'privateDnsZoneResourceId', parameters('privateDnsZoneResourceId')), null()), if(not(empty(parameters('delegatedSubnetResourceId'))), createObject('publicNetworkAccess', parameters('publicNetworkAccess'), 'delegatedSubnetResourceId', parameters('delegatedSubnetResourceId'), 'privateDnsZoneResourceId', parameters('privateDnsZoneResourceId')), null()))]",
         "replicationRole": "[parameters('replicationRole')]",
         "restorePointInTime": "[parameters('restorePointInTime')]",
         "sourceServerResourceId": "[if(not(empty(parameters('sourceServerResourceId'))), parameters('sourceServerResourceId'), null())]",
@@ -830,8 +837,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "15491679806037869848"
+              "version": "0.31.92.45157",
+              "templateHash": "8816099454149448745"
             },
             "name": "DBforMySQL Flexible Server Databases",
             "description": "This module deploys a DBforMySQL Flexible Server Database.",
@@ -938,8 +945,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "10498063087675421166"
+              "version": "0.31.92.45157",
+              "templateHash": "10309431502079210011"
             },
             "name": "DBforMySQL Flexible Server Firewall Rules",
             "description": "This module deploys a DBforMySQL Flexible Server Firewall Rule.",
@@ -1047,8 +1054,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.30.3.12046",
-              "templateHash": "17380647846007156110"
+              "version": "0.31.92.45157",
+              "templateHash": "15901602668303039143"
             },
             "name": "DBforMySQL Flexible Server Administrators",
             "description": "This module deploys a DBforMySQL Flexible Server Administrator.",
