@@ -1,0 +1,10 @@
+# AVM Spec-Kit (private AI context - do not commit)
+.specify/
+.github/copilot-instructions.md
+
+# Dashboards (maintained on feature/finops-hub-dashboards branch)
+dashboards/
+
+# error logs
+*.txt
+*\test-data
