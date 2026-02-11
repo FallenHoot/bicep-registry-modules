@@ -1,13 +1,20 @@
-Write-Output 'Updating settings.json file...'
-Write-Output "Storage account: $env:storageAccountName"
-Write-Output "Container: $env:containerName"
+﻿# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
 
-$validateScopes = { $_.Length -gt 45 }
+# This script creates/updates the settings.json file in the FinOps Hub config container.
+# It is a direct port of the upstream FinOps toolkit deployment script.
+# Reference: https://github.com/microsoft/finops-toolkit/blob/dev/src/templates/finops-hub/modules/Microsoft.FinOpsHubs/Core/Copy-FileToAzureBlob.ps1
+
+Write-Output "Updating settings.json file..."
+Write-Output "  Storage account: $env:storageAccountName"
+Write-Output "  Container: $env:containerName"
+
+$validateScopes = { $_.scope.Length -gt 45 }
 
 # Initialize variables
 $fileName = 'settings.json'
 $filePath = Join-Path -Path . -ChildPath $fileName
-$newScopes = $env:exportScopes.Split('|') | Where-Object $validateScopes | ForEach-Object { @{ scope = $_ } }
+$newScopes = $env:scopes.Split('|') | ForEach-Object { [PSCustomObject]@{ scope = $_ } } | Where-Object $validateScopes
 
 # Get storage context
 $storageContext = @{
@@ -16,23 +23,30 @@ $storageContext = @{
 }
 
 # Download existing settings, if they exist
-$blob = Get-AzStorageBlobContent @storageContext -Blob $fileName -Destination $filePath -Force
-if ($blob) {
-    Write-Output 'Existing settings.json file found. Updating...'
+$blob = Get-AzStorageBlobContent @storageContext -Blob $fileName -Destination $filePath -Force -ErrorAction SilentlyContinue
+if ($blob)
+{
     $text = Get-Content $filePath -Raw
-    Write-Output '---------'
+    Write-Output "---------"
     Write-Output $text
-    Write-Output '---------'
+    Write-Output "---------"
     $json = $text | ConvertFrom-Json
+    Write-Output "Existing settings.json file found. Updating..."
 
     # Rename exportScopes to scopes + convert to object array
-    if ($json.exportScopes) {
-        Write-Output '  Updating exportScopes...'
-        if ($json.exportScopes[0] -is [string]) {
-            Write-Output '    Converting string array to object array...'
-            $json.exportScopes = $json.exportScopes | Where-Object $validateScopes | ForEach-Object { @{ scope = $_ } }
-            if (-not ($json.exportScopes -is [array])) {
-                Write-Output '    Converting single object to object array...'
+    if ($json.exportScopes)
+    {
+        Write-Output "  Updating exportScopes..."
+        if ($json.exportScopes[0] -is [string])
+        {
+            Write-Output "    Converting string array to object array..."
+            $json.exportScopes = @($json.exportScopes | Where-Object $validateScopes | ForEach-Object { @{ scope = $_ } })
+        }
+        else
+        {
+            if (-not ($json.exportScopes -is [array]))
+            {
+                Write-Output "    Converting single object to object array..."
                 $json.exportScopes = @($json.exportScopes)
             }
         }
@@ -41,41 +55,123 @@ if ($blob) {
         $json | Add-Member -MemberType NoteProperty -Name scopes -Value $json.exportScopes
         $json.PSObject.Properties.Remove('exportScopes')
     }
+
+    # Force string array to object array with unique values
+    if ($json.scopes)
+    {
+        Write-Output "  Converting string array to object array..."
+        $scopeArray = @()
+        $json.scopes | Where-Object $validateScopes | ForEach-Object { $scopeArray += $_ } | Select-Object -Unique
+        $json.scopes = @() + $scopeArray
+    }
 }
 
 # Set default if not found
-if (!$json) {
-    Write-Output 'No existing settings.json file found. Creating new file...'
+if (!$json)
+{
+    Write-Output "No existing settings.json file found. Creating new file..."
     $json = [ordered]@{
         '$schema' = 'https://aka.ms/finops/hubs/settings-schema'
         type      = 'HubInstance'
         version   = ''
         learnMore = 'https://aka.ms/finops/hubs'
         scopes    = @()
+        retention = @{
+            'msexports' = @{
+                days = 0
+            }
+            'ingestion' = @{
+                months = 13
+            }
+            'raw'       = @{
+                days = 0
+            }
+            'final'     = @{
+                months = 13
+            }
+        }
     }
+
+    $text = $json | ConvertTo-Json
+    Write-Output "---------"
+    Write-Output $text
+    Write-Output "---------"
+}
+
+# Set default retention
+if (!($json.retention))
+{
+    # In case the retention object is not present in the settings.json file (versions before 0.4), add it with default values
+    $retention = @"
+    {
+        "msexports": {
+            "days": 0
+        },
+        "ingestion": {
+            "months": 13
+        },
+        "raw": {
+            "days": 0
+        },
+        "final": {
+            "months": 13
+        }
+    }
+"@
+    $json | Add-Member -Name retention -Value (ConvertFrom-Json $retention) -MemberType NoteProperty
+}
+
+# Set or update msexports retention
+if (!($json.retention.msexports))
+{
+    $json.retention | Add-Member -Name msexports -Value (ConvertFrom-Json "{""days"":$($env:msexportRetentionInDays)}") -MemberType NoteProperty
+}
+else
+{
+    $json.retention.msexports.days = [Int32]::Parse($env:msexportRetentionInDays)
+}
+
+# Set or update ingestion retention
+if (!($json.retention.ingestion))
+{
+    $json.retention | Add-Member -Name ingestion -Value (ConvertFrom-Json "{""months"":$($env:ingestionRetentionInMonths)}") -MemberType NoteProperty
+}
+else
+{
+    $json.retention.ingestion.months = [Int32]::Parse($env:ingestionRetentionInMonths)
+}
+
+# Set or update raw retention
+if (!($json.retention.raw))
+{
+    $json.retention | Add-Member -Name raw -Value (ConvertFrom-Json "{""days"":$($env:rawRetentionInDays)}") -MemberType NoteProperty
+}
+else
+{
+    $json.retention.raw.days = [Int32]::Parse($env:rawRetentionInDays)
+}
+
+# Set or update final retention
+if (!($json.retention.final))
+{
+    $json.retention | Add-Member -Name final -Value (ConvertFrom-Json "{""months"":$($env:finalRetentionInMonths)}") -MemberType NoteProperty
+}
+else
+{
+    $json.retention.final.months = [Int32]::Parse($env:finalRetentionInMonths)
 }
 
 # Updating settings
 Write-Output "Updating version to $env:ftkVersion..."
 $json.version = $env:ftkVersion
-if ($newScopes) {
-    Write-Output "Merging $($newScopes.Count) scopes..."
-    $json.scopes = Compare-Object -ReferenceObject $json.scopes -DifferenceObject $newScopes -Property scope -PassThru -IncludeEqual
-
-    # Remove the SideIndicator property from the Compare-Object output
-    $json.scopes | ForEach-Object { $_.PSObject.Properties.Remove('SideIndicator') } | ConvertTo-Json
-
-    if (-not ($json.scopes -is [array])) {
-        $json.scopes = @($json.scopes)
-    }
-    Write-Output "$($json.scopes.Count) scopes found."
-}
+$json.scopes = ($json.scopes + $newScopes) | Sort-Object scope -Unique
+if ($null -eq $json.scopes) { $json.scopes = @() }
 $text = $json | ConvertTo-Json
-Write-Output '---------'
+Write-Output "---------"
 Write-Output $text
-Write-Output '---------'
+Write-Output "---------"
 $text | Out-File $filePath
 
 # Upload new/updated settings
-Write-Output 'Uploading settings.json file...'
-Set-AzStorageBlobContent @storageContext -File $filePath -Force
+Write-Output "Uploading settings.json file..."
+Set-AzStorageBlobContent @storageContext -File $filePath -Force | Out-Null
