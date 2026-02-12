@@ -633,7 +633,7 @@ module dataFactory 'br/public:avm/res/data-factory/factory:0.11.0' = {
 // --- Data Factory Resources ---
 
 // Stop triggers before updating ADF resources (idempotent redeployment)
-module stopTriggers 'modules/triggerManagement.bicep' = if (enableTriggerManagement) {
+module stopTriggers 'modules/hub-initialize.bicep' = if (enableTriggerManagement) {
   name: '${uniqueString(deployment().name, location)}-stop-triggers'
   dependsOn: [
     identityStorageRoleAssignment  // Identity needs storage access for deployment scripts
@@ -942,7 +942,7 @@ module deployerStorageRoleAssignment 'br/public:avm/ptn/authorization/resource-r
 }
 
 // --- Post-Deployment: Start Triggers ---
-module startTriggers 'modules/triggerManagement.bicep' = if (enableTriggerManagement) {
+module startTriggers 'modules/hub-initialize.bicep' = if (enableTriggerManagement) {
   name: '${uniqueString(deployment().name, location)}-start-triggers'
   dependsOn: [
     dataFactoryResources  // All ADF resources must be deployed first
@@ -977,7 +977,7 @@ module startTriggers 'modules/triggerManagement.bicep' = if (enableTriggerManage
 var scopeIds = [for scope in scopesToMonitor: scope.?scopeId ?? '']
 var scopesPipeDelimited = join(filter(scopeIds, id => !empty(id)), '|')
 
-module configDeploymentScript 'modules/configDeploymentScript.bicep' = {
+module hubDeploymentScript 'modules/hub-deploymentScript.bicep' = {
   name: '${uniqueString(deployment().name, location)}-config-script'
   dependsOn: [
     identityStorageRoleAssignment
@@ -1204,7 +1204,7 @@ var settingsJsonScopes = [for scope in scopesToMonitor: {
   tenantId: scope.?tenantId ?? tenant().tenantId
 }]
 
-@description('Settings.json content for the config container (also deployed to blob via configDeploymentScript).')
+@description('Settings.json content for the config container (also deployed to blob via hubDeploymentScript).')
 output settingsJson object = {
   '$schema': 'https://aka.ms/finops/hubs/settings-schema'
   type: 'HubInstance'

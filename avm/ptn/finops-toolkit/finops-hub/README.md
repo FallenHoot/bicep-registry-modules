@@ -1886,7 +1886,7 @@ Resource-specific tags by resource type.
 | `resourceGroupName` | string | Resource group name. |
 | `satelliteHubCount` | int | Number of satellite hubs configured for pull mode. 0 if not using pull mode. |
 | `scopeCount` | int | Number of scopes configured for monitoring. |
-| `settingsJson` | object | Settings.json content for the config container (also deployed to blob via configDeploymentScript). |
+| `settingsJson` | object | Settings.json content for the config container (also deployed to blob via hubDeploymentScript). |
 | `storageAccountId` | string | Storage account resource ID. |
 | `storageAccountName` | string | Storage account name. |
 | `storageBlobEndpoint` | string | Storage account primary blob endpoint. |
