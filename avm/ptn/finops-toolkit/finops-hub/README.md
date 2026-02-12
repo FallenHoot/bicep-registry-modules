@@ -38,6 +38,7 @@ For examples, please refer to the [Usage Examples](#usage-examples) section.
 | `Microsoft.KeyVault/vaults` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.keyvault_vaults.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2024-11-01/vaults)</li></ul> |
 | `Microsoft.KeyVault/vaults/accessPolicies` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.keyvault_vaults_accesspolicies.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2024-11-01/vaults/accessPolicies)</li></ul> |
 | `Microsoft.KeyVault/vaults/keys` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.keyvault_vaults_keys.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2024-11-01/vaults/keys)</li></ul> |
+| `Microsoft.KeyVault/vaults/secrets` | 2023-07-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.keyvault_vaults_secrets.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2023-07-01/vaults/secrets)</li></ul> |
 | `Microsoft.KeyVault/vaults/secrets` | 2024-11-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.keyvault_vaults_secrets.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2024-11-01/vaults/secrets)</li></ul> |
 | `Microsoft.Kusto/clusters` | 2024-04-13 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.kusto_clusters.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Kusto/2024-04-13/clusters)</li></ul> |
 | `Microsoft.Kusto/clusters/databases` | 2024-04-13 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.kusto_clusters_databases.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Kusto/2024-04-13/clusters/databases)</li></ul> |
@@ -58,8 +59,8 @@ For examples, please refer to the [Usage Examples](#usage-examples) section.
 | `Microsoft.Network/privateDnsZones/SRV` | 2020-06-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privatednszones_srv.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV)</li></ul> |
 | `Microsoft.Network/privateDnsZones/TXT` | 2020-06-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privatednszones_txt.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT)</li></ul> |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2024-06-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privatednszones_virtualnetworklinks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-06-01/privateDnsZones/virtualNetworkLinks)</li></ul> |
-| `Microsoft.Network/privateEndpoints` | 2024-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints)</li></ul> |
 | `Microsoft.Network/privateEndpoints` | 2024-10-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-10-01/privateEndpoints)</li></ul> |
+| `Microsoft.Network/privateEndpoints` | 2024-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints)</li></ul> |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2024-10-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints_privatednszonegroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-10-01/privateEndpoints/privateDnsZoneGroups)</li></ul> |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2024-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_privateendpoints_privatednszonegroups.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/privateEndpoints/privateDnsZoneGroups)</li></ul> |
 | `Microsoft.Network/virtualNetworks` | 2024-05-01 | <ul style="padding-left: 0px;"><li>[AzAdvertizer](https://www.azadvertizer.net/azresourcetypes/microsoft.network_virtualnetworks.html)</li><li>[Template reference](https://learn.microsoft.com/en-us/azure/templates/Microsoft.Network/2024-05-01/virtualNetworks)</li></ul> |
@@ -94,7 +95,8 @@ The following section provides usage examples for the module, which were used to
 - [Using Microsoft Fabric with minimal configuration](#example-4-using-microsoft-fabric-with-minimal-configuration)
 - [Fabric WAF-aligned](#example-5-fabric-waf-aligned)
 - [Managed Network Isolation](#example-6-managed-network-isolation)
-- [Storage Minimal](#example-7-storage-minimal)
+- [Remote Hub Configuration](#example-7-remote-hub-configuration)
+- [Storage Minimal](#example-8-storage-minimal)
 
 ### Example 1: _ADX with Managed Network_
 
@@ -893,7 +895,122 @@ param tags = {
 </details>
 <p>
 
-### Example 7: _Storage Minimal_
+### Example 7: _Remote Hub Configuration_
+
+This instance deploys the module with remote hub federation in push mode. Tests cross-hub data federation where this hub acts as a satellite pushing data to a remote primary hub.
+
+You can find the full example and the setup of its dependencies in the deployment test folder path [/tests/e2e/remote-hub]
+
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
+  params: {
+    // Required parameters
+    hubName: '<hubName>'
+    // Non-required parameters
+    deploymentConfiguration: 'minimal'
+    deploymentType: 'storage-only'
+    enableTelemetry: true
+    location: '<location>'
+    remoteHubMode: 'push'
+    remoteHubStorageKey: '<remoteHubStorageKey>'
+    remoteHubStorageUri: '<remoteHubStorageUri>'
+    tags: {
+      Environment: 'Development'
+      'hidden-title': 'FinOps Hub - Remote Hub Push Test'
+      SecurityControl: 'Ignore'
+      TestScenario: 'RemoteHub-Push'
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via JSON parameters file</summary>
+
+```json
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    // Required parameters
+    "hubName": {
+      "value": "<hubName>"
+    },
+    // Non-required parameters
+    "deploymentConfiguration": {
+      "value": "minimal"
+    },
+    "deploymentType": {
+      "value": "storage-only"
+    },
+    "enableTelemetry": {
+      "value": true
+    },
+    "location": {
+      "value": "<location>"
+    },
+    "remoteHubMode": {
+      "value": "push"
+    },
+    "remoteHubStorageKey": {
+      "value": "<remoteHubStorageKey>"
+    },
+    "remoteHubStorageUri": {
+      "value": "<remoteHubStorageUri>"
+    },
+    "tags": {
+      "value": {
+        "Environment": "Development",
+        "hidden-title": "FinOps Hub - Remote Hub Push Test",
+        "SecurityControl": "Ignore",
+        "TestScenario": "RemoteHub-Push"
+      }
+    }
+  }
+}
+```
+
+</details>
+<p>
+
+<details>
+
+<summary>via Bicep parameters file</summary>
+
+```bicep-params
+using 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>'
+
+// Required parameters
+param hubName = '<hubName>'
+// Non-required parameters
+param deploymentConfiguration = 'minimal'
+param deploymentType = 'storage-only'
+param enableTelemetry = true
+param location = '<location>'
+param remoteHubMode = 'push'
+param remoteHubStorageKey = '<remoteHubStorageKey>'
+param remoteHubStorageUri = '<remoteHubStorageUri>'
+param tags = {
+  Environment: 'Development'
+  'hidden-title': 'FinOps Hub - Remote Hub Push Test'
+  SecurityControl: 'Ignore'
+  TestScenario: 'RemoteHub-Push'
+}
+```
+
+</details>
+<p>
+
+### Example 8: _Storage Minimal_
 
 This instance deploys the module with the minimum set of required parameters for storage-only mode.
 
@@ -1010,6 +1127,9 @@ param tags = {
 | [`byoVaultDnsZoneId`](#parameter-byovaultdnszoneid) | string | Resource ID of the private DNS zone for Key Vault (privatelink.vaultcore.azure.net). Required if networkIsolationMode is "BringYourOwn" and enablePrivateDnsZoneGroups is true. |
 | [`dataExplorerClusterName`](#parameter-dataexplorerclustername) | string | Azure Data Explorer cluster name. Required if deploymentType is "adx" and not using existing cluster. |
 | [`fabricQueryUri`](#parameter-fabricqueryuri) | string | Microsoft Fabric eventhouse Query URI. Required if deploymentType is "fabric". |
+| [`remoteHubStorageKey`](#parameter-remotehubstoragekey) | securestring | Required if remoteHubMode is "push". Access key for the primary (remote) hub storage account. |
+| [`remoteHubStorageUri`](#parameter-remotehubstorageuri) | string | Required if remoteHubMode is "push". DFS endpoint URI of the primary (remote) hub storage account (e.g., https://<account>.dfs.core.windows.net). |
+| [`satelliteHubStorageUris`](#parameter-satellitehubstorageuris) | array | Required if remoteHubMode is "pull". Array of satellite hub storage account DFS endpoint URIs to pull data from. |
 
 **Optional parameters**
 
@@ -1051,8 +1171,8 @@ param tags = {
 | [`managedVnetAddressPrefix`](#parameter-managedvnetaddressprefix) | string | Address prefix for the managed VNet. Only used when networkIsolationMode is "Managed". Default: 10.0.0.0/24. |
 | [`networkIsolationMode`](#parameter-networkisolationmode) | string | Network isolation: "None" (public), "Managed" (module creates VNet/PEs), or "BringYourOwn" (you provide subnet/DNS). |
 | [`privateEndpointSubnetId`](#parameter-privateendpointsubnetid) | string | Note: This is a deprecated property, please use `networkIsolationMode="BringYourOwn"` with `byoSubnetResourceId` instead. Resource ID of the subnet for private endpoints. |
-| [`remoteHubStorageKey`](#parameter-remotehubstoragekey) | securestring | Storage account key to use when pushing data to a remote hub. |
-| [`remoteHubStorageUri`](#parameter-remotehubstorageuri) | string | Storage account to push data to for ingestion into a remote hub. |
+| [`pullIntervalHours`](#parameter-pullintervalhours) | int | Schedule interval in hours for polling satellite hubs in pull mode. Default: 6. |
+| [`remoteHubMode`](#parameter-remotehubmode) | string | Remote hub federation mode. "push" makes this hub a satellite that pushes data to a remote primary hub (cross-cloud/cross-tenant, uses storage key). "pull" makes this hub the primary that reads from satellite hubs (same-cloud, uses Managed Identity + RBAC). "none" disables federation. Default: none. |
 | [`scopesToMonitor`](#parameter-scopestomonitor) | array | Billing scopes to monitor. See README for scope types and export support matrix. |
 | [`storageBlobPrivateDnsZoneId`](#parameter-storageblobprivatednszoneid) | string | Note: This is a deprecated property, please use `byoBlobDnsZoneId` instead. |
 | [`storageDfsPrivateDnsZoneId`](#parameter-storagedfsprivatednszoneid) | string | Note: This is a deprecated property, please use `byoDfsDnsZoneId` instead. |
@@ -1129,6 +1249,30 @@ Microsoft Fabric eventhouse Query URI. Required if deploymentType is "fabric".
 - Required: No
 - Type: string
 - Default: `''`
+
+### Parameter: `remoteHubStorageKey`
+
+Required if remoteHubMode is "push". Access key for the primary (remote) hub storage account.
+
+- Required: No
+- Type: securestring
+- Default: `''`
+
+### Parameter: `remoteHubStorageUri`
+
+Required if remoteHubMode is "push". DFS endpoint URI of the primary (remote) hub storage account (e.g., https://<account>.dfs.core.windows.net).
+
+- Required: No
+- Type: string
+- Default: `''`
+
+### Parameter: `satelliteHubStorageUris`
+
+Required if remoteHubMode is "pull". Array of satellite hub storage account DFS endpoint URIs to pull data from.
+
+- Required: No
+- Type: array
+- Default: `[]`
 
 ### Parameter: `adxAdminPrincipalIds`
 
@@ -1628,21 +1772,31 @@ Note: This is a deprecated property, please use `networkIsolationMode="BringYour
 - Type: string
 - Default: `''`
 
-### Parameter: `remoteHubStorageKey`
+### Parameter: `pullIntervalHours`
 
-Storage account key to use when pushing data to a remote hub.
+Schedule interval in hours for polling satellite hubs in pull mode. Default: 6.
 
 - Required: No
-- Type: securestring
-- Default: `''`
+- Type: int
+- Default: `6`
+- MinValue: 1
+- MaxValue: 24
 
-### Parameter: `remoteHubStorageUri`
+### Parameter: `remoteHubMode`
 
-Storage account to push data to for ingestion into a remote hub.
+Remote hub federation mode. "push" makes this hub a satellite that pushes data to a remote primary hub (cross-cloud/cross-tenant, uses storage key). "pull" makes this hub the primary that reads from satellite hubs (same-cloud, uses Managed Identity + RBAC). "none" disables federation. Default: none.
 
 - Required: No
 - Type: string
-- Default: `''`
+- Default: `'none'`
+- Allowed:
+  ```Bicep
+  [
+    'none'
+    'pull'
+    'push'
+  ]
+  ```
 
 ### Parameter: `scopesToMonitor`
 
@@ -1726,7 +1880,11 @@ Resource-specific tags by resource type.
 | `managedIdentityResourceId` | string | User-assigned managed identity resource ID. |
 | `networkIsolationMode` | string | Network isolation mode used for this deployment. |
 | `privateEndpointSubnetResourceId` | string | Private endpoint subnet resource ID. Empty when networkIsolationMode is "None". |
+| `remoteHubMode` | string | Remote hub federation mode. "push" = satellite, "pull" = primary, "none" = standalone. |
+| `remoteHubPullPipeline` | string | Remote hub pull pipeline name. Empty if not using pull mode. |
+| `remoteHubPushPipeline` | string | Remote hub push pipeline name. Empty if not using push mode. |
 | `resourceGroupName` | string | Resource group name. |
+| `satelliteHubCount` | int | Number of satellite hubs configured for pull mode. 0 if not using pull mode. |
 | `scopeCount` | int | Number of scopes configured for monitoring. |
 | `settingsJson` | object | Settings.json content for the config container (also deployed to blob via configDeploymentScript). |
 | `storageAccountId` | string | Storage account resource ID. |
@@ -1941,6 +2099,69 @@ Helper scripts in the [src/](./src/) folder simplify deployment and testing:
 | `Manage-FinOpsHubState.ps1` | Pause/resume hub to optimize costs |
 
 See [src/README.md](./src/README.md) for detailed usage, or use the `gettingStartedGuide` output from deployment.
+
+### Remote Hub Federation
+
+For organizations that need to aggregate cost data across multiple FinOps Hub instances (e.g., different tenants, subscriptions, or cloud providers), the module supports two federation modes.
+
+#### Federation Modes
+
+| Mode | Parameter Value | Direction | Authentication | Use Case |
+|------|----------------|-----------|----------------|----------|
+| **Push** | `remoteHubMode: 'push'` | This hub → Remote hub | Storage key (via Key Vault) | Cross-cloud, cross-tenant |
+| **Pull** | `remoteHubMode: 'pull'` | Remote hubs → This hub | Managed Identity + RBAC | Same-cloud, same-tenant |
+| **None** | `remoteHubMode: 'none'` | No federation (default) | N/A | Standalone hub |
+
+#### Push Mode (Satellite → Primary)
+
+Use push mode when this hub is a **satellite** that should send its processed cost data to a central **primary** hub. This matches the upstream FinOps Toolkit pattern and works across clouds and tenants.
+
+```bicep
+module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
+  params: {
+    hubName: 'satellite-hub'
+    remoteHubMode: 'push'
+    remoteHubStorageUri: 'https://primaryhubstorage.dfs.core.windows.net'
+    remoteHubStorageKey: primaryHubStorageKey  // @secure() parameter
+  }
+}
+```
+
+**Resources created**: Key Vault secret, ADF linked service to remote storage, 3 datasets, copy pipeline (manifest-last pattern to trigger ingestion at the primary hub).
+
+#### Pull Mode (Primary ← Satellites)
+
+Use pull mode when this hub is the **primary** that should read processed cost data from one or more **satellite** hubs. More secure than push mode (no storage keys), but requires all hubs to be in the same cloud.
+
+```bicep
+module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
+  params: {
+    hubName: 'primary-hub'
+    remoteHubMode: 'pull'
+    satelliteHubStorageUris: [
+      'https://satellite1storage.dfs.core.windows.net'
+      'https://satellite2storage.dfs.core.windows.net'
+    ]
+    pullIntervalHours: 6  // How often to poll satellites (default: 6)
+  }
+}
+```
+
+**Prerequisites**: Grant the primary hub's ADF managed identity `Storage Blob Data Reader` on each satellite's storage account.
+
+**Resources created**: ADF linked service per satellite (MI auth), datasets per satellite, pull pipeline with ForEach activity, scheduled trigger.
+
+#### Choosing a Mode
+
+| Scenario | Recommended Mode | Why |
+|----------|-----------------|-----|
+| Multi-tenant enterprise | Push | Each tenant pushes to central hub, no cross-tenant MI |
+| Multi-cloud (Azure + AWS/GCP) | Push | Non-Azure hubs can push via storage key |
+| Single-tenant, multi-subscription | Pull | MI + RBAC, no secrets to rotate |
+| Single-tenant, multi-region | Pull | Simpler, more secure |
+| Hybrid (some tenants, some subs) | Mix | Push for cross-tenant, pull for same-tenant |
+
+For detailed architecture rationale, see [ADR-016](./ADR.md#adr-016-dual-mode-remote-hub-federation) in the Architecture Decision Records.
 
 ### Visualization Options
 

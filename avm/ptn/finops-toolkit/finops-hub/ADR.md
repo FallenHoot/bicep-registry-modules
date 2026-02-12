@@ -600,6 +600,107 @@ The managed identity policy is set at runtime via an `AzureDataExplorerCommand` 
 
 ---
 
+## ADR-016: Dual-Mode Remote Hub Federation
+
+**Date**: February 2026
+**Status**: Accepted
+**Context**: Enterprise customers with multiple business units, subsidiaries, or cloud environments need to aggregate cost data across FinOps Hub instances. The upstream FinOps Toolkit supports a single "push" pattern where satellite hubs push data to a primary hub using storage account keys. We needed to decide whether to replicate this pattern, improve it, or offer alternatives.
+
+**Problem Statement**:
+- Cross-tenant and cross-cloud scenarios require a key-based approach (no shared identity plane)
+- Same-tenant scenarios should use Managed Identity + RBAC (no secrets to rotate)
+- Azure Object Replication was considered but rejected (see alternatives below)
+
+**Decision**: Implement **two federation modes** controlled by a single `remoteHubMode` parameter.
+
+| Mode | Direction | Auth | Use Case | Module |
+|------|-----------|------|----------|--------|
+| `push` | Satellite → Primary | Storage key via Key Vault | Cross-cloud, cross-tenant | `remoteHubPush.bicep` |
+| `pull` | Primary ← Satellites | Managed Identity + RBAC | Same-cloud, same-tenant | `remoteHubPull.bicep` |
+| `none` | No federation | N/A | Standalone hub (default) | — |
+
+**Push Mode Architecture** (upstream-compatible):
+```
+Satellite Hub                          Primary Hub
+┌──────────────┐                      ┌──────────────┐
+│ ADF Pipeline │──copy parquet──────→ │ ingestion/   │
+│ (local data) │                      │ container    │
+│              │──copy manifest LAST→ │ (triggers    │
+│              │                      │  ingestion)  │
+│ Key Vault    │                      └──────────────┘
+│ (remote key) │
+└──────────────┘
+```
+
+**Pull Mode Architecture** (AVM-exclusive):
+```
+Primary Hub                            Satellite Hubs
+┌──────────────┐                      ┌──────────────┐
+│ ADF Pipeline │←─MI+RBAC read──────  │ ingestion/   │
+│ (ForEach     │                      │ container    │
+│  satellite)  │                      └──────────────┘
+│              │←─MI+RBAC read──────  ┌──────────────┐
+│ Scheduled    │                      │ ingestion/   │
+│ Trigger      │                      │ container    │
+│ (every N hr) │                      └──────────────┘
+└──────────────┘
+```
+
+**Alternatives Considered**:
+| Option | Pros | Cons |
+|--------|------|------|
+| Push-only (upstream pattern) | Simple, cross-cloud | Secrets to manage, single direction |
+| Pull-only (MI+RBAC) | No secrets, more secure | Doesn't work cross-cloud/cross-tenant |
+| Dual-mode (chosen) | Covers all scenarios | Two modules to maintain |
+| Azure Object Replication | No ADF needed | Cross-cloud impossible, cross-tenant policy-blocked, requires blob versioning, no data-ready signal, replicates raw+processed |
+| Azure Storage geo-replication | Built-in | Read-only secondary, no cross-tenant, no filtering |
+
+**Why Not Azure Object Replication?**
+1. **Cross-cloud**: Not possible — Azure-only feature
+2. **Cross-tenant**: Often policy-blocked by Azure Policy
+3. **Blob versioning**: Required prerequisite, adds cost and complexity
+4. **No data-ready signal**: Manifest could replicate before parquet files arrive, triggering premature ingestion
+5. **All-or-nothing**: Replicates raw + processed data, not just processed
+
+**Implementation Details**:
+
+*Push mode* (`modules/remoteHubPush.bicep`):
+- Key Vault secret storing remote storage account key
+- ADF linked service (AzureBlobFS with AzureKeyVaultSecret authentication)
+- 3 datasets: `remote_ingestion`, `remote_ingestion_files`, `remote_ingestion_manifest`
+- Pipeline `remoteHub_PushToRemoteHub` with manifest-last pattern
+
+*Pull mode* (`modules/remoteHubPull.bicep`):
+- ADF linked service per satellite (AzureBlobFS with system MI, no keys)
+- Datasets per satellite for ingestion and manifest
+- Pipeline `remoteHub_PullFromSatellites` with ForEach activity (parallel, batch of 4)
+- Scheduled trigger `remoteHub_PullSchedule` (configurable interval, default 6 hours)
+
+**Manifest-Last Pattern**: Both modes copy the manifest file last. The primary hub's ingestion trigger watches for manifest files to start processing — copying the manifest before parquet files would trigger premature ingestion with incomplete data.
+
+**Parameters**:
+```bicep
+param remoteHubMode string     // 'none' | 'push' | 'pull'
+param remoteHubStorageUri string     // Push: remote DFS endpoint
+param remoteHubStorageKey string     // Push: remote storage key
+param satelliteHubStorageUris string[] // Pull: array of satellite DFS endpoints
+param pullIntervalHours int          // Pull: polling interval (1-24, default 6)
+```
+
+**E2E Test Strategy**: The remote-hub test deploys a secondary ADLS Gen2 storage account via `dependencies.bicep` to simulate the remote target, providing real DFS endpoints and keys — no external dependencies required. Unlike the Fabric tests (which conditionally skip when no Fabric workspace exists), the remote-hub test always executes.
+
+**Consequences**:
+- **Positive**: Covers both cross-tenant (push) and same-tenant (pull) scenarios
+- **Positive**: Pull mode eliminates secret management for the common same-cloud case
+- **Positive**: Push mode is upstream-compatible with existing FinOps Toolkit deployments
+- **Positive**: E2E test is self-contained — no external resources needed
+- **Negative**: Two modules to maintain (but they share similar patterns)
+- **Negative**: Pull mode requires caller to grant RBAC on satellite storage accounts
+
+**Confidence**: High — push mode matches proven upstream pattern; pull mode uses standard ADF MI authentication
+
+---
+
 ## Related Documentation
 
 For detailed implementation guidance, refer to the official Microsoft Learn documentation:
@@ -620,6 +721,7 @@ For detailed implementation guidance, refer to the official Microsoft Learn docu
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
+| 1.4.0 | Feb 2026 | FinOps Toolkit Team | Added ADR-016 (Dual-mode remote hub federation) |
 | 1.3.0 | Feb 2026 | FinOps Toolkit Team | Added ADR-015 (ADF pipeline for ADX managed identity policy) |
 | 1.2.0 | Feb 2026 | FinOps Toolkit Team | Added ADR-014 (ADX principal assignment identity format fix) |
 | 1.1.0 | Feb 2026 | FinOps Toolkit Team | Added ADR-011 (AVM constraints), ADR-012 (CI naming), ADR-013 (region selection) |

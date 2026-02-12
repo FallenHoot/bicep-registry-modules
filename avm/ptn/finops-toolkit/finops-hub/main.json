@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.40.2.10011",
-      "templateHash": "7650631152730833098"
+      "templateHash": "18243861388068179462"
     },
     "name": "FinOps Hub",
     "description": "Deploys a FinOps Hub for cloud cost analytics using Azure Verified Modules.",
@@ -340,18 +340,49 @@
         "description": "Optional. Number of months of data to retain in the Data Explorer *_final_v* tables. Default: 13."
       }
     },
+    "remoteHubMode": {
+      "type": "string",
+      "defaultValue": "none",
+      "allowedValues": [
+        "none",
+        "push",
+        "pull"
+      ],
+      "metadata": {
+        "description": "Optional. Remote hub federation mode. \"push\" makes this hub a satellite that pushes data to a remote primary hub (cross-cloud/cross-tenant, uses storage key). \"pull\" makes this hub the primary that reads from satellite hubs (same-cloud, uses Managed Identity + RBAC). \"none\" disables federation. Default: none."
+      }
+    },
     "remoteHubStorageUri": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. Storage account to push data to for ingestion into a remote hub."
+        "description": "Conditional. Required if remoteHubMode is \"push\". DFS endpoint URI of the primary (remote) hub storage account (e.g., https://<account>.dfs.core.windows.net)."
       }
     },
     "remoteHubStorageKey": {
       "type": "securestring",
       "defaultValue": "",
       "metadata": {
-        "description": "Optional. Storage account key to use when pushing data to a remote hub."
+        "description": "Conditional. Required if remoteHubMode is \"push\". Access key for the primary (remote) hub storage account."
+      }
+    },
+    "satelliteHubStorageUris": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "defaultValue": [],
+      "metadata": {
+        "description": "Conditional. Required if remoteHubMode is \"pull\". Array of satellite hub storage account DFS endpoint URIs to pull data from."
+      }
+    },
+    "pullIntervalHours": {
+      "type": "int",
+      "defaultValue": 6,
+      "minValue": 1,
+      "maxValue": 24,
+      "metadata": {
+        "description": "Optional. Schedule interval in hours for polling satellite hubs in pull mode. Default: 6."
       }
     },
     "enableInfrastructureEncryption": {
@@ -617,6 +648,8 @@
     "createNewAdx": "[and(and(equals(parameters('deploymentType'), 'adx'), not(empty(parameters('dataExplorerClusterName')))), not(variables('useExistingAdx')))]",
     "useFabric": "[and(equals(parameters('deploymentType'), 'fabric'), not(empty(parameters('fabricQueryUri'))))]",
     "deployAdxSchema": "[and(equals(parameters('deploymentType'), 'adx'), or(variables('createNewAdx'), variables('useExistingAdx')))]",
+    "enableRemoteHubPush": "[and(and(equals(parameters('remoteHubMode'), 'push'), not(empty(parameters('remoteHubStorageUri')))), not(empty(parameters('remoteHubStorageKey'))))]",
+    "enableRemoteHubPull": "[and(equals(parameters('remoteHubMode'), 'pull'), not(empty(parameters('satelliteHubStorageUris'))))]",
     "deployerAdminAssignment": "[if(not(empty(parameters('deployerPrincipalId'))), createArray(createObject('principalId', parameters('deployerPrincipalId'), 'principalType', 'User', 'role', 'AllDatabasesAdmin', 'tenantId', tenant().tenantId)), createArray())]",
     "existingIdentityName": "[if(variables('useExistingIdentity'), last(split(parameters('existingManagedIdentityResourceId'), '/')), '')]",
     "existingAdxClusterName": "[if(variables('useExistingAdx'), last(split(parameters('existingDataExplorerClusterId'), '/')), '')]",
@@ -37325,6 +37358,880 @@
         "storageAccount"
       ]
     },
+    "remoteHubPush": {
+      "condition": "[variables('enableRemoteHubPush')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('{0}-remote-hub-push', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dataFactoryName": {
+            "value": "[reference('dataFactory').outputs.name.value]"
+          },
+          "keyVaultName": {
+            "value": "[reference('keyVault').outputs.name.value]"
+          },
+          "remoteHubStorageUri": {
+            "value": "[parameters('remoteHubStorageUri')]"
+          },
+          "remoteHubStorageKey": {
+            "value": "[parameters('remoteHubStorageKey')]"
+          },
+          "integrationRuntimeName": "[if(variables('effectiveAdfManagedVnet'), createObject('value', 'FinOpsHubManagedIR'), createObject('value', ''))]"
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.40.2.10011",
+              "templateHash": "1216547890917435502"
+            }
+          },
+          "parameters": {
+            "dataFactoryName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the Data Factory."
+              }
+            },
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the Key Vault."
+              }
+            },
+            "remoteHubStorageUri": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. DFS endpoint URI of the primary (remote) hub storage account."
+              }
+            },
+            "remoteHubStorageKey": {
+              "type": "securestring",
+              "metadata": {
+                "description": "Required. Access key for the primary (remote) hub storage account."
+              }
+            },
+            "ingestionContainerName": {
+              "type": "string",
+              "defaultValue": "ingestion",
+              "metadata": {
+                "description": "Optional. Name of the ingestion container on the remote hub. Default: ingestion."
+              }
+            },
+            "integrationRuntimeName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Name of the integration runtime to use. If using managed VNet, this should reference the managed IR."
+              }
+            }
+          },
+          "variables": {
+            "secretName": "remote-hub-storage-key",
+            "linkedServiceName": "remoteHubStorage",
+            "useIntegrationRuntime": "[not(empty(parameters('integrationRuntimeName')))]",
+            "connectViaProperty": "[if(variables('useIntegrationRuntime'), createObject('referenceName', parameters('integrationRuntimeName'), 'type', 'IntegrationRuntimeReference'), null())]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.KeyVault/vaults/secrets",
+              "apiVersion": "2023-07-01",
+              "name": "[format('{0}/{1}', parameters('keyVaultName'), variables('secretName'))]",
+              "properties": {
+                "value": "[parameters('remoteHubStorageKey')]",
+                "contentType": "Remote hub storage account key for cross-hub data federation",
+                "attributes": {
+                  "enabled": true
+                }
+              }
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/linkedservices",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), variables('linkedServiceName'))]",
+              "properties": {
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                  "url": "[parameters('remoteHubStorageUri')]",
+                  "accountKey": {
+                    "type": "AzureKeyVaultSecret",
+                    "store": {
+                      "referenceName": "[parameters('keyVaultName')]",
+                      "type": "LinkedServiceReference"
+                    },
+                    "secretName": "[variables('secretName')]"
+                  }
+                },
+                "connectVia": "[variables('connectViaProperty')]",
+                "annotations": [
+                  "RemoteHub",
+                  "push-mode"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVaultName'), variables('secretName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/datasets",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), format('remote_{0}', parameters('ingestionContainerName')))]",
+              "properties": {
+                "linkedServiceName": {
+                  "referenceName": "[variables('linkedServiceName')]",
+                  "type": "LinkedServiceReference"
+                },
+                "type": "Parquet",
+                "typeProperties": {
+                  "location": {
+                    "type": "AzureBlobFSLocation",
+                    "fileName": {
+                      "value": "@{dataset().blobPath}",
+                      "type": "Expression"
+                    },
+                    "fileSystem": "[parameters('ingestionContainerName')]"
+                  }
+                },
+                "parameters": {
+                  "blobPath": {
+                    "type": "String"
+                  }
+                },
+                "annotations": [
+                  "RemoteHub"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('linkedServiceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/datasets",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), format('remote_{0}_files', parameters('ingestionContainerName')))]",
+              "properties": {
+                "linkedServiceName": {
+                  "referenceName": "[variables('linkedServiceName')]",
+                  "type": "LinkedServiceReference"
+                },
+                "type": "Parquet",
+                "typeProperties": {
+                  "location": {
+                    "type": "AzureBlobFSLocation",
+                    "fileSystem": "[parameters('ingestionContainerName')]",
+                    "folderPath": {
+                      "value": "@dataset().folderPath",
+                      "type": "Expression"
+                    }
+                  }
+                },
+                "parameters": {
+                  "folderPath": {
+                    "type": "String"
+                  }
+                },
+                "annotations": [
+                  "RemoteHub"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('linkedServiceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/datasets",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), 'remote_ingestion_manifest')]",
+              "properties": {
+                "linkedServiceName": {
+                  "referenceName": "[variables('linkedServiceName')]",
+                  "type": "LinkedServiceReference"
+                },
+                "type": "Json",
+                "typeProperties": {
+                  "location": {
+                    "type": "AzureBlobFSLocation",
+                    "fileName": {
+                      "value": "@{dataset().fileName}",
+                      "type": "Expression"
+                    },
+                    "folderPath": {
+                      "value": "@{dataset().folderPath}",
+                      "type": "Expression"
+                    },
+                    "fileSystem": "[parameters('ingestionContainerName')]"
+                  }
+                },
+                "parameters": {
+                  "fileName": {
+                    "type": "String",
+                    "defaultValue": "manifest.json"
+                  },
+                  "folderPath": {
+                    "type": "String",
+                    "defaultValue": "[parameters('ingestionContainerName')]"
+                  }
+                },
+                "annotations": [
+                  "RemoteHub"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories/linkedservices', parameters('dataFactoryName'), variables('linkedServiceName'))]"
+              ]
+            },
+            {
+              "type": "Microsoft.DataFactory/factories/pipelines",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), 'remoteHub_PushToRemote')]",
+              "properties": {
+                "description": "Copies processed FOCUS cost data from the local hub ingestion container to the remote (primary) hub ingestion container for centralized analysis.",
+                "activities": [
+                  {
+                    "name": "Get Ingestion Folders",
+                    "type": "GetMetadata",
+                    "dependsOn": [],
+                    "policy": {
+                      "timeout": "0.00:10:00",
+                      "retry": 2,
+                      "retryIntervalInSeconds": 30,
+                      "secureOutput": false,
+                      "secureInput": false
+                    },
+                    "userProperties": [],
+                    "typeProperties": {
+                      "dataset": {
+                        "referenceName": "[format('{0}_files', parameters('ingestionContainerName'))]",
+                        "type": "DatasetReference",
+                        "parameters": {
+                          "folderPath": "@pipeline().parameters.folderPath"
+                        }
+                      },
+                      "fieldList": [
+                        "childItems"
+                      ],
+                      "storeSettings": {
+                        "type": "AzureBlobFSReadSettings",
+                        "recursive": false,
+                        "enablePartitionDiscovery": false
+                      }
+                    }
+                  },
+                  {
+                    "name": "Copy Data To Remote Hub",
+                    "type": "Copy",
+                    "dependsOn": [
+                      {
+                        "activity": "Get Ingestion Folders",
+                        "dependencyConditions": [
+                          "Succeeded"
+                        ]
+                      }
+                    ],
+                    "policy": {
+                      "timeout": "0.12:00:00",
+                      "retry": 2,
+                      "retryIntervalInSeconds": 30,
+                      "secureOutput": false,
+                      "secureInput": false
+                    },
+                    "userProperties": [],
+                    "typeProperties": {
+                      "source": {
+                        "type": "ParquetSource",
+                        "storeSettings": {
+                          "type": "AzureBlobFSReadSettings",
+                          "recursive": true,
+                          "wildcardFolderPath": "@pipeline().parameters.folderPath",
+                          "wildcardFileName": "*.parquet",
+                          "enablePartitionDiscovery": false
+                        }
+                      },
+                      "sink": {
+                        "type": "ParquetSink",
+                        "storeSettings": {
+                          "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                          "type": "ParquetWriteSettings"
+                        }
+                      },
+                      "enableStaging": false
+                    },
+                    "inputs": [
+                      {
+                        "referenceName": "[format('{0}_files', parameters('ingestionContainerName'))]",
+                        "type": "DatasetReference",
+                        "parameters": {
+                          "folderPath": "@pipeline().parameters.folderPath"
+                        }
+                      }
+                    ],
+                    "outputs": [
+                      {
+                        "referenceName": "[format('remote_{0}_files', parameters('ingestionContainerName'))]",
+                        "type": "DatasetReference",
+                        "parameters": {
+                          "folderPath": "@pipeline().parameters.folderPath"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Copy Manifest To Remote Hub",
+                    "type": "Copy",
+                    "dependsOn": [
+                      {
+                        "activity": "Copy Data To Remote Hub",
+                        "dependencyConditions": [
+                          "Succeeded"
+                        ]
+                      }
+                    ],
+                    "policy": {
+                      "timeout": "0.00:10:00",
+                      "retry": 2,
+                      "retryIntervalInSeconds": 30,
+                      "secureOutput": false,
+                      "secureInput": false
+                    },
+                    "userProperties": [],
+                    "typeProperties": {
+                      "source": {
+                        "type": "JsonSource",
+                        "storeSettings": {
+                          "type": "AzureBlobFSReadSettings",
+                          "recursive": false,
+                          "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                          "type": "JsonReadSettings"
+                        }
+                      },
+                      "sink": {
+                        "type": "JsonSink",
+                        "storeSettings": {
+                          "type": "AzureBlobFSWriteSettings"
+                        },
+                        "formatSettings": {
+                          "type": "JsonWriteSettings"
+                        }
+                      },
+                      "enableStaging": false
+                    },
+                    "inputs": [
+                      {
+                        "referenceName": "ingestion_manifest",
+                        "type": "DatasetReference",
+                        "parameters": {
+                          "fileName": "@pipeline().parameters.manifestFileName",
+                          "folderPath": "@pipeline().parameters.folderPath"
+                        }
+                      }
+                    ],
+                    "outputs": [
+                      {
+                        "referenceName": "remote_ingestion_manifest",
+                        "type": "DatasetReference",
+                        "parameters": {
+                          "fileName": "@pipeline().parameters.manifestFileName",
+                          "folderPath": "@pipeline().parameters.folderPath"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "parameters": {
+                  "folderPath": {
+                    "type": "String",
+                    "defaultValue": ""
+                  },
+                  "manifestFileName": {
+                    "type": "String",
+                    "defaultValue": "manifest.json"
+                  }
+                },
+                "annotations": [
+                  "RemoteHub",
+                  "push-mode"
+                ]
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.DataFactory/factories/datasets', parameters('dataFactoryName'), format('remote_{0}_files', parameters('ingestionContainerName')))]",
+                "[resourceId('Microsoft.DataFactory/factories/datasets', parameters('dataFactoryName'), 'remote_ingestion_manifest')]"
+              ]
+            }
+          ],
+          "outputs": {
+            "linkedServiceName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the remote hub linked service."
+              },
+              "value": "[variables('linkedServiceName')]"
+            },
+            "secretName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the Key Vault secret storing the remote storage key."
+              },
+              "value": "[variables('secretName')]"
+            },
+            "pipelineName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the push pipeline."
+              },
+              "value": "remoteHub_PushToRemote"
+            },
+            "datasetNames": {
+              "type": "array",
+              "metadata": {
+                "description": "Names of the remote datasets created."
+              },
+              "value": [
+                "[format('remote_{0}', parameters('ingestionContainerName'))]",
+                "[format('remote_{0}_files', parameters('ingestionContainerName'))]",
+                "remote_ingestion_manifest"
+              ]
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "adfKeyVaultRoleAssignment",
+        "dataFactory",
+        "dataFactoryResources",
+        "keyVault"
+      ]
+    },
+    "remoteHubPull": {
+      "condition": "[variables('enableRemoteHubPull')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "[format('{0}-remote-hub-pull', uniqueString(deployment().name, parameters('location')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "dataFactoryName": {
+            "value": "[reference('dataFactory').outputs.name.value]"
+          },
+          "satelliteStorageUris": {
+            "value": "[parameters('satelliteHubStorageUris')]"
+          },
+          "pullIntervalHours": {
+            "value": "[parameters('pullIntervalHours')]"
+          },
+          "integrationRuntimeName": "[if(variables('effectiveAdfManagedVnet'), createObject('value', 'FinOpsHubManagedIR'), createObject('value', ''))]"
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.40.2.10011",
+              "templateHash": "4981558068695037176"
+            }
+          },
+          "parameters": {
+            "dataFactoryName": {
+              "type": "string",
+              "metadata": {
+                "description": "Required. Name of the Data Factory."
+              }
+            },
+            "satelliteStorageUris": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "metadata": {
+                "description": "Required. Array of satellite hub storage account DFS endpoint URIs to pull data from."
+              }
+            },
+            "ingestionContainerName": {
+              "type": "string",
+              "defaultValue": "ingestion",
+              "metadata": {
+                "description": "Optional. Name of the ingestion container on satellite hubs. Default: ingestion."
+              }
+            },
+            "integrationRuntimeName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Optional. Name of the integration runtime to use. If using managed VNet, this should reference the managed IR."
+              }
+            },
+            "pullIntervalHours": {
+              "type": "int",
+              "defaultValue": 6,
+              "minValue": 1,
+              "maxValue": 24,
+              "metadata": {
+                "description": "Optional. Schedule interval in hours for polling satellite hubs. Default: 6."
+              }
+            }
+          },
+          "variables": {
+            "copy": [
+              {
+                "name": "satelliteConfigs",
+                "count": "[length(parameters('satelliteStorageUris'))]",
+                "input": {
+                  "uri": "[parameters('satelliteStorageUris')[copyIndex('satelliteConfigs')]]",
+                  "name": "[split(split(parameters('satelliteStorageUris')[copyIndex('satelliteConfigs')], '//')[1], '.')[0]]",
+                  "index": "[copyIndex('satelliteConfigs')]"
+                }
+              }
+            ],
+            "useIntegrationRuntime": "[not(empty(parameters('integrationRuntimeName')))]",
+            "connectViaProperty": "[if(variables('useIntegrationRuntime'), createObject('referenceName', parameters('integrationRuntimeName'), 'type', 'IntegrationRuntimeReference'), null())]"
+          },
+          "resources": {
+            "dataFactory": {
+              "existing": true,
+              "type": "Microsoft.DataFactory/factories",
+              "apiVersion": "2018-06-01",
+              "name": "[parameters('dataFactoryName')]"
+            },
+            "linkedService_satellite": {
+              "copy": {
+                "name": "linkedService_satellite",
+                "count": "[length(variables('satelliteConfigs'))]"
+              },
+              "type": "Microsoft.DataFactory/factories/linkedservices",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), format('satellite_{0}', variables('satelliteConfigs')[copyIndex()].name))]",
+              "properties": {
+                "type": "AzureBlobFS",
+                "typeProperties": {
+                  "url": "[variables('satelliteConfigs')[copyIndex()].uri]"
+                },
+                "connectVia": "[variables('connectViaProperty')]",
+                "annotations": [
+                  "RemoteHub",
+                  "pull-mode",
+                  "[format('satellite-{0}', variables('satelliteConfigs')[copyIndex()].index)]"
+                ]
+              }
+            },
+            "dataset_satelliteIngestion": {
+              "copy": {
+                "name": "dataset_satelliteIngestion",
+                "count": "[length(variables('satelliteConfigs'))]"
+              },
+              "type": "Microsoft.DataFactory/factories/datasets",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), format('satellite_{0}_ingestion', variables('satelliteConfigs')[copyIndex()].name))]",
+              "properties": {
+                "linkedServiceName": {
+                  "referenceName": "[format('satellite_{0}', variables('satelliteConfigs')[copyIndex()].name)]",
+                  "type": "LinkedServiceReference"
+                },
+                "type": "Parquet",
+                "typeProperties": {
+                  "location": {
+                    "type": "AzureBlobFSLocation",
+                    "fileSystem": "[parameters('ingestionContainerName')]",
+                    "folderPath": {
+                      "value": "@dataset().folderPath",
+                      "type": "Expression"
+                    }
+                  }
+                },
+                "parameters": {
+                  "folderPath": {
+                    "type": "String",
+                    "defaultValue": ""
+                  }
+                },
+                "annotations": [
+                  "RemoteHub",
+                  "satellite"
+                ]
+              },
+              "dependsOn": [
+                "[format('linkedService_satellite[{0}]', copyIndex())]"
+              ]
+            },
+            "dataset_satelliteManifest": {
+              "copy": {
+                "name": "dataset_satelliteManifest",
+                "count": "[length(variables('satelliteConfigs'))]"
+              },
+              "type": "Microsoft.DataFactory/factories/datasets",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), format('satellite_{0}_manifest', variables('satelliteConfigs')[copyIndex()].name))]",
+              "properties": {
+                "linkedServiceName": {
+                  "referenceName": "[format('satellite_{0}', variables('satelliteConfigs')[copyIndex()].name)]",
+                  "type": "LinkedServiceReference"
+                },
+                "type": "Json",
+                "typeProperties": {
+                  "location": {
+                    "type": "AzureBlobFSLocation",
+                    "fileName": {
+                      "value": "@{dataset().fileName}",
+                      "type": "Expression"
+                    },
+                    "folderPath": {
+                      "value": "@{dataset().folderPath}",
+                      "type": "Expression"
+                    },
+                    "fileSystem": "[parameters('ingestionContainerName')]"
+                  }
+                },
+                "parameters": {
+                  "fileName": {
+                    "type": "String",
+                    "defaultValue": "manifest.json"
+                  },
+                  "folderPath": {
+                    "type": "String",
+                    "defaultValue": ""
+                  }
+                },
+                "annotations": [
+                  "RemoteHub",
+                  "satellite"
+                ]
+              },
+              "dependsOn": [
+                "[format('linkedService_satellite[{0}]', copyIndex())]"
+              ]
+            },
+            "pipeline_pullFromSatellites": {
+              "type": "Microsoft.DataFactory/factories/pipelines",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), 'remoteHub_PullFromSatellites')]",
+              "properties": {
+                "description": "Pulls processed FOCUS cost data from satellite hub ingestion containers to the primary hub for centralized analysis. Uses Managed Identity — no storage keys required.",
+                "activities": [
+                  {
+                    "name": "For Each Satellite",
+                    "type": "ForEach",
+                    "dependsOn": [],
+                    "userProperties": [],
+                    "typeProperties": {
+                      "isSequential": false,
+                      "items": {
+                        "value": "@pipeline().parameters.satelliteConfigs",
+                        "type": "Expression"
+                      },
+                      "batchCount": 4,
+                      "activities": [
+                        {
+                          "name": "Get Satellite Folders",
+                          "type": "GetMetadata",
+                          "dependsOn": [],
+                          "policy": {
+                            "timeout": "0.00:10:00",
+                            "retry": 2,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                          },
+                          "userProperties": [],
+                          "typeProperties": {
+                            "dataset": {
+                              "referenceName": "@item().datasetName",
+                              "type": "DatasetReference",
+                              "parameters": {
+                                "folderPath": ""
+                              }
+                            },
+                            "fieldList": [
+                              "childItems"
+                            ],
+                            "storeSettings": {
+                              "type": "AzureBlobFSReadSettings",
+                              "recursive": false,
+                              "enablePartitionDiscovery": false
+                            }
+                          }
+                        },
+                        {
+                          "name": "Copy Satellite Data",
+                          "type": "Copy",
+                          "dependsOn": [
+                            {
+                              "activity": "Get Satellite Folders",
+                              "dependencyConditions": [
+                                "Succeeded"
+                              ]
+                            }
+                          ],
+                          "policy": {
+                            "timeout": "0.12:00:00",
+                            "retry": 2,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                          },
+                          "userProperties": [],
+                          "typeProperties": {
+                            "source": {
+                              "type": "ParquetSource",
+                              "storeSettings": {
+                                "type": "AzureBlobFSReadSettings",
+                                "recursive": true,
+                                "enablePartitionDiscovery": false
+                              }
+                            },
+                            "sink": {
+                              "type": "ParquetSink",
+                              "storeSettings": {
+                                "type": "AzureBlobFSWriteSettings"
+                              },
+                              "formatSettings": {
+                                "type": "ParquetWriteSettings"
+                              }
+                            },
+                            "enableStaging": false
+                          },
+                          "inputs": [
+                            {
+                              "referenceName": "@item().datasetName",
+                              "type": "DatasetReference",
+                              "parameters": {
+                                "folderPath": ""
+                              }
+                            }
+                          ],
+                          "outputs": [
+                            {
+                              "referenceName": "[format('{0}_files', parameters('ingestionContainerName'))]",
+                              "type": "DatasetReference",
+                              "parameters": {
+                                "folderPath": "@concat(item().satelliteName, '/')"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "parameters": {
+                  "satelliteConfigs": {
+                    "copy": [
+                      {
+                        "name": "defaultValue",
+                        "count": "[length(variables('satelliteConfigs'))]",
+                        "input": {
+                          "satelliteName": "[variables('satelliteConfigs')[copyIndex('defaultValue')].name]",
+                          "datasetName": "[format('satellite_{0}_ingestion', variables('satelliteConfigs')[copyIndex('defaultValue')].name)]",
+                          "manifestDatasetName": "[format('satellite_{0}_manifest', variables('satelliteConfigs')[copyIndex('defaultValue')].name)]",
+                          "storageUri": "[variables('satelliteConfigs')[copyIndex('defaultValue')].uri]"
+                        }
+                      }
+                    ],
+                    "type": "Array"
+                  }
+                },
+                "annotations": [
+                  "RemoteHub",
+                  "pull-mode"
+                ]
+              }
+            },
+            "trigger_pullSchedule": {
+              "type": "Microsoft.DataFactory/factories/triggers",
+              "apiVersion": "2018-06-01",
+              "name": "[format('{0}/{1}', parameters('dataFactoryName'), 'remoteHub_PullSchedule')]",
+              "properties": {
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                  "recurrence": {
+                    "frequency": "Hour",
+                    "interval": "[parameters('pullIntervalHours')]",
+                    "startTime": "2024-01-01T00:00:00Z",
+                    "timeZone": "UTC"
+                  }
+                },
+                "pipelines": [
+                  {
+                    "pipelineReference": {
+                      "referenceName": "remoteHub_PullFromSatellites",
+                      "type": "PipelineReference"
+                    },
+                    "parameters": {}
+                  }
+                ],
+                "annotations": [
+                  "RemoteHub",
+                  "pull-mode"
+                ]
+              },
+              "dependsOn": [
+                "pipeline_pullFromSatellites"
+              ]
+            }
+          },
+          "outputs": {
+            "linkedServiceNames": {
+              "type": "array",
+              "metadata": {
+                "description": "Names of the satellite linked services created."
+              },
+              "copy": {
+                "count": "[length(variables('satelliteConfigs'))]",
+                "input": "[format('satellite_{0}', variables('satelliteConfigs')[copyIndex()].name)]"
+              }
+            },
+            "datasetNames": {
+              "type": "array",
+              "metadata": {
+                "description": "Names of the satellite ingestion datasets created."
+              },
+              "copy": {
+                "count": "[length(variables('satelliteConfigs'))]",
+                "input": "[format('satellite_{0}_ingestion', variables('satelliteConfigs')[copyIndex()].name)]"
+              }
+            },
+            "pipelineName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the pull pipeline."
+              },
+              "value": "remoteHub_PullFromSatellites"
+            },
+            "triggerName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the pull schedule trigger."
+              },
+              "value": "remoteHub_PullSchedule"
+            },
+            "satelliteCount": {
+              "type": "int",
+              "metadata": {
+                "description": "Number of satellite hubs configured."
+              },
+              "value": "[length(parameters('satelliteStorageUris'))]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "dataFactory",
+        "dataFactoryResources"
+      ]
+    },
     "dataExplorer": {
       "condition": "[variables('createNewAdx')]",
       "type": "Microsoft.Resources/deployments",
@@ -43405,6 +44312,8 @@
         "dataFactory",
         "dataFactoryResources",
         "managedIdentity",
+        "remoteHubPull",
+        "remoteHubPush",
         "storageAccount"
       ]
     },
@@ -43861,6 +44770,34 @@
         "description": "Indicates whether MACC (Microsoft Azure Consumption Commitment) tracking is enabled."
       },
       "value": "[reference('dataFactoryResources').outputs.maccEnabled.value]"
+    },
+    "remoteHubMode": {
+      "type": "string",
+      "metadata": {
+        "description": "Remote hub federation mode. \"push\" = satellite, \"pull\" = primary, \"none\" = standalone."
+      },
+      "value": "[parameters('remoteHubMode')]"
+    },
+    "remoteHubPushPipeline": {
+      "type": "string",
+      "metadata": {
+        "description": "Remote hub push pipeline name. Empty if not using push mode."
+      },
+      "value": "[if(variables('enableRemoteHubPush'), reference('remoteHubPush').outputs.pipelineName.value, '')]"
+    },
+    "remoteHubPullPipeline": {
+      "type": "string",
+      "metadata": {
+        "description": "Remote hub pull pipeline name. Empty if not using pull mode."
+      },
+      "value": "[if(variables('enableRemoteHubPull'), reference('remoteHubPull').outputs.pipelineName.value, '')]"
+    },
+    "satelliteHubCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Number of satellite hubs configured for pull mode. 0 if not using pull mode."
+      },
+      "value": "[if(variables('enableRemoteHubPull'), reference('remoteHubPull').outputs.satelliteCount.value, 0)]"
     },
     "adxSchemaDeployed": {
       "type": "bool",

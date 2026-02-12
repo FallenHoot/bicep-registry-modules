@@ -111,14 +111,24 @@ param dataExplorerRawRetentionInDays int = 0
 param dataExplorerFinalRetentionInMonths int = 13
 
 // --- Remote Hub Configuration ---
-@description('Optional. Storage account to push data to for ingestion into a remote hub.')
-#disable-next-line no-unused-params // Reserved for future remote hub module implementation
+@description('Optional. Remote hub federation mode. "push" makes this hub a satellite that pushes data to a remote primary hub (cross-cloud/cross-tenant, uses storage key). "pull" makes this hub the primary that reads from satellite hubs (same-cloud, uses Managed Identity + RBAC). "none" disables federation. Default: none.')
+@allowed(['none', 'push', 'pull'])
+param remoteHubMode string = 'none'
+
+@description('Conditional. Required if remoteHubMode is "push". DFS endpoint URI of the primary (remote) hub storage account (e.g., https://<account>.dfs.core.windows.net).')
 param remoteHubStorageUri string = ''
 
-@description('Optional. Storage account key to use when pushing data to a remote hub.')
+@description('Conditional. Required if remoteHubMode is "push". Access key for the primary (remote) hub storage account.')
 @secure()
-#disable-next-line no-unused-params // Reserved for future remote hub module implementation
 param remoteHubStorageKey string = ''
+
+@description('Conditional. Required if remoteHubMode is "pull". Array of satellite hub storage account DFS endpoint URIs to pull data from.')
+param satelliteHubStorageUris string[] = []
+
+@description('Optional. Schedule interval in hours for polling satellite hubs in pull mode. Default: 6.')
+@minValue(1)
+@maxValue(24)
+param pullIntervalHours int = 6
 
 // --- Infrastructure Encryption ---
 @description('Optional. Enable infrastructure encryption on the storage account. Default: false.')
@@ -272,6 +282,10 @@ var useExistingAdx = !empty(existingDataExplorerClusterId)
 var createNewAdx = deploymentType == 'adx' && !empty(dataExplorerClusterName) && !useExistingAdx
 var useFabric = deploymentType == 'fabric' && !empty(fabricQueryUri)
 var deployAdxSchema = deploymentType == 'adx' && (createNewAdx || useExistingAdx)
+
+// Remote hub deployment flags
+var enableRemoteHubPush = remoteHubMode == 'push' && !empty(remoteHubStorageUri) && !empty(remoteHubStorageKey)
+var enableRemoteHubPull = remoteHubMode == 'pull' && !empty(satelliteHubStorageUris)
 
 // ADX admin principal assignments
 var adxAdminAssignments = [for principalId in adxAdminPrincipalIds: {
@@ -671,6 +685,38 @@ module managedExportsPipelines 'modules/managedExportsPipelines.bicep' = if (ena
   }
 }
 
+// --- Remote Hub: Push Mode (this hub is a satellite) ---
+// Pushes processed cost data to a remote primary hub's storage account.
+// Uses storage key stored in Key Vault — works cross-cloud and cross-tenant.
+module remoteHubPush 'modules/remoteHubPush.bicep' = if (enableRemoteHubPush) {
+  name: '${uniqueString(deployment().name, location)}-remote-hub-push'
+  dependsOn: [
+    dataFactoryResources
+    adfKeyVaultRoleAssignment
+  ]
+  params: {
+    dataFactoryName: dataFactory.outputs.name
+    keyVaultName: keyVault.outputs.name
+    remoteHubStorageUri: remoteHubStorageUri
+    remoteHubStorageKey: remoteHubStorageKey
+    integrationRuntimeName: effectiveAdfManagedVnet ? 'FinOpsHubManagedIR' : ''
+  }
+}
+
+// --- Remote Hub: Pull Mode (this hub is the primary) ---
+// Reads processed cost data from satellite hubs using Managed Identity.
+// No storage keys required — uses RBAC. Works within same cloud/tenant.
+module remoteHubPull 'modules/remoteHubPull.bicep' = if (enableRemoteHubPull) {
+  name: '${uniqueString(deployment().name, location)}-remote-hub-pull'
+  dependsOn: [dataFactoryResources]
+  params: {
+    dataFactoryName: dataFactory.outputs.name
+    satelliteStorageUris: satelliteHubStorageUris
+    pullIntervalHours: pullIntervalHours
+    integrationRuntimeName: effectiveAdfManagedVnet ? 'FinOpsHubManagedIR' : ''
+  }
+}
+
 // --- Azure Data Explorer ---
 module dataExplorer 'br/public:avm/res/kusto/cluster:0.9.1' = if (createNewAdx) {
   name: '${uniqueString(deployment().name, location)}-adx'
@@ -904,6 +950,8 @@ module startTriggers 'modules/triggerManagement.bicep' = if (enableTriggerManage
     // Note: ADX MI policy is now set at runtime via ADF pipeline activity (Set Ingestion Policy)
     // in ingestion_ETL_dataExplorer pipeline, matching the upstream FinOps toolkit approach
     approveAdxManagedPeConnections // ADX managed PE must be approved before pipelines can reach ADX
+    remoteHubPush                  // Remote hub push resources must be deployed before triggers start
+    remoteHubPull                  // Remote hub pull resources must be deployed before triggers start
   ]
   params: {
     dataFactoryName: dataFactory.outputs.name
@@ -1073,6 +1121,22 @@ output analyticsPlatform string = dataFactoryResources.outputs.analyticsPlatform
 
 @description('Indicates whether MACC (Microsoft Azure Consumption Commitment) tracking is enabled.')
 output maccEnabled bool = dataFactoryResources.outputs.maccEnabled
+
+// Remote Hub outputs
+@description('Remote hub federation mode. "push" = satellite, "pull" = primary, "none" = standalone.')
+output remoteHubMode string = remoteHubMode
+
+@description('Remote hub push pipeline name. Empty if not using push mode.')
+#disable-next-line BCP321 // Null safety - module only exists when enableRemoteHubPush is true
+output remoteHubPushPipeline string = enableRemoteHubPush ? remoteHubPush!.outputs.pipelineName : ''
+
+@description('Remote hub pull pipeline name. Empty if not using pull mode.')
+#disable-next-line BCP321 // Null safety - module only exists when enableRemoteHubPull is true
+output remoteHubPullPipeline string = enableRemoteHubPull ? remoteHubPull!.outputs.pipelineName : ''
+
+@description('Number of satellite hubs configured for pull mode. 0 if not using pull mode.')
+#disable-next-line BCP321 // Null safety - module only exists when enableRemoteHubPull is true
+output satelliteHubCount int = enableRemoteHubPull ? remoteHubPull!.outputs.satelliteCount : 0
 
 // ADX Schema deployment outputs
 @description('Indicates whether ADX schema was deployed.')
