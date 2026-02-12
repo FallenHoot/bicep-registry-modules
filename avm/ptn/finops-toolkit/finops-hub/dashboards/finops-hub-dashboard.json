@@ -1,9 +1,9 @@
 {
-  "$schema": "https://dataexplorer.azure.com/static/d/schema/67/dashboard.json",
+  "$schema": "https://dataexplorer.azure.com/static/d/schema/68/dashboard.json",
   "id": "2366c492-3d9c-4fe4-b8b0-a02265d5488a",
-  "eTag": "0491a91e-21bd-40b5-bdc1-047d144d720a",
-  "title": "FinOps Hub - Cloud Cost Intelligence Dashboard",
-  "schema_version": 67,
+  "eTag": "c705be91-b1a6-41e9-8bdd-675d08cabf15",
+  "title": "FinOps hub 2",
+  "schema_version": 68,
   "tiles": [
     {
       "id": "acf2ca3d-9d8f-477f-b259-f3937bf938d4",
@@ -20,6 +20,7 @@
         "kind": "query",
         "queryId": "152f2041-bbc1-41e4-b155-271b2e0cf6e9"
       },
+      "description": "Your last month's bill in a nutshell. Billed cost is what appears on your invoice. Effective cost accounts for amortized commitments. The difference matters for accurate showback.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -31,8 +32,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "Your last month's bill in a nutshell. Billed cost is what appears on your invoice. Effective cost accounts for amortized commitments. The difference matters for accurate showback."
+      }
     },
     {
       "id": "595e39e5-02ff-4ee7-99f9-68694ffd0495",
@@ -49,6 +49,7 @@
         "kind": "query",
         "queryId": "bc24e050-f2b9-4b4a-a08d-69fc4a4bb95e"
       },
+      "description": "Billed vs effective cost over time. When these diverge, it means your commitment purchases are being amortized. Understanding this gap is key to explaining invoices to finance.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -72,6 +73,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -81,10 +83,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Billed vs effective cost over time. When these diverge, it means your commitment purchases are being amortized. Understanding this gap is key to explaining invoices to finance."
+        }
+      }
     },
     {
       "id": "efd2b03d-c80d-4d78-b77a-efa3f932efdb",
@@ -101,6 +101,7 @@
         "kind": "query",
         "queryId": "0d91ea4a-c81d-4a21-b708-b6af37be1eec"
       },
+      "description": "Is your bill growing or shrinking? Each bar shows the change from the previous month. Positive bars mean the bill grew. A string of positive bars means costs are consistently rising.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -124,6 +125,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -133,10 +135,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Is your bill growing or shrinking? Each bar shows the change from the previous month. Positive bars mean the bill grew. A string of positive bars means costs are consistently rising."
+        }
+      }
     },
     {
       "id": "9c5e208a-f0ce-4e2e-9969-35130eef22c1",
@@ -153,6 +153,7 @@
         "kind": "query",
         "queryId": "f2cecbb0-13f8-4642-afa4-bbcc0558f777"
       },
+      "description": "How many subscriptions, resources, and resource groups were active last month? Use this to sanity-check your bill — if resource count dropped but cost didn't, pricing changed.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -164,8 +165,7 @@
           "height": 1
         },
         "colorRules": []
-      },
-      "description": "How many subscriptions, resources, and resource groups were active last month? Use this to sanity-check your bill — if resource count dropped but cost didn't, pricing changed."
+      }
     },
     {
       "id": "2a1ee947-f1e3-447e-9388-91e318068608",
@@ -182,6 +182,7 @@
         "kind": "query",
         "queryId": "5d63e04d-1a11-4307-96f1-ebbf68e09be0"
       },
+      "description": "How big is our cloud footprint right now? These counts tell you how many subscriptions, resource groups, resources, and services had charges recently. If a count suddenly jumps, someone spun up something new.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -217,8 +218,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "How big is our cloud footprint right now? These counts tell you how many subscriptions, resource groups, resources, and services had charges recently. If a count suddenly jumps, someone spun up something new."
+      }
     },
     {
       "id": "49534f2e-97ea-4b41-87c2-5e0f4bc26db8",
@@ -235,6 +235,7 @@
         "kind": "query",
         "queryId": "290e7eab-8159-4338-8531-85e2718cedb1"
       },
+      "description": "This is what your organization actually paid each month after all discounts. Each bar is one billing period. If a bar is taller than the one before it, spending went up — find out why.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -271,6 +272,7 @@
         "verticalLine": "",
         "drillthroughDisabled": false,
         "forceAxisTicks": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -280,10 +282,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "This is what your organization actually paid each month after all discounts. Each bar is one billing period. If a bar is taller than the one before it, spending went up — find out why."
+        }
+      }
     },
     {
       "id": "8e17c9f7-c513-4b93-bab8-44d3b0e48e9c",
@@ -296,7 +296,7 @@
         "width": 18,
         "height": 10
       },
-      "markdownText": "# FinOps hubs 13.0 (February 2026)\nThe FinOps hub dashboard provides several summaries of your cost and usage in alignment with the [FinOps Framework](https://aka.ms/finops/fx). All data formatted based on the [FinOps Open Cost and Usage Specification (FOCUS)](https://aka.ms/finops/focus).\n\nMost of this dashboard is designed to work with effective (amortized) cost rather than billed (actual) cost. Amortization breaks down reservation and savings plan purchases and allocates costs to the resources that received the benefit to facilitate chargeback reporting. Effective costs will not match your invoice. For invoice reconciliation, refer to the **Invoicing** page.\n\n### Understanding Amortized vs Actual Cost\n| FOCUS Column | Azure Cost Management View | Description |\n|---|---|---|\n| **BilledCost** | Actual cost | What appears on your invoice. Commitment purchases show as lump sums. |\n| **EffectiveCost** | Amortized cost | Commitment purchases are spread across benefiting resources. Best for chargeback. |\n\nIf this dashboard shows a different total than Azure Cost Management, check which cost view you are comparing: **Actual cost** = `BilledCost`, **Amortized cost** = `EffectiveCost`. The difference equals the amortized portion of commitment discount purchases (reservations, savings plans).\n\n[Learn more](https://aka.ms/finops/hubs) &nbsp; &nbsp; [Give feedback](https://portal.azure.com/#view/HubsExtension/InProductFeedbackBlade/extensionName/FinOpsToolkit/cesQuestion/How%20easy%20or%20hard%20is%20it%20to%20use%20the%20FinOps%20hubs%20Data%20Explorer%20dashboard%3F/cvaQuestion/How%20valuable%20the%20FinOps%20hubs%20Data%20Explorer%20dashboard%3F/surveyId/FTK13.0/bladeName/Hubs.Dashboard/featureName/Summary)\n",
+      "markdownText": "# FinOps hubs 14.0 (March 2026)\nThe FinOps hub dashboard provides several summaries of your cost and usage in alignment with the [FinOps Framework](https://aka.ms/finops/fx). All data formatted based on the [FinOps Open Cost and Usage Specification (FOCUS)](https://aka.ms/finops/focus).\n\nMost of this dashboard is designed to work with effective (amortized) cost rather than billed (actual) cost. Amortization breaks down reservation and savings plan purchases and allocates costs to the resources that received the benefit to facilitate chargeback reporting. Effective costs will not match your invoice. For invoice reconciliation, refer to the **Invoicing** page.\n\n### Understanding Amortized vs Actual Cost\n| FOCUS Column | Azure Cost Management View | Description |\n|---|---|---|\n| **BilledCost** | Actual cost | What appears on your invoice. Commitment purchases show as lump sums. |\n| **EffectiveCost** | Amortized cost | Commitment purchases are spread across benefiting resources. Best for chargeback. |\n\nIf this dashboard shows a different total than Azure Cost Management, check which cost view you are comparing: **Actual cost** = `BilledCost`, **Amortized cost** = `EffectiveCost`. The difference equals the amortized portion of commitment discount purchases (reservations, savings plans).\n\n[Learn more](https://aka.ms/finops/hubs) &nbsp; &nbsp; [Give feedback](https://portal.azure.com/#view/HubsExtension/InProductFeedbackBlade/extensionName/FinOpsToolkit/cesQuestion/How%20easy%20or%20hard%20is%20it%20to%20use%20the%20FinOps%20hubs%20Data%20Explorer%20dashboard%3F/cvaQuestion/How%20valuable%20the%20FinOps%20hubs%20Data%20Explorer%20dashboard%3F/surveyId/FTK13.0/bladeName/Hubs.Dashboard/featureName/Summary)\n",
       "visualOptions": {}
     },
     {
@@ -328,6 +328,7 @@
         "kind": "query",
         "queryId": "d5ed469a-45ea-49a2-b305-b841050213cf"
       },
+      "description": "Watch your money accumulate day by day across 3 months. The shape of each curve tells you if you spend steadily or if costs spike at certain times. Steeper slopes mean faster burn.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -351,6 +352,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -360,10 +362,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Watch your money accumulate day by day across 3 months. The shape of each curve tells you if you spend steadily or if costs spike at certain times. Steeper slopes mean faster burn."
+        }
+      }
     },
     {
       "id": "1ac02a9f-3c12-4828-a4dd-60a0d411f60c",
@@ -380,6 +380,7 @@
         "kind": "query",
         "queryId": "10300876-866a-40d7-836d-b3a8783ecece"
       },
+      "description": "Are you spending faster this month than last? The two curves show cumulative daily spend. If this month's line is above last month's at the same day, you're on pace to spend more.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -403,6 +404,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -412,10 +414,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Are you spending faster this month than last? The two curves show cumulative daily spend. If this month's line is above last month's at the same day, you're on pace to spend more."
+        }
+      }
     },
     {
       "id": "27ff6f92-2e6f-431f-bf3b-f36aad59b5f5",
@@ -432,6 +432,7 @@
         "kind": "query",
         "queryId": "9e41a624-d5f9-40c6-b47f-fef4b50ec3dd"
       },
+      "description": "Your day-by-day spending overlaid for 3 months. Look for repeating patterns (weekday vs weekend) and outlier spikes. Spikes usually mean someone deployed something expensive or a job ran long.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -455,6 +456,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -464,10 +466,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Your day-by-day spending overlaid for 3 months. Look for repeating patterns (weekday vs weekend) and outlier spikes. Spikes usually mean someone deployed something expensive or a job ran long."
+        }
+      }
     },
     {
       "id": "97df5060-929c-4457-a7e9-47005c845f16",
@@ -484,6 +484,7 @@
         "kind": "query",
         "queryId": "f26e2204-270e-4219-8f68-5acef1c9393f"
       },
+      "description": "Same daily view, but colored by subscription. This tells you which team or environment is responsible when you see a cost spike. The biggest colored bands are your top spenders.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -507,24 +508,27 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [
           {
-            "destinationPages": [
-              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
-            ],
             "pairs": [
               {
                 "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
                 "property": "SubAccountNameUnique"
               }
-            ]
+            ],
+            "destinationPages": [
+              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
+            ],
+            "disabled": false
           }
         ],
         "selectedDataOnLoad": {
@@ -534,10 +538,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Same daily view, but colored by subscription. This tells you which team or environment is responsible when you see a cost spike. The biggest colored bands are your top spenders."
+        }
+      }
     },
     {
       "id": "dad96fbb-750c-47a3-bd2e-e2bee74ebd22",
@@ -554,6 +556,7 @@
         "kind": "query",
         "queryId": "dcc1f533-e5f9-4855-9e4c-21e21fcdf943"
       },
+      "description": "Are you saving more this month than last month? This overlays your cumulative cost and savings side by side. If the savings area is growing faster, your optimization efforts are working.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -581,6 +584,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -590,10 +594,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Are you saving more this month than last month? This overlays your cumulative cost and savings side by side. If the savings area is growing faster, your optimization efforts are working."
+        }
+      }
     },
     {
       "id": "66dcd731-a141-47b2-b36a-53a138cb75f2",
@@ -610,6 +612,7 @@
         "kind": "query",
         "queryId": "e8b343dc-7430-4487-8d44-ef48ac454f2d"
       },
+      "description": "Your headline numbers: total cost, total savings, and how much changed vs. last month. Share these in your monthly FinOps review. Green means costs went down; red means they went up.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -668,8 +671,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "Your headline numbers: total cost, total savings, and how much changed vs. last month. Share these in your monthly FinOps review. Green means costs went down; red means they went up."
+      }
     },
     {
       "id": "04cb63d9-0a92-488f-b863-815466d6725c",
@@ -686,6 +688,7 @@
         "kind": "query",
         "queryId": "c077a6d4-719f-42fe-b39b-36f77dc68976"
       },
+      "description": "The same headline numbers in a table so you can compare month by month. Look at the change column — consistent increases mean you need to investigate, not just accept growth.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -695,8 +698,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "The same headline numbers in a table so you can compare month by month. Look at the change column — consistent increases mean you need to investigate, not just accept growth."
+      }
     },
     {
       "id": "4faba5ce-4190-45f9-b41e-5d9c6a9c8098",
@@ -713,6 +715,7 @@
         "kind": "query",
         "queryId": "9d6635cd-503a-49bc-80c8-ac8157c6e923"
       },
+      "description": "Month-by-month cost with change percentages. Use this to prep for budget reviews. Consistent month-over-month increases mean you need to plan for growth, not just react to it.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -722,8 +725,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Month-by-month cost with change percentages. Use this to prep for budget reviews. Consistent month-over-month increases mean you need to plan for growth, not just react to it."
+      }
     },
     {
       "id": "890e0366-a9a5-4001-bc6e-f1b7f23fa8a7",
@@ -740,6 +742,7 @@
         "kind": "query",
         "queryId": "3886b5cd-34a8-42d7-9e16-33ea4d236953"
       },
+      "description": "Each subscription's monthly cost for budget allocation. If you do chargeback or showback, this is the data to share with subscription owners.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -749,26 +752,27 @@
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [
           {
-            "destinationPages": [
-              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
-            ],
             "pairs": [
               {
                 "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
                 "property": "SubAccountNameUnique"
               }
-            ]
+            ],
+            "destinationPages": [
+              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
+            ],
+            "disabled": false
           }
         ],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Each subscription's monthly cost for budget allocation. If you do chargeback or showback, this is the data to share with subscription owners."
+      }
     },
     {
       "id": "e47767ba-1884-4ca7-8458-24025b92464a",
@@ -799,6 +803,7 @@
         "kind": "query",
         "queryId": "d5224d06-c8e7-4dd9-afec-595b39712f5a"
       },
+      "description": "Which regions are you spending the most in? If a region you don't expect is in the top colors, you may have orphaned resources there. Some regions cost more than others for the same service.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -822,11 +827,13 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "RegionName",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [],
@@ -837,10 +844,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Which regions are you spending the most in? If a region you don't expect is in the top colors, you may have orphaned resources there. Some regions cost more than others for the same service."
+        }
+      }
     },
     {
       "id": "c54de4ff-e793-49b7-b33d-db22fccd0290",
@@ -857,6 +862,7 @@
         "kind": "query",
         "queryId": "0dcf2c54-7f1d-45e9-a53b-d598a24493a4"
       },
+      "description": "The numbers behind the region chart. Compare month over month to catch regions where costs are creeping up. A region growing 20%+ month-over-month needs investigation.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -866,14 +872,14 @@
           {
             "interaction": "column",
             "property": "RegionName",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "The numbers behind the region chart. Compare month over month to catch regions where costs are creeping up. A region growing 20%+ month-over-month needs investigation."
+      }
     },
     {
       "id": "b2916ba0-cb54-433d-89a1-8905b8d8618a",
@@ -890,6 +896,7 @@
         "kind": "query",
         "queryId": "30644718-defd-4c6c-9ffa-a9c2cd1f871f"
       },
+      "description": "Which cloud services eat most of your budget? VMs, storage, databases — the top colors are your biggest bills. If a service you rarely use suddenly appears, something changed.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -913,11 +920,13 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "ServiceName",
-            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70001"
+            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70001",
+            "disabled": false
           }
         ],
         "drillthrough": [],
@@ -928,10 +937,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Which cloud services eat most of your budget? VMs, storage, databases — the top colors are your biggest bills. If a service you rarely use suddenly appears, something changed."
+        }
+      }
     },
     {
       "id": "6208961b-6249-4fd4-a2d6-16b5e58b9baa",
@@ -948,6 +955,7 @@
         "kind": "query",
         "queryId": "6259f773-593c-4953-898c-15aa5ff6e53a"
       },
+      "description": "Service-level cost detail with monthly columns. Use this to find services where spending is growing but usage isn't — that's a pricing or sizing problem.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -957,14 +965,14 @@
           {
             "interaction": "column",
             "property": "ServiceName",
-            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70001"
+            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70001",
+            "disabled": false
           }
         ],
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Service-level cost detail with monthly columns. Use this to find services where spending is growing but usage isn't — that's a pricing or sizing problem."
+      }
     },
     {
       "id": "4956ec68-b338-4926-bd72-ae6ca9e886d6",
@@ -995,6 +1003,7 @@
         "kind": "query",
         "queryId": "21a87abe-19e2-44ec-8298-ba872e66c162"
       },
+      "description": "Each color is a subscription (team/environment). The tallest bands are your biggest-spending teams. If dev/test subscriptions are as expensive as production, that's a conversation to have.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1018,24 +1027,27 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [
           {
-            "destinationPages": [
-              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
-            ],
             "pairs": [
               {
                 "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
                 "property": "SubAccountNameUnique"
               }
-            ]
+            ],
+            "destinationPages": [
+              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
+            ],
+            "disabled": false
           }
         ],
         "selectedDataOnLoad": {
@@ -1045,10 +1057,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Each color is a subscription (team/environment). The tallest bands are your biggest-spending teams. If dev/test subscriptions are as expensive as production, that's a conversation to have."
+        }
+      }
     },
     {
       "id": "7b24b810-3cd3-4b7c-92cc-6b40f071b24d",
@@ -1065,6 +1075,7 @@
         "kind": "query",
         "queryId": "90502e9a-2d0d-4ae4-8d9d-cc21f9b72d5d"
       },
+      "description": "Subscription costs with monthly trend. Sort by the latest month to see who's spending the most right now. Month-over-month changes tell you who's growing fastest.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1074,26 +1085,27 @@
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [
           {
-            "destinationPages": [
-              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
-            ],
             "pairs": [
               {
                 "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
                 "property": "SubAccountNameUnique"
               }
-            ]
+            ],
+            "destinationPages": [
+              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
+            ],
+            "disabled": false
           }
         ],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Subscription costs with monthly trend. Sort by the latest month to see who's spending the most right now. Month-over-month changes tell you who's growing fastest."
+      }
     },
     {
       "id": "f56a2d38-7d69-4dfd-8cc8-6b7a292758b1",
@@ -1110,6 +1122,7 @@
         "kind": "query",
         "queryId": "c2c65ec0-e57d-4834-8a6b-b5975afeb9a0"
       },
+      "description": "Resource groups usually map to apps or teams. This shows which groups cost the most and whether they're growing. Use this to assign cost accountability to the right owners.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1119,14 +1132,14 @@
           {
             "interaction": "column",
             "property": "x_ResourceGroupName",
-            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70003"
+            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70003",
+            "disabled": false
           }
         ],
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Resource groups usually map to apps or teams. This shows which groups cost the most and whether they're growing. Use this to assign cost accountability to the right owners."
+      }
     },
     {
       "id": "d2672640-0e48-47e5-a253-de927a77a637",
@@ -1143,6 +1156,7 @@
         "kind": "query",
         "queryId": "61b26784-6a73-4e80-85b2-9c5cfbd2dd06"
       },
+      "description": "Visual view of resource group costs over time. Tall bands that keep growing are apps that need a cost review. Shrinking bands might be decommissioned workloads.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1166,11 +1180,13 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "x_ResourceGroupName",
-            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70003"
+            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70003",
+            "disabled": false
           }
         ],
         "drillthrough": [],
@@ -1181,10 +1197,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Visual view of resource group costs over time. Tall bands that keep growing are apps that need a cost review. Shrinking bands might be decommissioned workloads."
+        }
+      }
     },
     {
       "id": "6750ce15-ec4e-4c60-8079-b00a4b462d63",
@@ -1229,6 +1243,7 @@
         "kind": "query",
         "queryId": "3924981c-23e4-464d-a872-045df1752750"
       },
+      "description": "Individual resource costs — your most granular view. The top-colored resources are your single most expensive items. One VM or database can sometimes account for a huge chunk of spend.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1252,6 +1267,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1261,10 +1277,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Individual resource costs — your most granular view. The top-colored resources are your single most expensive items. One VM or database can sometimes account for a huge chunk of spend."
+        }
+      }
     },
     {
       "id": "586ebe0b-ff5c-4794-91a1-a8ec845cad3a",
@@ -1281,6 +1295,7 @@
         "kind": "query",
         "queryId": "c7be613e-deb4-4779-ad75-4445e8d5e01f"
       },
+      "description": "Resource-level detail with monthly cost. Sort by cost to find your most expensive resources. Ask: is this resource still needed? Is it right-sized? Is it using discounts?",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1290,8 +1305,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Resource-level detail with monthly cost. Sort by cost to find your most expensive resources. Ask: is this resource still needed? Is it right-sized? Is it using discounts?"
+      }
     },
     {
       "id": "c03c1e57-5e66-4eb1-a20b-10c887eb2140",
@@ -1308,6 +1322,7 @@
         "kind": "query",
         "queryId": "49e24ee0-91de-4b1c-973f-036a3c060aca"
       },
+      "description": "Recent daily cost by resource. Use this to catch resources that suddenly got expensive — someone may have scaled up and forgot to scale back down.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1331,6 +1346,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1340,10 +1356,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Recent daily cost by resource. Use this to catch resources that suddenly got expensive — someone may have scaled up and forgot to scale back down."
+        }
+      }
     },
     {
       "id": "d9960334-1cff-4686-9d4a-e6afc5574aa7",
@@ -1374,6 +1388,7 @@
         "kind": "query",
         "queryId": "4c7a7614-9b8c-415b-a4e1-d2d53c023d31"
       },
+      "description": "FOCUS service categories group costs in a cloud-agnostic way (Compute, Storage, Networking, etc.). This helps you compare spending patterns even across different cloud providers.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1397,11 +1412,13 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "ServiceCategory",
-            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70002"
+            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70002",
+            "disabled": false
           }
         ],
         "drillthrough": [],
@@ -1412,10 +1429,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "FOCUS service categories group costs in a cloud-agnostic way (Compute, Storage, Networking, etc.). This helps you compare spending patterns even across different cloud providers."
+        }
+      }
     },
     {
       "id": "97872267-01c6-44f9-ad0d-34940d4b58fa",
@@ -1432,6 +1447,7 @@
         "kind": "query",
         "queryId": "1d273b55-d2ea-427c-8a5f-01f6c240e98a"
       },
+      "description": "Service category costs with monthly detail. Use this to answer 'how much do we spend on compute vs. storage vs. networking?' without worrying about provider-specific service names.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1441,14 +1457,14 @@
           {
             "interaction": "column",
             "property": "ServiceCategory",
-            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70002"
+            "parameterId": "3e4666bf-d5e5-4aa7-b8ce-cefe41c70002",
+            "disabled": false
           }
         ],
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Service category costs with monthly detail. Use this to answer 'how much do we spend on compute vs. storage vs. networking?' without worrying about provider-specific service names."
+      }
     },
     {
       "id": "a8edc317-353b-4648-9d32-e73e0d0a2894",
@@ -1479,6 +1495,7 @@
         "kind": "query",
         "queryId": "90e30901-a931-4a1d-b81e-0a1821032c3c"
       },
+      "description": "Azure resource types (VMs, disks, NICs, etc.) over time. If 'disks' is growing but 'VMs' isn't, you might have orphaned disks from deleted VMs still costing you money.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1502,6 +1519,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1511,10 +1529,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Azure resource types (VMs, disks, NICs, etc.) over time. If 'disks' is growing but 'VMs' isn't, you might have orphaned disks from deleted VMs still costing you money."
+        }
+      }
     },
     {
       "id": "8d63f5d3-b1d8-4117-a358-bce7939a13ae",
@@ -1531,6 +1547,7 @@
         "kind": "query",
         "queryId": "ebe41e27-e9f9-478e-ab90-fd1f87906766"
       },
+      "description": "Recent daily costs by resource type. Good for catching new resource types that appeared in your environment. If a type you don't recognize shows up, investigate.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1554,6 +1571,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1563,10 +1581,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Recent daily costs by resource type. Good for catching new resource types that appeared in your environment. If a type you don't recognize shows up, investigate."
+        }
+      }
     },
     {
       "id": "011c2b2c-a232-4459-acf4-8db4055f4f70",
@@ -1610,6 +1626,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1619,8 +1636,7 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
+        }
       }
     },
     {
@@ -1665,6 +1681,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1674,8 +1691,7 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
+        }
       }
     },
     {
@@ -1693,6 +1709,7 @@
         "kind": "query",
         "queryId": "2d7b6447-2769-40b8-958a-f252dab68b1e"
       },
+      "description": "Resource types with both cost and count. Look for types with high cost but low count — those are expensive individual resources to right-size. High count with low cost is healthy.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1702,8 +1719,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Resource types with both cost and count. Look for types with high cost but low count — those are expensive individual resources to right-size. High count with low cost is healthy."
+      }
     },
     {
       "id": "a83872cb-44ef-402a-8512-b9d5ba04744e",
@@ -1721,6 +1737,7 @@
         "queryId": "f062533b-8c94-412f-bf83-0eb5cd06063d"
       },
       "hideTitle": true,
+      "description": "Quick count of how many distinct resources, resource types, and resource groups are generating costs. A sudden increase means new resources were deployed.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -1732,8 +1749,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "Quick count of how many distinct resources, resource types, and resource groups are generating costs. A sudden increase means new resources were deployed."
+      }
     },
     {
       "id": "5bd3258c-034c-4e23-b543-7cdf87bd153d",
@@ -1792,6 +1808,7 @@
         "kind": "query",
         "queryId": "1d9c166d-22b6-48fd-9a90-9f983083ecc7"
       },
+      "description": "Your daily spend as a simple bar chart. Flat is good (predictable). Spiky means unpredictable workloads or runaway resources. Look for bars that are 2x the average — those are your anomalies.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1827,6 +1844,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1836,10 +1854,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Your daily spend as a simple bar chart. Flat is good (predictable). Spiky means unpredictable workloads or runaway resources. Look for bars that are 2x the average — those are your anomalies."
+        }
+      }
     },
     {
       "id": "c0bd4bc4-a910-4a74-89a9-d4ae0f995563",
@@ -1870,6 +1886,7 @@
         "kind": "query",
         "queryId": "af6424d4-8f73-4b81-bfdd-f0287ebcaaca"
       },
+      "description": "These SKUs already have a negotiated discount from your EA/MCA agreement. Check the discount percentage — if it's small, you might renegotiate for better rates on high-spend SKUs.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1879,8 +1896,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "These SKUs already have a negotiated discount from your EA/MCA agreement. Check the discount percentage — if it's small, you might renegotiate for better rates on high-spend SKUs."
+      }
     },
     {
       "id": "3d7688f7-0a1c-4564-b851-f380a22817bf",
@@ -1897,6 +1913,7 @@
         "kind": "query",
         "queryId": "c4f6542d-a9cb-4284-bd4e-b9f94ad02192"
       },
+      "description": "These SKUs are covered by reservations or savings plans. Look at utilization — if a commitment discount is barely used, it's wasting money instead of saving it.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1906,8 +1923,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "These SKUs are covered by reservations or savings plans. Look at utilization — if a commitment discount is barely used, it's wasting money instead of saving it."
+      }
     },
     {
       "id": "b2c9dcef-b40d-4dad-a0a3-cb5fe2c77156",
@@ -1924,6 +1940,7 @@
         "kind": "query",
         "queryId": "00ae3917-c783-45f6-a04e-9113e4c5d445"
       },
+      "description": "These SKUs are paying full on-demand prices with zero discounts. This is your biggest optimization opportunity — buy reservations or savings plans for the ones you use consistently.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -1933,8 +1950,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "These SKUs are paying full on-demand prices with zero discounts. This is your biggest optimization opportunity — buy reservations or savings plans for the ones you use consistently."
+      }
     },
     {
       "id": "a3d814b8-ff20-4919-ae2a-f1caec997edf",
@@ -1951,6 +1967,7 @@
         "kind": "query",
         "queryId": "d8a4634e-7ebe-47ce-83b5-ff7f50f6bee6"
       },
+      "description": "SKUs ranked by how many resources use them. High-count SKUs are predictable demand — exactly what reservations and savings plans are designed for. Start commitment purchases here.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -1976,6 +1993,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -1985,10 +2003,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "SKUs ranked by how many resources use them. High-count SKUs are predictable demand — exactly what reservations and savings plans are designed for. Start commitment purchases here."
+        }
+      }
     },
     {
       "id": "18517864-8a43-4f0c-80e3-863554f1b189",
@@ -2019,6 +2035,7 @@
         "kind": "query",
         "queryId": "98c9b9b5-bebf-41f8-8319-5fa2523f9dd0"
       },
+      "description": "One-time and recurring purchases like reservation buys, savings plan enrollments, and marketplace subscriptions. Check this to verify your commitment purchases went through correctly.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2028,8 +2045,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "One-time and recurring purchases like reservation buys, savings plan enrollments, and marketplace subscriptions. Check this to verify your commitment purchases went through correctly."
+      }
     },
     {
       "id": "84da605b-6a0d-4a2a-aac3-a4160f9de10d",
@@ -2046,6 +2062,7 @@
         "kind": "query",
         "queryId": "35a3a2b3-4ab0-4449-96f7-c78db789089e"
       },
+      "description": "Your reservation and savings plan purchases by billing period. Verify these match what you intended to buy. If you see unexpected purchases, someone on your team may be buying without coordination.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2055,8 +2072,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Your reservation and savings plan purchases by billing period. Verify these match what you intended to buy. If you see unexpected purchases, someone on your team may be buying without coordination."
+      }
     },
     {
       "id": "ea97e18e-5253-4a9d-9eed-0f2fc45b3c5b",
@@ -2097,6 +2113,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -2106,8 +2123,7 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
+        }
       }
     },
     {
@@ -2149,6 +2165,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -2158,8 +2175,7 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
+        }
       }
     },
     {
@@ -2191,6 +2207,7 @@
         "kind": "query",
         "queryId": "d7f31381-ba44-46a1-ad3e-dc6b8826706d"
       },
+      "description": "Are your reservations and savings plans actually being used? Low utilization means you're paying for commitments that aren't being consumed — exchange or cancel them.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2200,8 +2217,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Are your reservations and savings plans actually being used? Low utilization means you're paying for commitments that aren't being consumed — exchange or cancel them."
+      }
     },
     {
       "id": "9513d9d7-be4a-468c-aed0-f0076c9bf3c4",
@@ -2218,6 +2234,7 @@
         "kind": "query",
         "queryId": "e17346d1-0227-4aa4-8765-f9b4bf43bed5"
       },
+      "description": "Your total savings from all discount types. This is the number to share with leadership — it shows the dollar value of your optimization work over recent months.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -2345,8 +2362,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "Your total savings from all discount types. This is the number to share with leadership — it shows the dollar value of your optimization work over recent months."
+      }
     },
     {
       "id": "9aec9f5c-f7cc-48da-8f0d-303137623945",
@@ -2363,6 +2379,7 @@
         "kind": "query",
         "queryId": "f1ef29df-7a1d-4dd0-8619-0c0164707b31"
       },
+      "description": "Recent savings snapshot. Compare this to the monthly view — if daily savings are lower than the monthly average, your optimization coverage may be slipping.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -2490,8 +2507,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "Recent savings snapshot. Compare this to the monthly view — if daily savings are lower than the monthly average, your optimization coverage may be slipping."
+      }
     },
     {
       "id": "e8018da4-7269-4e91-9f32-4bcf390746af",
@@ -2508,6 +2524,7 @@
         "kind": "query",
         "queryId": "7d0c2c1f-338b-4534-b173-36b284779131"
       },
+      "description": "How much of your committed spend is actually being used vs. sitting idle? 'Unused' means you're paying for capacity nobody is consuming. Act on that.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -2519,8 +2536,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "How much of your committed spend is actually being used vs. sitting idle? 'Unused' means you're paying for capacity nobody is consuming. Act on that."
+      }
     },
     {
       "id": "8dd83ee9-6692-4b94-a8c3-68caa7adbb64",
@@ -2537,6 +2553,7 @@
         "kind": "query",
         "queryId": "84ecad69-79ac-45b9-a8af-60be28dcc748"
       },
+      "description": "Recent commitment utilization. If unused amounts are high, check if workloads moved, scaled down, or were deleted after the commitment was purchased.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -2548,8 +2565,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "Recent commitment utilization. If unused amounts are high, check if workloads moved, scaled down, or were deleted after the commitment was purchased."
+      }
     },
     {
       "id": "e69fe03b-606c-4b93-b9b5-6f1048b24deb",
@@ -2566,6 +2582,7 @@
         "kind": "query",
         "queryId": "a7843e1d-7c76-4e4d-9a92-bc642d2f8506"
       },
+      "description": "Cost by service category in the rate optimization context. Use this to identify which categories have the most room for discount coverage improvement.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2575,8 +2592,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Cost by service category in the rate optimization context. Use this to identify which categories have the most room for discount coverage improvement."
+      }
     },
     {
       "id": "df06246e-5feb-4fd1-bcb0-c04448ac4c80",
@@ -2593,6 +2609,7 @@
         "kind": "query",
         "queryId": "5bbb5369-ac95-45fc-853c-a6a2ce6a9e7b"
       },
+      "description": "Is your savings growing month over month? The trend should go up as you buy more commitments and negotiate better rates. A flat or declining trend means optimization stalled.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -2616,6 +2633,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -2625,10 +2643,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Is your savings growing month over month? The trend should go up as you buy more commitments and negotiate better rates. A flat or declining trend means optimization stalled."
+        }
+      }
     },
     {
       "id": "fa177e0f-9a74-4475-b64d-a399224e96e0",
@@ -2659,6 +2675,7 @@
         "kind": "query",
         "queryId": "93f0eb9f-fa4d-4c54-96c2-8c1d3387d13a"
       },
+      "description": "Where do your savings come from — negotiated discounts or commitment discounts? If one slice is tiny, you have untapped savings potential in that area.",
       "visualOptions": {
         "hideLegend": false,
         "legendLocation": "right",
@@ -2683,8 +2700,7 @@
         "pie__topNSlices": null,
         "crossFilter": [],
         "drillthrough": []
-      },
-      "description": "Where do your savings come from — negotiated discounts or commitment discounts? If one slice is tiny, you have untapped savings potential in that area."
+      }
     },
     {
       "id": "b28fdb79-8d7a-414a-9da4-75ab9bffe134",
@@ -2701,6 +2717,7 @@
         "kind": "query",
         "queryId": "5c442903-65b0-4b53-9e7c-3ea9c1af7be5"
       },
+      "description": "Day-by-day savings. Look for days where savings drop to near zero — that could indicate expiring commitments or workloads moving off committed resources.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -2724,6 +2741,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -2733,10 +2751,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Day-by-day savings. Look for days where savings drop to near zero — that could indicate expiring commitments or workloads moving off committed resources."
+        }
+      }
     },
     {
       "id": "088944a4-6cc6-4320-a8eb-82d35ee5b5d6",
@@ -2753,6 +2769,7 @@
         "kind": "query",
         "queryId": "9a9ee4b0-a37d-475f-bf1d-f51573243491"
       },
+      "description": "Recent savings by discount type. Compare this to the monthly pie — if the proportions changed, something shifted in your discount coverage.",
       "visualOptions": {
         "hideLegend": false,
         "legendLocation": "right",
@@ -2777,8 +2794,7 @@
         "pie__topNSlices": null,
         "crossFilter": [],
         "drillthrough": []
-      },
-      "description": "Recent savings by discount type. Compare this to the monthly pie — if the proportions changed, something shifted in your discount coverage."
+      }
     },
     {
       "id": "bd461109-e42e-4329-a4b9-16a83c1ad9b3",
@@ -2851,6 +2867,7 @@
         "kind": "query",
         "queryId": "377e3693-0738-45d7-97d9-4b6e71ec5b36"
       },
+      "description": "How reservation and savings plan costs get distributed to resource groups. Use this for fair cost allocation — teams using committed resources should 'own' that amortized cost.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2860,8 +2877,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "How reservation and savings plan costs get distributed to resource groups. Use this for fair cost allocation — teams using committed resources should 'own' that amortized cost."
+      }
     },
     {
       "id": "e22f49e5-766c-4b35-8b4c-b99bef142d42",
@@ -2878,6 +2894,7 @@
         "kind": "query",
         "queryId": "13cad52d-91e7-4ab4-aad5-4aae21c1019a"
       },
+      "description": "Amortized commitment costs by subscription. This tells each subscription what share of the centrally-purchased reservations they're consuming.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2887,26 +2904,27 @@
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [
           {
-            "destinationPages": [
-              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
-            ],
             "pairs": [
               {
                 "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
                 "property": "SubAccountNameUnique"
               }
-            ]
+            ],
+            "destinationPages": [
+              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
+            ],
+            "disabled": false
           }
         ],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Amortized commitment costs by subscription. This tells each subscription what share of the centrally-purchased reservations they're consuming."
+      }
     },
     {
       "id": "c7e80308-bbb1-4aa8-a3d7-ce9eb0145f92",
@@ -2923,6 +2941,7 @@
         "kind": "query",
         "queryId": "dcf69b47-233e-4bc4-b914-3f6f09f4cb82"
       },
+      "description": "Which specific resources are using your commitments? If a reservation is underutilized, this table shows you what resources are (or aren't) consuming it.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -2932,8 +2951,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Which specific resources are using your commitments? If a reservation is underutilized, this table shows you what resources are (or aren't) consuming it."
+      }
     },
     {
       "id": "6e4a3743-e023-4fbc-a34d-43c08f201c6e",
@@ -2992,6 +3010,7 @@
         "kind": "query",
         "queryId": "d7a9ff96-da17-4826-9fb5-b23f4c7b938d"
       },
+      "description": "How much does running the FinOps Hub itself cost? Each color is a hub instance. If hub costs are growing, check if you can optimize the ADX cluster SKU or scale settings.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3015,6 +3034,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3024,10 +3044,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "How much does running the FinOps Hub itself cost? Each color is a hub instance. If hub costs are growing, check if you can optimize the ADX cluster SKU or scale settings."
+        }
+      }
     },
     {
       "id": "37a8bef0-7dfb-42b9-aeab-55f8c9c178b8",
@@ -3044,6 +3062,7 @@
         "kind": "query",
         "queryId": "13813a00-e634-4428-9eac-ea255fd1eaca"
       },
+      "description": "Daily hub operating cost. Spikes might coincide with large data ingestion jobs. If costs are steady, your hub is running predictably.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3067,6 +3086,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3076,10 +3096,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Daily hub operating cost. Spikes might coincide with large data ingestion jobs. If costs are steady, your hub is running predictably."
+        }
+      }
     },
     {
       "id": "c48e07c5-f0a5-43e2-8a13-ee43ed1b92f9",
@@ -3096,6 +3114,7 @@
         "kind": "query",
         "queryId": "62bbceee-c089-45db-822c-0b4745358aa4"
       },
+      "description": "Hub costs in table form for detailed month-over-month tracking. Use this to justify hub operating expenses to stakeholders — it should be a small fraction of what you manage.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -3105,8 +3124,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Hub costs in table form for detailed month-over-month tracking. Use this to justify hub operating expenses to stakeholders — it should be a small fraction of what you manage."
+      }
     },
     {
       "id": "10d7d4d3-0201-4cdf-977b-4814152fda24",
@@ -3137,6 +3155,7 @@
         "kind": "query",
         "queryId": "b98c9ed7-47b3-41c1-a596-fd9d32725b33"
       },
+      "description": "How much data is in each ADX table? This tells you which FOCUS datasets (costs, prices, recommendations, transactions) are being ingested. Missing datasets mean incomplete visibility.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3162,6 +3181,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3171,10 +3191,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "How much data is in each ADX table? This tells you which FOCUS datasets (costs, prices, recommendations, transactions) are being ingested. Missing datasets mean incomplete visibility."
+        }
+      }
     },
     {
       "id": "db78922e-5215-4b93-9762-212eb0e32bf3",
@@ -3191,6 +3209,7 @@
         "kind": "query",
         "queryId": "187e22fe-3d78-45a2-a2bf-090ece144fd1"
       },
+      "description": "Which billing scopes (subscriptions/accounts) have cost data in the hub? If a scope is missing, its costs won't appear in any dashboard. Check your export pipeline.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3216,6 +3235,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3225,10 +3245,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Which billing scopes (subscriptions/accounts) have cost data in the hub? If a scope is missing, its costs won't appear in any dashboard. Check your export pipeline."
+        }
+      }
     },
     {
       "id": "c636ea6c-8356-4a69-a4d6-61e6596a3c4e",
@@ -3245,13 +3263,13 @@
         "kind": "query",
         "queryId": "d2c522dc-ef4b-4714-a473-09350e275557"
       },
+      "description": "How many billing scopes are feeding data into the hub? If this is lower than the number of subscriptions you manage, some scopes aren't exporting data yet.",
       "visualOptions": {
         "multiStat__textSize": "auto",
         "multiStat__valueColumn": null,
         "colorRulesDisabled": false,
         "colorRules": []
-      },
-      "description": "How many billing scopes are feeding data into the hub? If this is lower than the number of subscriptions you manage, some scopes aren't exporting data yet."
+      }
     },
     {
       "id": "379b25b8-7188-4657-b82f-dee14b344bec",
@@ -3268,13 +3286,13 @@
         "kind": "query",
         "queryId": "6fe11b78-82ef-4e9a-8411-a65e5b0d8bba"
       },
+      "description": "How many months of historical data are available? More months means better forecasts and trend analysis. If this is low, your exports may have just started recently.",
       "visualOptions": {
         "multiStat__textSize": "auto",
         "multiStat__valueColumn": null,
         "colorRulesDisabled": false,
         "colorRules": []
-      },
-      "description": "How many months of historical data are available? More months means better forecasts and trend analysis. If this is low, your exports may have just started recently."
+      }
     },
     {
       "id": "71b29fd4-2999-45dc-9e4b-14152c48a4f4",
@@ -3291,6 +3309,7 @@
         "kind": "query",
         "queryId": "b3621977-59be-4f98-a034-a94479612115"
       },
+      "description": "Price sheet data by scope. Without price data, the hub can't calculate list costs accurately. Scopes missing here will have incomplete cost breakdowns.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3316,6 +3335,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3325,10 +3345,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Price sheet data by scope. Without price data, the hub can't calculate list costs accurately. Scopes missing here will have incomplete cost breakdowns."
+        }
+      }
     },
     {
       "id": "29f1c705-131d-44b9-9bd6-368c93aedcdf",
@@ -3345,6 +3363,7 @@
         "kind": "query",
         "queryId": "4a2a77fe-e819-4059-b027-dab0a1770a0a"
       },
+      "description": "Advisor recommendation data by scope. Without this, the hub can't surface optimization suggestions. Make sure your key subscriptions export recommendations.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3370,6 +3389,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3379,10 +3399,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Advisor recommendation data by scope. Without this, the hub can't surface optimization suggestions. Make sure your key subscriptions export recommendations."
+        }
+      }
     },
     {
       "id": "47471816-9569-4ff3-816b-98fbc47b5c17",
@@ -3399,6 +3417,7 @@
         "kind": "query",
         "queryId": "8f1ad1ef-6f5e-4f20-a1c4-3941e871d0cd"
       },
+      "description": "Transaction/invoice data by scope. This powers the invoicing views. If scopes are missing, billing reconciliation will be incomplete for those accounts.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3424,6 +3443,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3433,10 +3453,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Transaction/invoice data by scope. This powers the invoicing views. If scopes are missing, billing reconciliation will be incomplete for those accounts."
+        }
+      }
     },
     {
       "id": "fcedcd3b-cd11-42ab-8363-de9619fc2018",
@@ -3453,6 +3471,7 @@
         "kind": "query",
         "queryId": "e9a9a135-6a74-4463-b69f-eac6930ff1f2"
       },
+      "description": "Commitment discount usage data by scope. Without this, reservation and savings plan utilization analysis will be incomplete. Ensure all committed scopes export this.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3478,6 +3497,7 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3487,10 +3507,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Commitment discount usage data by scope. Without this, reservation and savings plan utilization analysis will be incomplete. Ensure all committed scopes export this."
+        }
+      }
     },
     {
       "id": "e29123b0-320a-4d36-a5bd-14c1757af8b8",
@@ -3535,6 +3553,7 @@
         "kind": "query",
         "queryId": "1a400b6c-9204-434d-88ff-2dc5260a95bf"
       },
+      "description": "Do you have Windows/SQL licenses you already own? Hybrid Benefit lets you reuse them in Azure for up to 40% savings. These numbers show how much of your estate is using it.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -3546,8 +3565,7 @@
           "height": 3
         },
         "colorRules": []
-      },
-      "description": "Do you have Windows/SQL licenses you already own? Hybrid Benefit lets you reuse them in Azure for up to 40% savings. These numbers show how much of your estate is using it."
+      }
     },
     {
       "id": "80e1ecb4-69f6-451d-9e1c-f90d17b7f865",
@@ -3564,6 +3582,7 @@
         "kind": "query",
         "queryId": "c2ad5370-f4df-4a13-ac31-2c095f88754d"
       },
+      "description": "These resources have Hybrid Benefit enabled but aren't fully using the licensed vCPUs. You're paying for licenses that aren't being utilized — resize or redistribute.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -3573,8 +3592,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "These resources have Hybrid Benefit enabled but aren't fully using the licensed vCPUs. You're paying for licenses that aren't being utilized — resize or redistribute."
+      }
     },
     {
       "id": "59a1756c-7586-4364-8047-604aa7d6f09a",
@@ -3591,6 +3609,7 @@
         "kind": "query",
         "queryId": "4614acfb-2288-4a71-97f7-32845a9ddcb2"
       },
+      "description": "Well-optimized resources that are fully using their Hybrid Benefit licenses. This is what 'good' looks like — use this as a benchmark for the rest.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -3600,8 +3619,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Well-optimized resources that are fully using their Hybrid Benefit licenses. This is what 'good' looks like — use this as a benchmark for the rest."
+      }
     },
     {
       "id": "9197f822-bdf3-42af-8b43-5609c9b91f00",
@@ -3618,6 +3636,7 @@
         "kind": "query",
         "queryId": "99d44f1f-c53a-40ee-b749-8e5557ec58c7"
       },
+      "description": "These resources could use Hybrid Benefit but don't have it turned on yet. Enabling it is often free savings — just flip the license flag and your cost drops.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -3627,8 +3646,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "These resources could use Hybrid Benefit but don't have it turned on yet. Enabling it is often free savings — just flip the license flag and your cost drops."
+      }
     },
     {
       "id": "876b81e5-4f71-4c69-bd62-8d470f50bf31",
@@ -3673,6 +3691,7 @@
         "kind": "query",
         "queryId": "5fd3ea2a-8882-4438-9103-fa3945240604"
       },
+      "description": "Where is spending headed? This uses your historical patterns to predict future costs. If the forecast line is climbing, now is the time to act — not after the bill arrives.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -3696,6 +3715,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -3705,10 +3725,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Where is spending headed? This uses your historical patterns to predict future costs. If the forecast line is climbing, now is the time to act — not after the bill arrives."
+        }
+      }
     },
     {
       "id": "961b8980-213f-4bc7-9512-8a08614229e0",
@@ -3725,6 +3743,7 @@
         "kind": "query",
         "queryId": "e1bc2d51-44af-4dd9-8b0d-a71088b551f5"
       },
+      "description": "What percentage of your total potential cost are you avoiding through discounts? Industry target is 30-50%. Below 20% means significant untapped savings.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -3875,8 +3894,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "What percentage of your total potential cost are you avoiding through discounts? Industry target is 30-50%. Below 20% means significant untapped savings."
+      }
     },
     {
       "id": "6367a5d7-99ca-4afc-b9d4-4c77ec259a07",
@@ -3893,6 +3911,7 @@
         "kind": "query",
         "queryId": "3b3f0a58-2d84-4e3e-bebc-3e747a7d5ede"
       },
+      "description": "Month-by-month detail of where savings come from. Use this in your monthly FinOps review to show progress and identify which savings categories are growing or shrinking.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -3902,8 +3921,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Month-by-month detail of where savings come from. Use this in your monthly FinOps review to show progress and identify which savings categories are growing or shrinking."
+      }
     },
     {
       "id": "69e3a7e2-9477-4b63-8c86-9d66a782501b",
@@ -3920,6 +3938,7 @@
         "kind": "query",
         "queryId": "cb34f22b-9370-460c-9658-3e73d220bbc7"
       },
+      "description": "Your recent effective savings rate. Compare to the monthly rate — if the daily rate is dropping, a reservation may have expired or workloads changed recently.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -4070,8 +4089,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "Your recent effective savings rate. Compare to the monthly rate — if the daily rate is dropping, a reservation may have expired or workloads changed recently."
+      }
     },
     {
       "id": "fc2e27cf-57be-486f-afa5-6a93d6e9c6a7",
@@ -4088,6 +4106,7 @@
         "kind": "query",
         "queryId": "8de47213-8327-44da-9d1b-8ba5de74c44a"
       },
+      "description": "Hub health at a glance: data version, how many months are available, and whether ingestion is running normally. If months stopped incrementing, your pipeline may be broken.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -4099,8 +4118,7 @@
           "height": 1
         },
         "colorRules": []
-      },
-      "description": "Hub health at a glance: data version, how many months are available, and whether ingestion is running normally. If months stopped incrementing, your pipeline may be broken."
+      }
     },
     {
       "id": "2e9d6a7f-6393-41ad-83df-51faddbe3b8e",
@@ -4117,6 +4135,7 @@
         "kind": "query",
         "queryId": "0341b3e4-eccc-4924-9555-9835b128c543"
       },
+      "description": "Breaks down what you paid by charge type: usage, purchases, amortization. If 'purchase' charges are high but savings are low, your commitments may not be well-matched.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -4126,8 +4145,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Breaks down what you paid by charge type: usage, purchases, amortization. If 'purchase' charges are high but savings are low, your commitments may not be well-matched."
+      }
     },
     {
       "id": "daa1b2bd-0ccd-43ff-ad2c-1337d247805a",
@@ -4199,6 +4217,7 @@
         "kind": "query",
         "queryId": "ed34de1f-3e00-467f-bc70-304e2c25262a"
       },
+      "description": "How much are you spending on marketplace SaaS products? These are software subscriptions billed through Azure. Check if you still need all of them — SaaS sprawl is real.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -4208,8 +4227,7 @@
           "width": 4,
           "height": 1
         }
-      },
-      "description": "How much are you spending on marketplace SaaS products? These are software subscriptions billed through Azure. Check if you still need all of them — SaaS sprawl is real."
+      }
     },
     {
       "id": "4fac3388-31f5-496b-b13a-d3a6661753a2",
@@ -4226,20 +4244,12 @@
         "kind": "query",
         "queryId": "891f3114-1466-42d7-8c3d-6f329ba9b816"
       },
+      "description": "Monthly SaaS spending trend. Rising bars might mean new SaaS subscriptions were added. Make sure each one has an owner and is still being actively used.",
       "visualOptions": {
         "legendLocation": "right",
         "crossFilterDisabled": false,
-        "dataPointsTooltip": {
-          "limit": 5,
-          "all": false
-        },
-        "selectedDataOnLoad": {
-          "limit": 10,
-          "all": false
-        },
         "hideLegend": false
-      },
-      "description": "Monthly SaaS spending trend. Rising bars might mean new SaaS subscriptions were added. Make sure each one has an owner and is still being actively used."
+      }
     },
     {
       "id": "903b7a84-e206-4ec4-8924-21ff8ce63c82",
@@ -4256,20 +4266,12 @@
         "kind": "query",
         "queryId": "61be1ce6-fd98-4961-bc00-ee23c5ade3eb"
       },
+      "description": "Which SaaS vendors cost you the most? If a vendor's bar is large, make sure you're getting value from that product. Consider negotiating volume pricing for your top publishers.",
       "visualOptions": {
         "legendLocation": "right",
         "crossFilterDisabled": false,
-        "dataPointsTooltip": {
-          "limit": 5,
-          "all": false
-        },
-        "selectedDataOnLoad": {
-          "limit": 10,
-          "all": false
-        },
         "hideLegend": false
-      },
-      "description": "Which SaaS vendors cost you the most? If a vendor's bar is large, make sure you're getting value from that product. Consider negotiating volume pricing for your top publishers."
+      }
     },
     {
       "id": "c2b7f97e-ff16-4ace-8582-216afa688a26",
@@ -4286,11 +4288,11 @@
         "kind": "query",
         "queryId": "e2be6de9-ae28-46ca-a974-be2d014d4542"
       },
+      "description": "Individual SaaS products ranked by cost. Check if teams are using competing products for the same purpose — consolidating can save money and reduce complexity.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "crossFilterDisabled": false
-      },
-      "description": "Individual SaaS products ranked by cost. Check if teams are using competing products for the same purpose — consolidating can save money and reduce complexity."
+      }
     },
     {
       "id": "bb0ba12b-c5f4-4458-b987-e436c2c953fe",
@@ -4307,6 +4309,7 @@
         "kind": "query",
         "queryId": "3159144e-e894-4fd3-9320-eeeaa5fabd0c"
       },
+      "description": "Which subscriptions are buying SaaS products? This helps you track who's purchasing marketplace software and ensure it goes through proper procurement.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "crossFilterDisabled": false,
@@ -4314,11 +4317,11 @@
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ]
-      },
-      "description": "Which subscriptions are buying SaaS products? This helps you track who's purchasing marketplace software and ensure it goes through proper procurement."
+      }
     },
     {
       "id": "ea6c815d-af8b-4a74-8ede-9574911f8d49",
@@ -4349,6 +4352,7 @@
         "kind": "query",
         "queryId": "886ef328-6a85-4f47-8a52-4261281a0c4f"
       },
+      "description": "Spot instances can save up to 90% vs on-demand. These numbers show how much you're using spot today. Low spot usage in dev/test or batch workloads is a missed opportunity.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": "Value",
@@ -4358,8 +4362,7 @@
           "width": 4,
           "height": 1
         }
-      },
-      "description": "Spot instances can save up to 90% vs on-demand. These numbers show how much you're using spot today. Low spot usage in dev/test or batch workloads is a missed opportunity."
+      }
     },
     {
       "id": "a95553d6-7eaf-46af-832a-ec4543afe659",
@@ -4376,11 +4379,11 @@
         "kind": "query",
         "queryId": "647bfaef-4a54-42c0-aaeb-186b8dea47ee"
       },
+      "description": "What percentage of your spend is on-demand vs. spot vs. committed? A large on-demand slice means there's room to save by moving predictable workloads to commitments or spot.",
       "visualOptions": {
         "hideLegend": false,
         "legendLocation": "right"
-      },
-      "description": "What percentage of your spend is on-demand vs. spot vs. committed? A large on-demand slice means there's room to save by moving predictable workloads to commitments or spot."
+      }
     },
     {
       "id": "629459f2-df5f-43df-9b5e-d01a62dc1b33",
@@ -4397,20 +4400,12 @@
         "kind": "query",
         "queryId": "e60a2844-d918-481a-81bc-ebf9bef4fd2c"
       },
+      "description": "Is your spot adoption growing over time? The spot band should be expanding as teams move batch and fault-tolerant workloads to spot instances for savings.",
       "visualOptions": {
         "legendLocation": "bottom",
         "crossFilterDisabled": false,
-        "dataPointsTooltip": {
-          "limit": 5,
-          "all": false
-        },
-        "selectedDataOnLoad": {
-          "limit": 10,
-          "all": false
-        },
         "hideLegend": false
-      },
-      "description": "Is your spot adoption growing over time? The spot band should be expanding as teams move batch and fault-tolerant workloads to spot instances for savings."
+      }
     },
     {
       "id": "3d5aa022-877b-4dfc-a6c0-1de2c582be92",
@@ -4427,11 +4422,11 @@
         "kind": "query",
         "queryId": "cf56343c-7597-43b7-bebe-4e86ea7d3da7"
       },
+      "description": "Your most expensive spot-priced resources. Spot can be evicted, so make sure these workloads can handle interruptions. If they can't, they should use a different pricing model.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "crossFilterDisabled": false
-      },
-      "description": "Your most expensive spot-priced resources. Spot can be evicted, so make sure these workloads can handle interruptions. If they can't, they should use a different pricing model."
+      }
     },
     {
       "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
@@ -4462,6 +4457,7 @@
         "kind": "query",
         "queryId": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a"
       },
+      "description": "How much of your Azure commitment (MACC) have you consumed vs. what's remaining? If you're behind schedule, you need to accelerate Azure usage or risk losing the commitment benefit.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -4471,8 +4467,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "How much of your Azure commitment (MACC) have you consumed vs. what's remaining? If you're behind schedule, you need to accelerate Azure usage or risk losing the commitment benefit."
+      }
     },
     {
       "id": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
@@ -4489,6 +4484,7 @@
         "kind": "query",
         "queryId": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c"
       },
+      "description": "Are you consuming your MACC fast enough? Each bar is a month of consumption. If bars are shrinking, you're falling behind. If they're growing, you're on track.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -4512,6 +4508,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -4521,10 +4518,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Are you consuming your MACC fast enough? Each bar is a month of consumption. If bars are shrinking, you're falling behind. If they're growing, you're on track."
+        }
+      }
     },
     {
       "id": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d",
@@ -4541,6 +4536,7 @@
         "kind": "query",
         "queryId": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e"
       },
+      "description": "At your current consumption rate, will you meet your MACC commitment? If projected completion is after the deadline, you need a plan to increase eligible Azure consumption.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -4552,8 +4548,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "At your current consumption rate, will you meet your MACC commitment? If projected completion is after the deadline, you need a plan to increase eligible Azure consumption."
+      }
     },
     {
       "id": "f2b3c4d5-0001-4a8b-9c0d-1e2f3a4b5c6d",
@@ -4584,6 +4579,7 @@
         "kind": "query",
         "queryId": "f2b3c4d5-1001-4a8b-9c0d-1e2f3a4b5c6d"
       },
+      "description": "What percentage of your cost is tagged? Untagged cost can't be allocated to teams. If coverage is below 80%, you have a governance problem that makes chargeback unreliable.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -4595,8 +4591,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "What percentage of your cost is tagged? Untagged cost can't be allocated to teams. If coverage is below 80%, you have a governance problem that makes chargeback unreliable."
+      }
     },
     {
       "id": "f2b3c4d5-0003-4a8b-9c0d-1e2f3a4b5c6d",
@@ -4613,6 +4608,7 @@
         "kind": "query",
         "queryId": "f2b3c4d5-1002-4a8b-9c0d-1e2f3a4b5c6d"
       },
+      "description": "Which tag keys cover the most spending? 'Environment', 'CostCenter', 'Owner' should ideally be at the top. If important tags are missing, push for a tagging policy.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -4636,6 +4632,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -4645,10 +4642,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Which tag keys cover the most spending? 'Environment', 'CostCenter', 'Owner' should ideally be at the top. If important tags are missing, push for a tagging policy."
+        }
+      }
     },
     {
       "id": "f2b3c4d5-0004-4a8b-9c0d-1e2f3a4b5c6d",
@@ -4665,6 +4660,7 @@
         "kind": "query",
         "queryId": "f2b3c4d5-1003-4a8b-9c0d-1e2f3a4b5c6d"
       },
+      "description": "What are the actual tag values and how much cost is behind each? 'Production' is usually the top value. If 'Unknown' or blank values are high, tagging needs improvement.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -4688,6 +4684,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -4697,10 +4694,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "What are the actual tag values and how much cost is behind each? 'Production' is usually the top value. If 'Unknown' or blank values are high, tagging needs improvement."
+        }
+      }
     },
     {
       "id": "f2b3c4d5-0005-4a8b-9c0d-1e2f3a4b5c6d",
@@ -4717,6 +4712,7 @@
         "kind": "query",
         "queryId": "f2b3c4d5-1004-4a8b-9c0d-1e2f3a4b5c6d"
       },
+      "description": "Every tag key-value combination with its cost. Use this to build chargeback reports. If a team claims they don't spend much, show them their tagged costs here.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -4726,8 +4722,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Every tag key-value combination with its cost. Use this to build chargeback reports. If a team claims they don't spend much, show them their tagged costs here."
+      }
     },
     {
       "id": "f2b3c4d5-0006-4a8b-9c0d-1e2f3a4b5c6d",
@@ -4744,6 +4739,7 @@
         "kind": "query",
         "queryId": "f2b3c4d5-1005-4a8b-9c0d-1e2f3a4b5c6d"
       },
+      "description": "Is tagging getting better or worse over time? The 'tagged' band should be growing. If 'untagged' is growing, new resources are being deployed without proper tags.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -4767,6 +4763,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -4776,10 +4773,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Is tagging getting better or worse over time? The 'tagged' band should be growing. If 'untagged' is growing, new resources are being deployed without proper tags."
+        }
+      }
     },
     {
       "id": "a3b4c5d6-0001-4a9b-0c1d-2e3f4a5b6c7d",
@@ -4810,6 +4805,7 @@
         "kind": "query",
         "queryId": "a3b4c5d6-1001-4a9b-0c1d-2e3f4a5b6c7d"
       },
+      "description": "How many subscriptions you have, what they cost in total, and the average cost per subscription. If your average is high, some subscriptions may need attention.",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__valueColumn": null,
@@ -4821,8 +4817,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "How many subscriptions you have, what they cost in total, and the average cost per subscription. If your average is high, some subscriptions may need attention."
+      }
     },
     {
       "id": "a3b4c5d6-0003-4a9b-0c1d-2e3f4a5b6c7d",
@@ -4839,6 +4834,7 @@
         "kind": "query",
         "queryId": "a3b4c5d6-1002-4a9b-0c1d-2e3f4a5b6c7d"
       },
+      "description": "Subscription cost trend over time. Watch for subscriptions whose bands are growing — those teams may need help optimizing. Flat bands are well-managed.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -4862,11 +4858,13 @@
         "xAxisScale": "linear",
         "verticalLine": "9",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [],
@@ -4877,10 +4875,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Subscription cost trend over time. Watch for subscriptions whose bands are growing — those teams may need help optimizing. Flat bands are well-managed."
+        }
+      }
     },
     {
       "id": "a3b4c5d6-0004-4a9b-0c1d-2e3f4a5b6c7d",
@@ -4897,6 +4893,7 @@
         "kind": "query",
         "queryId": "a3b4c5d6-1003-4a9b-0c1d-2e3f4a5b6c7d"
       },
+      "description": "Drill into any subscription to see its most expensive resources. This is your investigation table — when a subscription's costs jump, look here to find the culprit.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": false,
@@ -4906,14 +4903,14 @@
           {
             "interaction": "column",
             "property": "SubAccountNameUnique",
-            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Drill into any subscription to see its most expensive resources. This is your investigation table — when a subscription's costs jump, look here to find the culprit."
+      }
     },
     {
       "id": "a3b4c5d6-0005-4a9b-0c1d-2e3f4a5b6c7d",
@@ -4930,6 +4927,7 @@
         "kind": "query",
         "queryId": "a3b4c5d6-1004-4a9b-0c1d-2e3f4a5b6c7d"
       },
+      "description": "Services ranked by total cost. The top bar is where you'll get the biggest return on optimization effort. If you're not already optimizing that service, start there.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -4953,6 +4951,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -4962,10 +4961,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Services ranked by total cost. The top bar is where you'll get the biggest return on optimization effort. If you're not already optimizing that service, start there."
+        }
+      }
     },
     {
       "id": "a3b4c5d6-0006-4a9b-0c1d-2e3f4a5b6c7d",
@@ -4982,6 +4979,7 @@
         "kind": "query",
         "queryId": "a3b4c5d6-1005-4a9b-0c1d-2e3f4a5b6c7d"
       },
+      "description": "Resource groups ranked by cost. Share this with team leads — each group usually maps to an app or team. The top bars are the teams who should be doing cost reviews.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5005,6 +5003,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5014,10 +5013,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Resource groups ranked by cost. Share this with team leads — each group usually maps to an app or team. The top bars are the teams who should be doing cost reviews."
+        }
+      }
     },
     {
       "id": "fc01a000-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5048,6 +5045,7 @@
         "kind": "query",
         "queryId": "fc010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Based on what you've spent so far this month, this projects your end-of-month total. If it's over budget, you still have days left to take action and reduce spend.",
       "visualOptions": {
         "multiStat__textSize": "auto",
         "multiStat__valueColumn": null,
@@ -5059,8 +5057,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "Based on what you've spent so far this month, this projects your end-of-month total. If it's over budget, you still have days left to take action and reduce spend."
+      }
     },
     {
       "id": "fc01a002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5077,6 +5074,7 @@
         "kind": "query",
         "queryId": "fc010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Where will spending be in 3 months? This statistical forecast uses your historical patterns. Use it for capacity planning and to justify optimization initiatives.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5100,6 +5098,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5109,10 +5108,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Where will spending be in 3 months? This statistical forecast uses your historical patterns. Use it for capacity planning and to justify optimization initiatives."
+        }
+      }
     },
     {
       "id": "fc01a003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5129,6 +5126,7 @@
         "kind": "query",
         "queryId": "fc010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "How accurate were previous forecasts? If forecasts consistently underpredict, your budgets are probably too low. If they overpredict, you may be over-provisioning.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5152,6 +5150,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5161,10 +5160,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "How accurate were previous forecasts? If forecasts consistently underpredict, your budgets are probably too low. If they overpredict, you may be over-provisioning."
+        }
+      }
     },
     {
       "id": "fc01a004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5181,6 +5178,7 @@
         "kind": "query",
         "queryId": "fc010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Each subscription's projected monthly cost. Flag any subscription projected to exceed its budget allocation and have a conversation with the owner now, not next month.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -5190,8 +5188,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Each subscription's projected monthly cost. Flag any subscription projected to exceed its budget allocation and have a conversation with the owner now, not next month."
+      }
     },
     {
       "id": "fc01a005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5208,6 +5205,7 @@
         "kind": "query",
         "queryId": "fc010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Long-term spending trend. Look for seasonality (end-of-quarter spikes?) and growth rate. This helps you set realistic budgets and explain trends to leadership.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -5217,8 +5215,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Long-term spending trend. Look for seasonality (end-of-quarter spikes?) and growth rate. This helps you set realistic budgets and explain trends to leadership."
+      }
     },
     {
       "id": "8e01a000-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5249,6 +5246,7 @@
         "kind": "query",
         "queryId": "8e010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "How efficiently are you using cloud resources? High waste ratio means you're paying for unused capacity. Low utilization means resources are oversized. Focus on the worst KPI first.",
       "visualOptions": {
         "multiStat__textSize": "auto",
         "multiStat__valueColumn": null,
@@ -5260,8 +5258,7 @@
           "height": 2
         },
         "colorRules": []
-      },
-      "description": "How efficiently are you using cloud resources? High waste ratio means you're paying for unused capacity. Low utilization means resources are oversized. Focus on the worst KPI first."
+      }
     },
     {
       "id": "8e01a002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5278,6 +5275,7 @@
         "kind": "query",
         "queryId": "8e010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Which subscriptions have the worst efficiency? These teams should be first in line for optimization reviews. High-cost, low-efficiency subscriptions are your biggest opportunity.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5301,6 +5299,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5310,10 +5309,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Which subscriptions have the worst efficiency? These teams should be first in line for optimization reviews. High-cost, low-efficiency subscriptions are your biggest opportunity."
+        }
+      }
     },
     {
       "id": "8e01a003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5330,6 +5327,7 @@
         "kind": "query",
         "queryId": "8e010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Is your efficiency improving or declining over time? After optimization efforts, this trend should improve. If it's flat, your efforts aren't having measurable impact.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5353,6 +5351,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5362,10 +5361,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Is your efficiency improving or declining over time? After optimization efforts, this trend should improve. If it's flat, your efforts aren't having measurable impact."
+        }
+      }
     },
     {
       "id": "8e01a004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5382,6 +5379,7 @@
         "kind": "query",
         "queryId": "8e010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Which resource groups (apps/teams) are most wasteful? Share this with engineering leads — they often don't know their resources are underutilized until they see the data.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5405,6 +5403,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5414,10 +5413,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Which resource groups (apps/teams) are most wasteful? Share this with engineering leads — they often don't know their resources are underutilized until they see the data."
+        }
+      }
     },
     {
       "id": "8e01a005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5434,6 +5431,7 @@
         "kind": "query",
         "queryId": "8e010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "What's the average cost per resource for each type? If your average VM cost is rising but you haven't changed SKUs, something is wrong — investigate pricing or usage changes.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -5443,8 +5441,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "What's the average cost per resource for each type? If your average VM cost is rising but you haven't changed SKUs, something is wrong — investigate pricing or usage changes."
+      }
     },
     {
       "id": "ba01a000-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5475,6 +5472,7 @@
         "kind": "query",
         "queryId": "ba010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Are you over or under budget? Green means you're within budget. Red means you've exceeded it. If you set the budget parameter to 0, set it to your actual monthly budget target.",
       "visualOptions": {
         "multiStat__textSize": "auto",
         "multiStat__valueColumn": null,
@@ -5556,8 +5554,7 @@
             "visualType": "multistat"
           }
         ]
-      },
-      "description": "Are you over or under budget? Green means you're within budget. Red means you've exceeded it. If you set the budget parameter to 0, set it to your actual monthly budget target."
+      }
     },
     {
       "id": "ba01a002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5574,6 +5571,7 @@
         "kind": "query",
         "queryId": "ba010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "The line shows your daily cumulative spend vs. the budget line. If you're above the line, you'll exceed budget. If you're below, you're on track. Act while there's still time.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5597,6 +5595,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5606,10 +5605,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "The line shows your daily cumulative spend vs. the budget line. If you're above the line, you'll exceed budget. If you're below, you're on track. Act while there's still time."
+        }
+      }
     },
     {
       "id": "ba01a003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5626,6 +5623,7 @@
         "kind": "query",
         "queryId": "ba010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Which subscriptions are over budget and by how much? These are the conversations to have this week, not at the end of the month when the bill is already set.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -5634,21 +5632,21 @@
         "crossFilter": [],
         "drillthrough": [
           {
-            "destinationPages": [
-              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
-            ],
             "pairs": [
               {
                 "parameterId": "b1c2d3e4-68b1-4f5a-6b7c-8d9e0f1a2b3c",
                 "property": "SubAccountNameUnique"
               }
-            ]
+            ],
+            "destinationPages": [
+              "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d"
+            ],
+            "disabled": false
           }
         ],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Which subscriptions are over budget and by how much? These are the conversations to have this week, not at the end of the month when the bill is already set."
+      }
     },
     {
       "id": "c191a000-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5679,6 +5677,7 @@
         "kind": "query",
         "queryId": "c1910001-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Cost allocated by tag value for internal billing. This is what you send to teams to show them what they owe. Make sure the tag key used is the right one for your org.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5702,6 +5701,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5711,10 +5711,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Cost allocated by tag value for internal billing. This is what you send to teams to show them what they owe. Make sure the tag key used is the right one for your org."
+        }
+      }
     },
     {
       "id": "c191a002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5731,6 +5729,7 @@
         "kind": "query",
         "queryId": "c1910002-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Department-level cost visibility over 3 months. Use this in meetings with department heads to show spending trends and set expectations for the next quarter.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -5740,8 +5739,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Department-level cost visibility over 3 months. Use this in meetings with department heads to show spending trends and set expectations for the next quarter."
+      }
     },
     {
       "id": "c381a000-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5772,6 +5770,7 @@
         "kind": "query",
         "queryId": "c3810001-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "How much are you spending on ARM64 vs x86 compute? ARM instances are often cheaper. A large x86 slice might mean migration opportunities for cost savings.",
       "visualOptions": {
         "hideLegend": false,
         "legendLocation": "right",
@@ -5796,8 +5795,7 @@
         "pie__topNSlices": null,
         "crossFilter": [],
         "drillthrough": []
-      },
-      "description": "How much are you spending on ARM64 vs x86 compute? ARM instances are often cheaper. A large x86 slice might mean migration opportunities for cost savings."
+      }
     },
     {
       "id": "d401a000-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
@@ -5828,6 +5826,7 @@
         "kind": "query",
         "queryId": "d4010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b"
       },
+      "description": "Specific data quality issues found in last month's data. Fix these upstream if possible — bad data leads to bad decisions. Common issues: missing costs, negative amounts, cost mismatches.",
       "visualOptions": {
         "table__enableRenderLinks": true,
         "colorRulesDisabled": true,
@@ -5837,8 +5836,7 @@
         "drillthrough": [],
         "table__renderLinks": [],
         "colorRules": []
-      },
-      "description": "Specific data quality issues found in last month's data. Fix these upstream if possible — bad data leads to bad decisions. Common issues: missing costs, negative amounts, cost mismatches."
+      }
     },
     {
       "id": "0c030000-6800-4f5a-6b7c-8d9e0f1a2b3c",
@@ -5869,18 +5867,20 @@
         "width": 10,
         "height": 7
       },
+      "description": "If you use multiple clouds, this shows where the money goes. A provider with a surprisingly large slice might warrant a closer look at rate optimization on that platform.",
       "visualOptions": {
         "hideLegend": false,
         "legendLocation": "right",
+        "crossFilterDisabled": false,
+        "drillthroughDisabled": false,
         "crossFilter": [
           {
             "interaction": "column",
             "property": "Provider",
-            "parameterId": "0c010000-3529-4f5a-6b7c-8d9e0f1a2b3c"
+            "parameterId": "0c010000-3529-4f5a-6b7c-8d9e0f1a2b3c",
+            "disabled": false
           }
         ],
-        "crossFilterDisabled": false,
-        "drillthroughDisabled": false,
         "drillthrough": [],
         "selectedDataOnLoad": {
           "all": true,
@@ -5890,8 +5890,7 @@
           "all": false,
           "limit": 1
         }
-      },
-      "description": "If you use multiple clouds, this shows where the money goes. A provider with a surprisingly large slice might warrant a closer look at rate optimization on that platform."
+      }
     },
     {
       "id": "0c030004-6800-4f5a-6b7c-8d9e0f1a2b3c",
@@ -5908,6 +5907,7 @@
         "kind": "query",
         "queryId": "0c030002-6800-4e5f-6a7b-8c9d0e1f2a3b"
       },
+      "description": "Is your multi-cloud spending shifting over time? Watch which provider's band is growing. If one is growing faster than expected, check if workloads migrated or if rates changed.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -5931,6 +5931,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -5940,10 +5941,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Is your multi-cloud spending shifting over time? Watch which provider's band is growing. If one is growing faster than expected, check if workloads migrated or if rates changed."
+        }
+      }
     },
     {
       "id": "0c040002-5d01-4f5a-6b7c-8d9e0f1a2b3c",
@@ -5960,8 +5959,8 @@
         "kind": "query",
         "queryId": "0c040001-5d01-4e5f-6a7b-8c9d0e1f2a3b"
       },
-      "visualOptions": {},
-      "description": "Your most expensive resources across all cloud providers. In multi-cloud, this helps you spot where the real money is going regardless of which platform hosts it."
+      "description": "Your most expensive resources across all cloud providers. In multi-cloud, this helps you spot where the real money is going regardless of which platform hosts it.",
+      "visualOptions": {}
     },
     {
       "id": "0c040005-c191-4f5a-6b7c-8d9e0f1a2b3c",
@@ -5992,8 +5991,8 @@
         "kind": "query",
         "queryId": "0c040003-c191-4e5f-6a7b-8c9d0e1f2a3b"
       },
-      "visualOptions": {},
-      "description": "When reconciling invoices across cloud providers, this shows who billed what. Useful for multi-cloud orgs that need to match invoices to provider contracts."
+      "description": "When reconciling invoices across cloud providers, this shows who billed what. Useful for multi-cloud orgs that need to match invoices to provider contracts.",
+      "visualOptions": {}
     },
     {
       "id": "0c090010-c203-4f5a-6b7c-8d9e0f1a2b3c",
@@ -6024,6 +6023,7 @@
         "kind": "query",
         "queryId": "0c090001-c203-4e5f-6a7b-8c9d0e1f2a3b"
       },
+      "description": "Monthly spend by cloud provider. Watch for one provider growing disproportionately — it might mean workloads shifted or a pricing change took effect.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -6047,6 +6047,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -6056,10 +6057,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Monthly spend by cloud provider. Watch for one provider growing disproportionately — it might mean workloads shifted or a pricing change took effect."
+        }
+      }
     },
     {
       "id": "0c090012-c203-4f5a-6b7c-8d9e0f1a2b3c",
@@ -6076,6 +6075,7 @@
         "kind": "query",
         "queryId": "0c090002-c203-4e5f-6a7b-8c9d0e1f2a3b"
       },
+      "description": "Recent daily spending by provider. Use this to catch sudden spikes on a specific cloud platform that might indicate a runaway deployment or misconfiguration.",
       "visualOptions": {
         "multipleYAxes": {
           "base": {
@@ -6099,6 +6099,7 @@
         "xAxisScale": "linear",
         "verticalLine": "",
         "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
         "crossFilter": [],
         "drillthrough": [],
         "selectedDataOnLoad": {
@@ -6108,10 +6109,8 @@
         "dataPointsTooltip": {
           "all": false,
           "limit": 1
-        },
-        "crossFilterDisabled": false
-      },
-      "description": "Recent daily spending by provider. Use this to catch sudden spikes on a specific cloud platform that might indicate a runaway deployment or misconfiguration."
+        }
+      }
     },
     {
       "id": "0c090013-c203-4f5a-6b7c-8d9e0f1a2b3c",
@@ -6128,8 +6127,8 @@
         "kind": "query",
         "queryId": "0c090003-c203-4e5f-6a7b-8c9d0e1f2a3b"
       },
-      "visualOptions": {},
-      "description": "Compares equivalent services across clouds. If you're paying more for 'Compute' on one cloud than another, dig into why — it might be a right-sizing or pricing issue."
+      "description": "Compares equivalent services across clouds. If you're paying more for 'Compute' on one cloud than another, dig into why — it might be a right-sizing or pricing issue.",
+      "visualOptions": {}
     },
     {
       "id": "0c090014-c203-4f5a-6b7c-8d9e0f1a2b3c",
@@ -6146,8 +6145,8 @@
         "kind": "query",
         "queryId": "0c090004-c203-4e5f-6a7b-8c9d0e1f2a3b"
       },
-      "visualOptions": {},
-      "description": "Your subscriptions/accounts by cloud, with cost and service details. Use this to ensure every account has an owner and to spot accounts with surprisingly high costs."
+      "description": "Your subscriptions/accounts by cloud, with cost and service details. Use this to ensure every account has an owner and to spot accounts with surprisingly high costs.",
+      "visualOptions": {}
     },
     {
       "id": "0c090015-c203-4f5a-6b7c-8d9e0f1a2b3c",
@@ -6164,8 +6163,8 @@
         "kind": "query",
         "queryId": "0c090005-c203-4e5f-6a7b-8c9d0e1f2a3b"
       },
-      "visualOptions": {},
-      "description": "How much are you saving on each cloud? The gap between list and effective cost shows your discount effectiveness. A low savings rate on a high-spend provider is a big opportunity."
+      "description": "How much are you saving on each cloud? The gap between list and effective cost shows your discount effectiveness. A low savings rate on a high-spend provider is a big opportunity.",
+      "visualOptions": {}
     },
     {
       "id": "4b1622e6-474f-4438-a544-4c504432edde",
@@ -6322,13 +6321,13 @@
         "kind": "query",
         "queryId": "35a9f1d0-3dd1-4ca5-b40b-47a104f48386"
       },
+      "description": "Where does your organization sit on the FinOps maturity scale? Crawl means you're just starting. Walk means you have processes. Run means you're optimizing proactively. What's your next step?",
       "visualOptions": {
         "multiStat__textSize": "large",
         "multiStat__displayOrientation": "horizontal",
         "colorRulesDisabled": true,
         "colorRules": []
-      },
-      "description": "Where does your organization sit on the FinOps maturity scale? Crawl means you're just starting. Walk means you have processes. Run means you're optimizing proactively. What's your next step?"
+      }
     },
     {
       "id": "7bdc738f-24af-4732-8c6f-8ced6b068959",
@@ -6345,10 +6344,10 @@
         "kind": "query",
         "queryId": "782dcff0-e4bd-4279-8af0-c7e22bc2f02d"
       },
+      "description": "Scores for each FinOps capability based on your actual data. Red areas are where you're weakest. Focus improvement efforts on capabilities that impact the most spend.",
       "visualOptions": {
         "table__enableRenderLinks": true
-      },
-      "description": "Scores for each FinOps capability based on your actual data. Red areas are where you're weakest. Focus improvement efforts on capabilities that impact the most spend."
+      }
     },
     {
       "id": "a76e5d07-b38d-4b1a-992a-f1ed1b7e1c0e",
@@ -6365,10 +6364,10 @@
         "kind": "query",
         "queryId": "af60214c-a4d9-4d9f-8b61-a5ac3ed42960"
       },
+      "description": "Concrete next steps to improve your maturity score. These are prioritized by impact — start at the top and work your way down. Each recommendation links to a specific capability gap.",
       "visualOptions": {
         "table__enableRenderLinks": true
-      },
-      "description": "Concrete next steps to improve your maturity score. These are prioritized by impact — start at the top and work your way down. Each recommendation links to a specific capability gap."
+      }
     },
     {
       "id": "e448d5e8-2ea2-4b88-b76b-910bef0c429d",
@@ -6399,10 +6398,10 @@
         "kind": "query",
         "queryId": "e50149e0-aa35-4666-ac62-178904d8c719"
       },
+      "description": "Last month's cost for each subscription. If a subscription is mapped to a project, this is that project's cloud bill. Compare to their allocated budget.",
       "visualOptions": {
         "table__enableRenderLinks": true
-      },
-      "description": "Last month's cost for each subscription. If a subscription is mapped to a project, this is that project's cloud bill. Compare to their allocated budget."
+      }
     },
     {
       "id": "c30b769c-22cb-4388-b9d5-ec40f0814349",
@@ -6419,8 +6418,8 @@
         "kind": "query",
         "queryId": "582a801f-88e7-4005-95bc-2d750473bdf5"
       },
-      "visualOptions": {},
-      "description": "6-month spending trend by subscription. Growing bands mean growing project costs — are they growing because the project is growing, or because of waste? That's the question to ask."
+      "description": "6-month spending trend by subscription. Growing bands mean growing project costs — are they growing because the project is growing, or because of waste? That's the question to ask.",
+      "visualOptions": {}
     }
   ],
   "baseQueries": [
@@ -6640,12 +6639,12 @@
   ],
   "dataSources": [
     {
-      "id": "23540be2-ffc9-4b61-8c4c-05e493e682a6",
       "kind": "manual-kusto",
-      "scopeId": "kusto",
+      "id": "23540be2-ffc9-4b61-8c4c-05e493e682a6",
       "name": "Hub",
-      "clusterUri": "https://fhwaffhadxwafadx2v4ily.swedencentral.kusto.windows.net",
-      "database": "Hub"
+      "clusterUri": "https://finopsdemoadx4uj6pm.italynorth.kusto.windows.net/",
+      "database": "Hub",
+      "scopeId": "kusto"
     }
   ],
   "pages": [
@@ -6831,6 +6830,17 @@
       },
       "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nlet data = (\n    CostsByMonth\n    | summarize \n        BilledCost     = todouble(round(sum(BilledCost), 2)),\n        EffectiveCost  = todouble(round(sum(EffectiveCost), 2)),\n        ContractedCost = todouble(round(sum(ContractedCost), 2)),\n        ListCost       = todouble(round(sum(ListCost), 2))\n        by\n        BillingPeriodStart\n    | order by BillingPeriodStart asc\n    | extend CommitmentDiscountSavings = todouble(round(ContractedCost - EffectiveCost, 2))\n    | extend NegotiatedDiscountSavings = todouble(round(ListCost - ContractedCost, 2))\n    | extend BillingPeriod = strcat(format_datetime(BillingPeriodStart, 'yyyy-MM - '), monthname[monthofyear(BillingPeriodStart)])\n);\ndata | extend Data = 'Billed cost' | evaluate pivot(BillingPeriod, sum(BilledCost), Data)\n| union (data | extend Data = 'Effective cost'     | evaluate pivot(BillingPeriod, sum(EffectiveCost), Data))\n| union (data | extend Data = 'Negotiated savings' | evaluate pivot(BillingPeriod, sum(NegotiatedDiscountSavings), Data))\n| union (data | extend Data = 'Commitment savings' | evaluate pivot(BillingPeriod, sum(CommitmentDiscountSavings), Data))\n",
       "id": "c077a6d4-719f-42fe-b39b-36f77dc68976",
+      "usedVariables": [
+        "CostsByMonth"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nlet data = (\n    CostsByMonth\n    | summarize \n        BilledCost     = todouble(round(sum(BilledCost), 2)),\n        EffectiveCost  = todouble(round(sum(EffectiveCost), 2)),\n        ContractedCost = todouble(round(sum(ContractedCost), 2)),\n        ListCost       = todouble(round(sum(ListCost), 2))\n        by\n        BillingPeriodStart\n    | order by BillingPeriodStart asc\n    | extend CommitmentDiscountSavings = todouble(round(ContractedCost - EffectiveCost, 2))\n    | extend NegotiatedDiscountSavings = todouble(round(ListCost - ContractedCost, 2))\n    | extend BillingPeriod = strcat(format_datetime(BillingPeriodStart, 'yyyy-MM - '), monthname[monthofyear(BillingPeriodStart)])\n);\ndata | extend Data = 'Billed cost' | evaluate pivot(BillingPeriod, sum(BilledCost), Data)\n| union (data | extend Data = 'Effective cost'     | evaluate pivot(BillingPeriod, sum(EffectiveCost), Data))\n| union (data | extend Data = 'Negotiated savings' | evaluate pivot(BillingPeriod, sum(NegotiatedDiscountSavings), Data))\n| union (data | extend Data = 'Commitment savings' | evaluate pivot(BillingPeriod, sum(CommitmentDiscountSavings), Data))\n",
+      "id": "9d6635cd-503a-49bc-80c8-ac8157c6e923",
       "usedVariables": [
         "CostsByMonth"
       ]
@@ -7230,6 +7240,17 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
+      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nlet data = (\n    CostsByMonth\n    | summarize \n        EffectiveCost  = sum(EffectiveCost)\n        by\n        ChargePeriodStart,\n        ServiceCategory,\n        ServiceName\n    | as per\n    | union (\n        per\n        | summarize \n            EffectiveCost  = sum(EffectiveCost)\n            by\n            ServiceCategory,\n            ServiceName\n    )\n    | order by ChargePeriodStart asc\n    | extend EffectiveCost = todouble(round(EffectiveCost, 2))\n    | extend ChargePeriod = iff(isempty(ChargePeriodStart), strcat('Total'), strcat(format_datetime(ChargePeriodStart, 'yyyy-MM - '), monthname[monthofyear(ChargePeriodStart)]))\n);\ndata | evaluate pivot(ChargePeriod, sum(EffectiveCost), ServiceCategory)\n| order by column_ifexists('Total', 0.0) desc",
+      "id": "a7843e1d-7c76-4e4d-9a92-bc642d2f8506",
+      "usedVariables": [
+        "CostsByMonth"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "CostsByMonth\n//\n// Filter out commitment discount purchases\n| where ChargeCategory == 'Usage' or isempty(CommitmentDiscountId)\n//\n| summarize \n    ListCost = sum(ListCost),\n    ContractedCost = sum(ContractedCost),\n    EffectiveCost = sum(EffectiveCost)\n    by\n    ChargePeriodStart = startofmonth(ChargePeriodStart),\n    CommitmentDiscountType\n| project\n    ChargePeriodStart,\n    Savings = round(ListCost - EffectiveCost, 2),\n    Type = case(\n        isnotempty(CommitmentDiscountType), CommitmentDiscountType,\n        'Negotiated'\n    )",
       "id": "5bbb5369-ac95-45fc-853c-a6a2ce6a9e7b",
       "usedVariables": [
@@ -7528,506 +7549,506 @@
       "usedVariables": []
     },
     {
-      "id": "ed34de1f-3e00-467f-bc70-304e2c25262a",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let marketplace = Costs\r\n| where x_PublisherCategory == 'Marketplace'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths);\r\nmarketplace\r\n| summarize \r\n    TotalSpend = round(sum(EffectiveCost), 2),\r\n    Publishers = dcount(PublisherName),\r\n    Products = dcount(ServiceName)\r\n| project json = todynamic(strcat('[',\r\n    '{\"Label\":\"Total Spend\",\"Value\":\"', TotalSpend, '\"},',\r\n    '{\"Label\":\"Publishers\",\"Value\":\"', Publishers, '\"},',\r\n    '{\"Label\":\"Products\",\"Value\":\"', Products, '\"}',\r\n']'))\r\n| mv-expand json\r\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "ed34de1f-3e00-467f-bc70-304e2c25262a",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "891f3114-1466-42d7-8c3d-6f329ba9b816",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where x_PublisherCategory == 'Marketplace'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Cost = round(sum(EffectiveCost), 2) by Month = startofmonth(ChargePeriodStart)\r\n| order by Month asc",
+      "id": "891f3114-1466-42d7-8c3d-6f329ba9b816",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "61be1ce6-fd98-4961-bc00-ee23c5ade3eb",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where x_PublisherCategory == 'Marketplace'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Cost = round(sum(EffectiveCost), 2) by PublisherName\r\n| order by Cost desc\r\n| take 10",
+      "id": "61be1ce6-fd98-4961-bc00-ee23c5ade3eb",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "e2be6de9-ae28-46ca-a974-be2d014d4542",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where x_PublisherCategory == 'Marketplace'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Cost = round(sum(EffectiveCost), 2) by ServiceName, PublisherName\r\n| order by Cost desc\r\n| take 15\r\n| project Product = ServiceName, Publisher = PublisherName, Cost",
+      "id": "e2be6de9-ae28-46ca-a974-be2d014d4542",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "3159144e-e894-4fd3-9320-eeeaa5fabd0c",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where x_PublisherCategory == 'Marketplace'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize \r\n    Cost = round(sum(EffectiveCost), 2),\r\n    Products = dcount(ServiceName),\r\n    Publishers = dcount(PublisherName)\r\nby SubAccountName\r\n| order by Cost desc",
+      "id": "3159144e-e894-4fd3-9320-eeeaa5fabd0c",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "886ef328-6a85-4f47-8a52-4261281a0c4f",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where PricingCategory == 'Dynamic'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize \r\n    SpotCost = round(sum(EffectiveCost), 2),\r\n    SpotResources = dcount(ResourceId),\r\n    SpotSavings = round(sum(ListCost - EffectiveCost), 2)\r\n| project json = todynamic(strcat('[',\r\n    '{\"Label\":\"Spot Spend\",\"Value\":\"', SpotCost, '\"},',\r\n    '{\"Label\":\"Resources\",\"Value\":\"', SpotResources, '\"},',\r\n    '{\"Label\":\"Savings\",\"Value\":\"', SpotSavings, '\"}',\r\n']'))\r\n| mv-expand json\r\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "886ef328-6a85-4f47-8a52-4261281a0c4f",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "e60a2844-d918-481a-81bc-ebf9bef4fd2c",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "Costs\r\n| where PricingCategory in ('Standard', 'Dynamic')\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Cost = round(sum(EffectiveCost), 2) by Month = startofmonth(ChargePeriodStart), PricingCategory\r\n| extend Category = case(PricingCategory == 'Dynamic', 'Spot', 'On-Demand')\r\n| project Month, Cost, Category",
-      "usedVariables": [
-        "numberOfMonths"
-      ]
-    },
-    {
-      "id": "cf56343c-7597-43b7-bebe-4e86ea7d3da7",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "Costs\r\n| where PricingCategory == 'Dynamic'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize \r\n    Cost = round(sum(EffectiveCost), 2),\r\n    Savings = round(sum(ListCost - EffectiveCost), 2),\r\n    ResourceType = take_any(ResourceType),\r\n    RegionName = take_any(RegionName)\r\nby ResourceName, ResourceId\r\n| extend SavingsPercent = round(100.0 * Savings / (Cost + Savings), 1)\r\n| order by Cost desc\r\n| take 15\r\n| project ResourceName, ResourceType, RegionName, Cost, Savings, SavingsPercent",
-      "usedVariables": [
-        "numberOfMonths"
-      ]
-    },
-    {
-      "id": "647bfaef-4a54-42c0-aaeb-186b8dea47ee",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Cost = round(sum(EffectiveCost), 2) by PricingCategory\r\n| extend Category = case(\r\n    PricingCategory == 'Standard', 'On-Demand',\r\n    PricingCategory == 'Dynamic', 'Spot/Preemptible',\r\n    PricingCategory == 'Committed', 'Commitment Discounts',\r\n    coalesce(PricingCategory, 'Other')\r\n)\r\n| project Category, Cost\r\n| order by Cost desc",
+      "id": "647bfaef-4a54-42c0-aaeb-186b8dea47ee",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "Costs\r\n| where PricingCategory in ('Standard', 'Dynamic')\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Cost = round(sum(EffectiveCost), 2) by Month = startofmonth(ChargePeriodStart), PricingCategory\r\n| extend Category = case(PricingCategory == 'Dynamic', 'Spot', 'On-Demand')\r\n| project Month, Cost, Category",
+      "id": "e60a2844-d918-481a-81bc-ebf9bef4fd2c",
+      "usedVariables": [
+        "numberOfMonths"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "Costs\r\n| where PricingCategory == 'Dynamic'\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize \r\n    Cost = round(sum(EffectiveCost), 2),\r\n    Savings = round(sum(ListCost - EffectiveCost), 2),\r\n    ResourceType = take_any(ResourceType),\r\n    RegionName = take_any(RegionName)\r\nby ResourceName, ResourceId\r\n| extend SavingsPercent = round(100.0 * Savings / (Cost + Savings), 1)\r\n| order by Cost desc\r\n| take 15\r\n| project ResourceName, ResourceType, RegionName, Cost, Savings, SavingsPercent",
+      "id": "cf56343c-7597-43b7-bebe-4e86ea7d3da7",
+      "usedVariables": [
+        "numberOfMonths"
+      ]
+    },
+    {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// MACC Status - Uses FOCUS cost data for consumption\r\nlet MACCData = MACC_ManualEntry | take 1;\r\nlet StartDate = toscalar(MACCData | project StartDate);\r\nlet EndDate = toscalar(MACCData | project ExpirationDate);\r\nlet Commitment = toscalar(MACCData | project CommitmentAmount);\r\nlet TotalConsumed = toscalar(Costs | where ChargePeriodStart >= StartDate and ChargePeriodStart < EndDate | summarize sum(EffectiveCost));\r\nlet TotalConsumed2 = iff(isnull(TotalConsumed), 0.0, TotalConsumed);\r\nlet DaysTotal = datetime_diff('day', EndDate, StartDate);\r\nlet DaysElapsed = datetime_diff('day', now(), StartDate);\r\nlet DaysRemaining = datetime_diff('day', EndDate, now());\r\nlet PercentConsumed = round(100.0 * TotalConsumed2 / Commitment, 1);\r\nlet PercentTimeElapsed = round(100.0 * todouble(DaysElapsed) / todouble(DaysTotal), 1);\r\nlet HealthStatus = case(PercentConsumed >= PercentTimeElapsed - 5 and PercentConsumed <= PercentTimeElapsed + 10, '🟢 On Track', PercentConsumed > PercentTimeElapsed + 10, '🟢 Ahead', PercentConsumed >= PercentTimeElapsed - 15, '🟡 Slightly Behind', PercentConsumed >= PercentTimeElapsed - 25, '🟠 Behind', '🔴 At Risk');\r\nMACCData\r\n| project Description, Currency, CommitmentAmount = round(Commitment, 0), TotalConsumed = round(TotalConsumed2, 0), RemainingBalance = round(Commitment - TotalConsumed2, 0), PercentConsumed = strcat(PercentConsumed, '%'), PercentTimeElapsed = strcat(PercentTimeElapsed, '%'), DaysRemaining, ExpirationDate = format_datetime(EndDate, 'yyyy-MM-dd'), HealthStatus",
+      "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
       "usedVariables": []
     },
     {
-      "id": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// MACC Monthly Consumption Trend from FOCUS data\r\nlet MACCData = MACC_ManualEntry | take 1;\r\nlet StartDate = toscalar(MACCData | project StartDate);\r\nlet EndDate = toscalar(MACCData | project ExpirationDate);\r\nlet Commitment = toscalar(MACCData | project CommitmentAmount);\r\nCosts\r\n| where ChargePeriodStart >= StartDate and ChargePeriodStart < EndDate\r\n| summarize MonthlyConsumption = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart)\r\n| order by Month asc\r\n| extend RunningTotal = row_cumsum(MonthlyConsumption)\r\n| extend CommitmentLine = Commitment\r\n| extend RemainingBalance = Commitment - RunningTotal\r\n| project Month, MonthlyConsumption = round(MonthlyConsumption, 0), RunningTotal = round(RunningTotal, 0), RemainingBalance = round(RemainingBalance, 0)",
+      "id": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
       "usedVariables": []
     },
     {
-      "id": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// MACC Forecast from FOCUS cost data\r\nlet MACCData = MACC_ManualEntry | take 1;\r\nlet StartDate = toscalar(MACCData | project StartDate);\r\nlet EndDate = toscalar(MACCData | project ExpirationDate);\r\nlet Commitment = toscalar(MACCData | project CommitmentAmount);\r\nlet TotalConsumed = toscalar(Costs | where ChargePeriodStart >= StartDate and ChargePeriodStart < EndDate | summarize sum(EffectiveCost));\r\nlet TotalConsumed2 = iff(isnull(TotalConsumed), 0.0, TotalConsumed);\r\nlet MonthsOfData = toscalar(Costs | where ChargePeriodStart >= StartDate | summarize dcount(startofmonth(ChargePeriodStart)));\r\nlet MonthsOfData2 = iff(isnull(MonthsOfData) or MonthsOfData < 1, 1, MonthsOfData);\r\nlet AvgMonthlyBurn = TotalConsumed2 / todouble(MonthsOfData2);\r\nlet RemainingBalance = Commitment - TotalConsumed2;\r\nlet MonthsUntilExpiration = datetime_diff('month', EndDate, now());\r\nlet MonthsUntilExp2 = iff(MonthsUntilExpiration < 1, 1, MonthsUntilExpiration);\r\nlet RequiredMonthlySpend = RemainingBalance / todouble(MonthsUntilExp2);\r\nlet SpendGap = RequiredMonthlySpend - AvgMonthlyBurn;\r\nprint Remaining=round(RemainingBalance, 0), AvgMonthly=round(AvgMonthlyBurn, 0), Required=round(RequiredMonthlySpend, 0), Gap=round(SpendGap, 0)\r\n| project json = pack_array(pack('Label', 'Remaining Balance', 'Value', tostring(Remaining)), pack('Label', 'Avg Monthly Burn', 'Value', tostring(AvgMonthly)), pack('Label', 'Required Monthly', 'Value', tostring(Required)), pack('Label', 'Spend Gap', 'Value', tostring(Gap)))\r\n| mv-expand json\r\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
       "usedVariables": []
     },
     {
-      "id": "f2b3c4d5-1001-4a8b-9c0d-1e2f3a4b5c6d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Tag Coverage Summary\nlet data = materialize(\n    CostsByMonth\n    | where ChargeCategory == 'Usage'\n    | extend TagBag = iff(isnotempty(Tags), todynamic(tostring(Tags)), dynamic({}))\n    | extend HasTags = array_length(bag_keys(TagBag)) > 0\n    | summarize\n        TaggedCost = round(sumif(EffectiveCost, HasTags), 0),\n        UntaggedCost = round(sumif(EffectiveCost, not(HasTags)), 0),\n        TaggedResources = dcountif(ResourceId, HasTags and isnotempty(ResourceId)),\n        UntaggedResources = dcountif(ResourceId, not(HasTags) and isnotempty(ResourceId)),\n        TotalResources = dcountif(ResourceId, isnotempty(ResourceId))\n    | extend TagCoveragePercent = round(100.0 * TaggedCost / (TaggedCost + UntaggedCost), 1)\n    | project json = todynamic(strcat('[',\n        '{\"Label\":\"Tagged Cost\",\"Value\":\"', TaggedCost, '\"},',\n        '{\"Label\":\"Untagged Cost\",\"Value\":\"', UntaggedCost, '\"},',\n        '{\"Label\":\"Tag Coverage %\",\"Value\":\"', TagCoveragePercent, '%\"},',\n        '{\"Label\":\"Tagged Resources\",\"Value\":\"', TaggedResources, '\"},',\n        '{\"Label\":\"Untagged Resources\",\"Value\":\"', UntaggedResources, '\"}',\n    ']'))\n    | mv-expand json\n    | project Label = tostring(json.Label), Value = tostring(json.Value)\n);\ndata",
+      "id": "f2b3c4d5-1001-4a8b-9c0d-1e2f3a4b5c6d",
       "usedVariables": [
         "CostsByMonth"
       ]
     },
     {
-      "id": "f2b3c4d5-1002-4a8b-9c0d-1e2f3a4b5c6d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Cost by Tag Key - Top tag keys by total effective cost\nCostsByMonth\n| where ChargeCategory == 'Usage'\n| extend TagBag = iff(isnotempty(Tags), todynamic(tostring(Tags)), dynamic({}))\n| where array_length(bag_keys(TagBag)) > 0\n| mv-apply TagKey = bag_keys(TagBag) to typeof(string) on (\n    project TagKey\n)\n| where isnotempty(TagKey)\n| summarize EffectiveCost = round(sum(EffectiveCost), 2) by TagKey\n| order by EffectiveCost desc\n| take maxGroupCount\n| project TagKey, EffectiveCost",
+      "id": "f2b3c4d5-1002-4a8b-9c0d-1e2f3a4b5c6d",
       "usedVariables": [
         "CostsByMonth",
         "maxGroupCount"
       ]
     },
     {
-      "id": "f2b3c4d5-1003-4a8b-9c0d-1e2f3a4b5c6d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Cost by Tag Value - Explode tags into key-value pairs and show top values\nCostsByMonth\n| where ChargeCategory == 'Usage'\n| extend TagBag = iff(isnotempty(Tags), todynamic(tostring(Tags)), dynamic({}))\n| where array_length(bag_keys(TagBag)) > 0\n| mv-apply TagKey = bag_keys(TagBag) to typeof(string) on (\n    extend TagValue = tostring(TagBag[TagKey])\n)\n| where isnotempty(TagKey) and isnotempty(TagValue)\n| summarize EffectiveCost = round(sum(EffectiveCost), 2) by TagLabel = strcat(TagKey, '=', TagValue)\n| order by EffectiveCost desc\n| take maxGroupCount\n| project TagLabel, EffectiveCost",
+      "id": "f2b3c4d5-1003-4a8b-9c0d-1e2f3a4b5c6d",
       "usedVariables": [
         "CostsByMonth",
         "maxGroupCount"
       ]
     },
     {
-      "id": "f2b3c4d5-1004-4a8b-9c0d-1e2f3a4b5c6d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Tag Detail Table - All tag key-value pairs with cost and resource count\nCostsByMonth\n| where ChargeCategory == 'Usage'\n| extend TagBag = iff(isnotempty(Tags), todynamic(tostring(Tags)), dynamic({}))\n| where array_length(bag_keys(TagBag)) > 0\n| mv-apply TagKey = bag_keys(TagBag) to typeof(string) on (\n    extend TagValue = tostring(TagBag[TagKey])\n)\n| where isnotempty(TagKey)\n| summarize\n    EffectiveCost = round(sum(EffectiveCost), 2),\n    BilledCost = round(sum(BilledCost), 2),\n    Resources = dcount(ResourceId)\n    by TagKey, TagValue\n| order by EffectiveCost desc\n| take 50\n| project TagKey, TagValue, EffectiveCost, BilledCost, Resources",
+      "id": "f2b3c4d5-1004-4a8b-9c0d-1e2f3a4b5c6d",
       "usedVariables": [
         "CostsByMonth"
       ]
     },
     {
-      "id": "f2b3c4d5-1005-4a8b-9c0d-1e2f3a4b5c6d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Monthly Tag Coverage Trend - Tagged vs Untagged cost over time\nCostsByMonth\n| where ChargeCategory == 'Usage'\n| extend TagBag = iff(isnotempty(Tags), todynamic(tostring(Tags)), dynamic({}))\n| extend HasTags = array_length(bag_keys(TagBag)) > 0\n| summarize\n    TaggedCost = round(sumif(EffectiveCost, HasTags), 2),\n    UntaggedCost = round(sumif(EffectiveCost, not(HasTags)), 2)\n    by BillingPeriodStart\n| order by BillingPeriodStart asc\n| project BillingPeriodStart, TaggedCost, UntaggedCost",
+      "id": "f2b3c4d5-1005-4a8b-9c0d-1e2f3a4b5c6d",
       "usedVariables": [
         "CostsByMonth"
       ]
     },
     {
-      "id": "a3b4c5d6-1001-4a9b-0c1d-2e3f4a5b6c7d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Subscription Summary - Counts and total cost\nlet data = materialize(\n    CostsByMonth\n    | summarize\n        Subscriptions = dcount(SubAccountId),\n        ResourceGroups = dcount(strcat(SubAccountId, x_ResourceGroupName)),\n        Resources = dcount(ResourceId),\n        TotalCost = round(sum(EffectiveCost), 0)\n    | project json = todynamic(strcat('[',\n        '{\"Label\":\"Subscriptions\",\"Value\":\"', Subscriptions, '\"},',\n        '{\"Label\":\"Resource Groups\",\"Value\":\"', ResourceGroups, '\"},',\n        '{\"Label\":\"Resources\",\"Value\":\"', Resources, '\"},',\n        '{\"Label\":\"Total Cost\",\"Value\":\"', TotalCost, '\"}',\n    ']'))\n    | mv-expand json\n    | project Label = tostring(json.Label), Value = tostring(json.Value)\n);\ndata",
+      "id": "a3b4c5d6-1001-4a9b-0c1d-2e3f4a5b6c7d",
       "usedVariables": [
         "CostsByMonth"
       ]
     },
     {
-      "id": "a3b4c5d6-1002-4a9b-0c1d-2e3f4a5b6c7d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Cost by Subscription - Monthly trend with top N\nlet costs = CostsByMonth;\nlet all = costs | where isnotempty(SubAccountId) | summarize sum(EffectiveCost) by SubAccountId;\nlet count = toscalar(all | order by sum_EffectiveCost desc | count);\nlet topX = all | order by sum_EffectiveCost desc | limit maxGroupCount;\nlet otherId = '(others)';\ncosts\n| extend inTopX = SubAccountId in (topX)\n| extend SubAccountId = iff(inTopX, SubAccountId, otherId)\n| extend SubAccountName = iff(inTopX, SubAccountName, strcat('(', (count - maxGroupCount), ' others)'))\n| summarize\n    EffectiveCost = round(sum(EffectiveCost), 2),\n    SubAccountName = take_any(SubAccountName)\n    by\n    ChargePeriodStart = startofmonth(ChargePeriodStart),\n    SubAccountId\n| project ChargePeriodStart, EffectiveCost, Sub = iff(SubAccountId == otherId, SubAccountName, strcat(SubAccountName, ' (', split(SubAccountId, '/')[2], ')'))\n| order by EffectiveCost desc\n| render columnchart",
+      "id": "a3b4c5d6-1002-4a9b-0c1d-2e3f4a5b6c7d",
       "usedVariables": [
         "CostsByMonth",
         "maxGroupCount"
       ]
     },
     {
-      "id": "a3b4c5d6-1003-4a9b-0c1d-2e3f4a5b6c7d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Top Resources by Subscription - Nested drilldown table\nCostsByMonth\n| where isnotempty(ResourceId)\n| summarize\n    EffectiveCost = round(sum(EffectiveCost), 2),\n    BilledCost = round(sum(BilledCost), 2),\n    ResourceName = take_any(ResourceName),\n    ServiceName = take_any(ServiceName),\n    x_ResourceType = take_any(x_ResourceType),\n    x_ResourceGroupName = take_any(x_ResourceGroupName),\n    SubAccountName = take_any(SubAccountName)\n    by SubAccountId, ResourceId\n| project\n    Subscription = strcat(SubAccountName, ' (', split(SubAccountId, '/')[2], ')'),\n    ResourceGroup = x_ResourceGroupName,\n    ResourceName,\n    ServiceName,\n    ResourceType = x_ResourceType,\n    EffectiveCost,\n    BilledCost\n| order by Subscription asc, EffectiveCost desc",
+      "id": "a3b4c5d6-1003-4a9b-0c1d-2e3f4a5b6c7d",
       "usedVariables": [
         "CostsByMonth"
       ]
     },
     {
-      "id": "a3b4c5d6-1004-4a9b-0c1d-2e3f4a5b6c7d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Resource Cost by Service - Top services by cost\nlet costs = CostsByMonth;\nlet all = costs | where isnotempty(ServiceName) | summarize sum(EffectiveCost) by ServiceName;\nlet count = toscalar(all | order by sum_EffectiveCost desc | count);\nlet topX = all | order by sum_EffectiveCost desc | limit maxGroupCount;\ncosts\n| extend inTopX = ServiceName in (topX)\n| extend ServiceName = iff(inTopX, ServiceName, strcat('(', (count - maxGroupCount), ' others)'))\n| summarize EffectiveCost = round(sum(EffectiveCost), 2) by ServiceName\n| order by EffectiveCost desc\n| project ServiceName, EffectiveCost",
+      "id": "a3b4c5d6-1004-4a9b-0c1d-2e3f4a5b6c7d",
       "usedVariables": [
         "CostsByMonth",
         "maxGroupCount"
       ]
     },
     {
-      "id": "a3b4c5d6-1005-4a9b-0c1d-2e3f4a5b6c7d",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Resource Cost by Resource Group - Top resource groups by cost\nlet costs = CostsByMonth;\nlet all = costs | where isnotempty(x_ResourceGroupName) | summarize sum(EffectiveCost) by x_ResourceGroupName;\nlet count = toscalar(all | order by sum_EffectiveCost desc | count);\nlet topX = all | order by sum_EffectiveCost desc | limit maxGroupCount;\ncosts\n| extend inTopX = x_ResourceGroupName in (topX)\n| extend x_ResourceGroupName = iff(inTopX, x_ResourceGroupName, strcat('(', (count - maxGroupCount), ' others)'))\n| summarize EffectiveCost = round(sum(EffectiveCost), 2) by x_ResourceGroupName\n| order by EffectiveCost desc\n| project ResourceGroup = x_ResourceGroupName, EffectiveCost",
+      "id": "a3b4c5d6-1005-4a9b-0c1d-2e3f4a5b6c7d",
       "usedVariables": [
         "CostsByMonth",
         "maxGroupCount"
       ]
     },
     {
-      "id": "fc010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "// 90-day cost forecast using time-series decomposition\r\nlet costs = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -6) and ChargePeriodStart < startofday(now());\r\nlet startDate = toscalar(costs | summarize min(startofday(ChargePeriodStart)));\r\nlet endDate = toscalar(costs | summarize max(startofday(ChargePeriodStart)));\r\ncosts\r\n| make-series DailyCost = sum(EffectiveCost) on ChargePeriodStart from startDate to endDate + 90d step 1d\r\n| extend Forecast = series_decompose_forecast(DailyCost, 90)\r\n| mv-expand ChargePeriodStart to typeof(datetime), DailyCost to typeof(real), Forecast to typeof(real)\r\n| project Day = ChargePeriodStart,\r\n    Actual = iff(ChargePeriodStart <= endDate, round(DailyCost, 2), real(null)),\r\n    Forecast = iff(ChargePeriodStart >= endDate - 7d, round(Forecast, 2), real(null))",
-      "usedVariables": []
-    },
-    {
-      "id": "fc010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let today = startofday(now());\r\nlet monthStart = startofmonth(today);\r\nlet monthEnd = endofmonth(today);\r\nlet daysInMonth = datetime_diff('day', monthEnd, monthStart) + 1;\r\nlet daysSoFar = datetime_diff('day', today, monthStart);\r\nlet spentSoFar = toscalar(Costs | where ChargePeriodStart >= monthStart and ChargePeriodStart < today | summarize sum(EffectiveCost));\r\nlet spentSafe = iff(isnull(spentSoFar), 0.0, spentSoFar);\r\nlet dailyRate = iff(daysSoFar > 0, spentSafe / todouble(daysSoFar), 0.0);\r\nlet projected = dailyRate * todouble(daysInMonth);\r\nlet lastMonth = toscalar(Costs | where ChargePeriodStart >= startofmonth(today, -1) and ChargePeriodStart < monthStart | summarize sum(EffectiveCost));\r\nlet lastSafe = iff(isnull(lastMonth), 0.0, lastMonth);\r\nlet change = iff(lastSafe > 0, round((projected - lastSafe) / lastSafe * 100, 1), 0.0);\r\nprint json = pack_array(\r\n    pack('Label', 'Spent So Far', 'Value', tostring(round(spentSafe, 0))),\r\n    pack('Label', 'Daily Run Rate', 'Value', tostring(round(dailyRate, 0))),\r\n    pack('Label', 'Projected This Month', 'Value', tostring(round(projected, 0))),\r\n    pack('Label', 'vs Last Month', 'Value', strcat(iff(change >= 0, '+', ''), tostring(change), '%')))\r\n| mv-expand json\r\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "fc010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "fc010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "// 90-day cost forecast using time-series decomposition\r\nlet costs = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -6) and ChargePeriodStart < startofday(now());\r\nlet startDate = toscalar(costs | summarize min(startofday(ChargePeriodStart)));\r\nlet endDate = toscalar(costs | summarize max(startofday(ChargePeriodStart)));\r\ncosts\r\n| make-series DailyCost = sum(EffectiveCost) on ChargePeriodStart from startDate to endDate + 90d step 1d\r\n| extend Forecast = series_decompose_forecast(DailyCost, 90)\r\n| mv-expand ChargePeriodStart to typeof(datetime), DailyCost to typeof(real), Forecast to typeof(real)\r\n| project Day = ChargePeriodStart,\r\n    Actual = iff(ChargePeriodStart <= endDate, round(DailyCost, 2), real(null)),\r\n    Forecast = iff(ChargePeriodStart >= endDate - 7d, round(Forecast, 2), real(null))",
+      "id": "fc010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "usedVariables": []
+    },
+    {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let history = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Actual = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart);\r\nlet recentAvg = toscalar(history | top 3 by Month desc | summarize avg(Actual));\r\nhistory\r\n| project Month, Actual = round(Actual, 0), Forecast = real(null)\r\n| union (print Month = startofmonth(datetime_add('month', 1, now())), Actual = real(null), Forecast = round(recentAvg, 0))\r\n| union (print Month = startofmonth(datetime_add('month', 2, now())), Actual = real(null), Forecast = round(recentAvg * 1.02, 0))\r\n| union (print Month = startofmonth(datetime_add('month', 3, now())), Actual = real(null), Forecast = round(recentAvg * 1.04, 0))\r\n| order by Month asc\r\n| project Month, Actual, Forecast",
+      "id": "fc010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "fc010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -3) and ChargePeriodStart < startofday(now())\r\n| summarize DailyCost = sum(EffectiveCost) by Day = bin(ChargePeriodStart, 1d), SubAccountName\r\n| summarize AvgDaily = avg(DailyCost) by SubAccountName\r\n| top 10 by AvgDaily desc\r\n| extend ProjectedMonthly = round(AvgDaily * 30, 0), AvgDaily = round(AvgDaily, 0)\r\n| project SubAccountName, AvgDaily, ProjectedMonthly\r\n| order by ProjectedMonthly desc",
+      "id": "fc010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "fc010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -6)\r\n| summarize MonthlyCost = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart)\r\n| order by Month asc\r\n| extend PrevMonth = prev(MonthlyCost)\r\n| extend MoMChange = iff(isnotnull(PrevMonth) and PrevMonth > 0, round((MonthlyCost - PrevMonth) / PrevMonth * 100, 1), 0.0)\r\n| project Month, MonthlyCost = round(MonthlyCost, 0), MoMChange = strcat(iff(MoMChange >= 0, '+', ''), tostring(MoMChange), '%'), Trend = iff(MonthlyCost > PrevMonth, '📈', iff(MonthlyCost < PrevMonth, '📉', '➡️'))",
+      "id": "fc010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "8e010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let data = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now());\r\nlet totalCost = toscalar(data | summarize sum(EffectiveCost));\r\nlet resourceCount = toscalar(data | summarize dcount(ResourceId));\r\nlet subCount = toscalar(data | summarize dcount(SubAccountId));\r\nlet rgCount = toscalar(data | summarize dcount(x_ResourceGroupName));\r\nlet costPerResource = iff(resourceCount > 0, round(totalCost / todouble(resourceCount), 2), 0.0);\r\nlet costPerSub = iff(subCount > 0, round(totalCost / todouble(subCount), 0), 0.0);\r\nlet costPerRG = iff(rgCount > 0, round(totalCost / todouble(rgCount), 0), 0.0);\r\nprint json = pack_array(\r\n    pack('Label', 'Cost / Resource', 'Value', tostring(costPerResource)),\r\n    pack('Label', 'Cost / Subscription', 'Value', tostring(costPerSub)),\r\n    pack('Label', 'Cost / Resource Group', 'Value', tostring(costPerRG)),\r\n    pack('Label', 'Total Resources', 'Value', tostring(resourceCount)))\r\n| mv-expand json\r\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "8e010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "8e010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId) by SubAccountName\r\n| extend CostPerResource = iff(Resources > 0, round(TotalCost / todouble(Resources), 2), 0.0)\r\n| project SubAccountName, TotalCost = round(TotalCost, 0), Resources, CostPerResource\r\n| order by TotalCost desc\r\n| take 15",
+      "id": "8e010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "8e010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId) by x_ResourceGroupName\r\n| where isnotempty(x_ResourceGroupName)\r\n| extend CostPerResource = iff(Resources > 0, round(TotalCost / todouble(Resources), 2), 0.0)\r\n| project ResourceGroup = x_ResourceGroupName, TotalCost = round(TotalCost, 0), Resources, CostPerResource\r\n| order by TotalCost desc\r\n| take 15",
-      "usedVariables": []
-    },
-    {
-      "id": "8e010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| summarize TotalCost = sum(EffectiveCost), ResourceCount = dcount(ResourceId) by ResourceType\r\n| where isnotempty(ResourceType) and ResourceCount > 0\r\n| extend CostPerResource = round(TotalCost / todouble(ResourceCount), 2)\r\n| project ResourceType, TotalCost = round(TotalCost, 0), ResourceCount, CostPerResource\r\n| order by TotalCost desc\r\n| take 20",
-      "usedVariables": []
-    },
-    {
-      "id": "8e010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId) by Month = startofmonth(ChargePeriodStart)\r\n| extend CostPerResource = iff(Resources > 0, round(TotalCost / todouble(Resources), 2), 0.0)\r\n| project Month, CostPerResource, TotalCost = round(TotalCost, 0), Resources\r\n| order by Month asc",
+      "id": "8e010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "ba010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId) by x_ResourceGroupName\r\n| where isnotempty(x_ResourceGroupName)\r\n| extend CostPerResource = iff(Resources > 0, round(TotalCost / todouble(Resources), 2), 0.0)\r\n| project ResourceGroup = x_ResourceGroupName, TotalCost = round(TotalCost, 0), Resources, CostPerResource\r\n| order by TotalCost desc\r\n| take 15",
+      "id": "8e010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| summarize TotalCost = sum(EffectiveCost), ResourceCount = dcount(ResourceId) by ResourceType\r\n| where isnotempty(ResourceType) and ResourceCount > 0\r\n| extend CostPerResource = round(TotalCost / todouble(ResourceCount), 2)\r\n| project ResourceType, TotalCost = round(TotalCost, 0), ResourceCount, CostPerResource\r\n| order by TotalCost desc\r\n| take 20",
+      "id": "8e010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "usedVariables": []
+    },
+    {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let currentMonth = startofmonth(now());\r\nlet lastMonth = startofmonth(now(), -1);\r\nlet budget = todouble(monthlyBudget);\r\nlet actualMTD = toscalar(Costs | where ChargePeriodStart >= currentMonth | summarize sum(EffectiveCost));\r\nlet actualSafe = iff(isnull(actualMTD), 0.0, actualMTD);\r\nlet actualLastMonth = toscalar(Costs | where ChargePeriodStart >= lastMonth and ChargePeriodStart < currentMonth | summarize sum(EffectiveCost));\r\nlet lastSafe = iff(isnull(actualLastMonth), 0.0, actualLastMonth);\r\nlet daysInMonth = datetime_diff('day', endofmonth(now()), currentMonth) + 1;\r\nlet daysElapsed = datetime_diff('day', startofday(now()), currentMonth);\r\nlet projected = iff(daysElapsed > 0, actualSafe / todouble(daysElapsed) * todouble(daysInMonth), 0.0);\r\nlet variance = iff(budget > 0, round((projected - budget) / budget * 100, 1), 0.0);\r\nlet status = iff(budget == 0, '⚪ No budget set', iff(variance > 15, '🔴 Over budget', iff(variance > 5, '🟡 At risk', '🟢 On track')));\r\nprint json = pack_array(\r\n    pack('Label', 'Monthly Budget', 'Value', tostring(round(budget, 0))),\r\n    pack('Label', 'Spent (MTD)', 'Value', tostring(round(actualSafe, 0))),\r\n    pack('Label', 'Projected', 'Value', tostring(round(projected, 0))),\r\n    pack('Label', 'Variance', 'Value', strcat(iff(variance >= 0, '+', ''), tostring(variance), '%')),\r\n    pack('Label', 'Status', 'Value', status),\r\n    pack('Label', 'Last Month Actual', 'Value', tostring(round(lastSafe, 0))))\r\n| mv-expand json\r\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "ba010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "monthlyBudget"
       ]
     },
     {
-      "id": "ba010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let currentMonth = startofmonth(now());\r\nlet budget = todouble(monthlyBudget);\r\nCosts\r\n| where ChargePeriodStart >= currentMonth and ChargePeriodStart < startofday(now())\r\n| summarize DailyCost = sum(EffectiveCost) by Day = startofday(ChargePeriodStart)\r\n| order by Day asc\r\n| extend CumulativeCost = row_cumsum(DailyCost)\r\n| extend BudgetLine = budget\r\n| project Day, CumulativeCost = round(CumulativeCost, 0), BudgetLine = round(BudgetLine, 0)",
+      "id": "ba010002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "monthlyBudget"
       ]
     },
     {
-      "id": "ba010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "let currentMonth = startofmonth(now());\r\nlet budget = todouble(monthlyBudget);\r\nlet subCount = toscalar(Costs | where ChargePeriodStart >= currentMonth | summarize dcount(SubAccountId));\r\nlet subCountSafe = iff(isnull(subCount) or subCount < 1, 1, subCount);\r\nlet budgetPerSub = iff(budget > 0, budget / todouble(subCountSafe), 0.0);\r\nCosts\r\n| where ChargePeriodStart >= currentMonth\r\n| summarize ActualCost = sum(EffectiveCost) by SubAccountName\r\n| extend EqualShareBudget = round(budgetPerSub, 0)\r\n| extend Variance = round(ActualCost - budgetPerSub, 0)\r\n| extend VariancePct = iff(budgetPerSub > 0, round((ActualCost - budgetPerSub) / budgetPerSub * 100, 1), 0.0)\r\n| extend Status = iff(budgetPerSub == 0, '⚪', iff(VariancePct > 15, '🔴', iff(VariancePct > 5, '🟡', '🟢')))\r\n| project Status, SubAccountName, ActualCost = round(ActualCost, 0), EqualShareBudget, Variance, VariancePct\r\n| order by ActualCost desc",
+      "id": "ba010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "monthlyBudget"
       ]
     },
     {
-      "id": "c1910001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| extend TagValue = iff(isnotempty(tagKeyFilter) and isnotempty(Tags) and bag_has_key(Tags, tagKeyFilter), tostring(Tags[tagKeyFilter]), 'Untagged')\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId) by TagValue\r\n| project TagValue, TotalCost = round(TotalCost, 0), Resources\r\n| order by TotalCost desc\r\n| take 15",
+      "id": "c1910001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "tagKeyFilter"
       ]
     },
     {
-      "id": "c1910002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -3)\r\n| extend Department = case(\r\n    isnotempty(Tags) and bag_has_key(Tags, 'Department'), tostring(Tags['Department']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'department'), tostring(Tags['department']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'CostCenter'), tostring(Tags['CostCenter']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'costcenter'), tostring(Tags['costcenter']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'BusinessUnit'), tostring(Tags['BusinessUnit']),\r\n    'Unassigned')\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId), Subscriptions = dcount(SubAccountName) by Department, Month = startofmonth(ChargePeriodStart)\r\n| project Month, Department, TotalCost = round(TotalCost, 0), Resources, Subscriptions\r\n| order by Month desc, TotalCost desc",
+      "id": "c1910002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "c3810001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// CPU architecture cost breakdown (community request #1594)\r\n// Heuristic based on Azure VM SKU naming conventions\r\nCosts\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| where ServiceCategory == 'Compute' or ServiceName has 'Virtual Machines' or ResourceType =~ 'Virtual machine'\r\n| where isnotempty(SkuMeter)\r\n| extend NormalizedSku = tolower(SkuMeter)\r\n| extend Architecture = case(\r\n    NormalizedSku matches regex @'[0-9]+a[^r]', 'AMD',\r\n    NormalizedSku matches regex @'[0-9]+p', 'Arm64 (Cobalt)',\r\n    NormalizedSku matches regex @'[0-9]+[^ap]', 'Intel',\r\n    'Other')\r\n| summarize TotalCost = round(sum(EffectiveCost), 0), VMs = dcount(ResourceId) by Architecture\r\n| order by TotalCost desc",
+      "id": "c3810001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "d4010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Data quality warnings - flag rows where EffectiveCost > ListCost (known MCA issue #1424)\r\nCosts\r\n| where ChargePeriodStart >= startofmonth(now(), -1) and ChargePeriodStart < startofmonth(now())\r\n| where EffectiveCost > ListCost and ListCost > 0\r\n| summarize AffectedRows = count(), TotalDifference = round(sum(EffectiveCost - ListCost), 2) by ServiceName, SubAccountName\r\n| project Warning = '⚠️ EffectiveCost > ListCost', ServiceName, SubAccountName, AffectedRows, TotalDifference\r\n| order by TotalDifference desc\r\n| take 20",
+      "id": "d4010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": []
     },
     {
-      "id": "0c030001-6800-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize Cost = round(sum(EffectiveCost), 2) by Provider = coalesce(ProviderName, 'Unknown')\n| order by Cost desc",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c030001-6800-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c030002-6800-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize Cost = round(sum(EffectiveCost), 2) by Month = startofmonth(ChargePeriodStart), Provider = coalesce(ProviderName, 'Unknown')\n| order by Month asc",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c030002-6800-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c040001-5d01-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize Cost = round(sum(EffectiveCost), 2) by\n    Provider = coalesce(ProviderName, 'Unknown'),\n    SubAccountName,\n    ServiceName,\n    ResourceName = coalesce(ResourceName, '(unnamed)')\n| order by Cost desc\n| take 100\n| project Provider, SubAccountName, ServiceName, ResourceName, Cost",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c040001-5d01-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c040003-c191-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize\n    BilledCost = round(sum(BilledCost), 2),\n    EffectiveCost = round(sum(EffectiveCost), 2)\n    by Provider = coalesce(ProviderName, 'Unknown'),\n       InvoiceIssuer = coalesce(InvoiceIssuerName, ProviderName, 'Unknown'),\n       Month = startofmonth(ChargePeriodStart)\n| order by Month desc, BilledCost desc\n| project Month, Provider, InvoiceIssuer, BilledCost, EffectiveCost",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c040003-c191-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c090001-c203-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize Cost = round(sum(EffectiveCost), 2)\n    by Month = startofmonth(ChargePeriodStart),\n       Provider = coalesce(ProviderName, 'Unknown')\n| order by Month asc, Provider asc",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c090001-c203-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c090002-c203-4e5f-6a7b-8c9d0e1f2a3b",
-      "text": "Costs\n| where ChargePeriodStart >= ago(numberOfDays * 1d)\n| summarize Cost = round(sum(EffectiveCost), 2)\n    by Day = bin(ChargePeriodStart, 1d),\n       Provider = coalesce(ProviderName, 'Unknown')\n| order by Day asc",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
+      "text": "Costs\n| where ChargePeriodStart >= ago(numberOfDays * 1d)\n| summarize Cost = round(sum(EffectiveCost), 2)\n    by Day = bin(ChargePeriodStart, 1d),\n       Provider = coalesce(ProviderName, 'Unknown')\n| order by Day asc",
+      "id": "0c090002-c203-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfDays"
       ]
     },
     {
-      "id": "0c090003-c203-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize Cost = round(sum(EffectiveCost), 2)\n    by Provider = coalesce(ProviderName, 'Unknown'),\n       ServiceCategory = coalesce(ServiceCategory, 'Other'),\n       ServiceName = coalesce(ServiceName, 'Unknown')\n| order by Cost desc\n| take 50\n| project Provider, ServiceCategory, ServiceName, Cost",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c090003-c203-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c090004-c203-4e5f-6a7b-8c9d0e1f2a3b",
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
       "text": "Costs\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize\n    Cost = round(sum(EffectiveCost), 2),\n    Services = dcount(ServiceName),\n    Resources = dcount(ResourceId)\n    by Provider = coalesce(ProviderName, 'Unknown'),\n       SubAccount = coalesce(SubAccountName, 'Unknown')\n| order by Cost desc\n| take 25\n| project Provider, SubAccount, Cost, Services, Resources",
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
+      "id": "0c090004-c203-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
     },
     {
-      "id": "0c090005-c203-4e5f-6a7b-8c9d0e1f2a3b",
-      "text": "Costs\n| where ChargeCategory == 'Usage'\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize\n    ListCostTotal = round(sum(ListCost), 2),\n    EffectiveCostTotal = round(sum(EffectiveCost), 2)\n    by Provider = coalesce(ProviderName, 'Unknown')\n| extend\n    Savings = round(ListCostTotal - EffectiveCostTotal, 2),\n    SavingsRate = iff(ListCostTotal > 0, round((ListCostTotal - EffectiveCostTotal) / ListCostTotal * 100, 1), 0.0)\n| order by ListCostTotal desc\n| project Provider, ListCostTotal, EffectiveCostTotal, Savings, SavingsRate",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
+      "text": "Costs\n| where ChargeCategory == 'Usage'\n| where ChargePeriodStart >= monthsago(numberOfMonths)\n| summarize\n    ListCostTotal = round(sum(ListCost), 2),\n    EffectiveCostTotal = round(sum(EffectiveCost), 2)\n    by Provider = coalesce(ProviderName, 'Unknown')\n| extend\n    Savings = round(ListCostTotal - EffectiveCostTotal, 2),\n    SavingsRate = iff(ListCostTotal > 0, round((ListCostTotal - EffectiveCostTotal) / ListCostTotal * 100, 1), 0.0)\n| order by ListCostTotal desc\n| project Provider, ListCostTotal, EffectiveCostTotal, Savings, SavingsRate",
+      "id": "0c090005-c203-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": [
         "numberOfMonths"
       ]
@@ -8078,57 +8099,57 @@
       "usedVariables": []
     },
     {
+      "id": "43612ae4-c475-4f22-bb50-ce9d995abb8f",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Base query: CostsThisMonth\n// Returns all cost records for the current month\nCosts()\n| where ChargePeriodStart >= startofmonth(now())",
-      "id": "43612ae4-c475-4f22-bb50-ce9d995abb8f",
       "usedVariables": []
     },
     {
+      "id": "cb1f5404-c0b1-42fd-99fb-3cff7b08daaa",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Base query: CostsLastMonth\n// Returns all cost records for the previous calendar month\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -1)\n| where ChargePeriodStart < startofmonth(now())",
-      "id": "cb1f5404-c0b1-42fd-99fb-3cff7b08daaa",
       "usedVariables": []
     },
     {
+      "id": "4ce0f587-2d45-436c-8f79-102c6b382439",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Base query: CostsByMonth\n// Returns all cost records for the last 13 months (used by 44 tile queries)\n// Tiles aggregate this data by month, subscription, service, region, etc.\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -13)",
-      "id": "4ce0f587-2d45-436c-8f79-102c6b382439",
       "usedVariables": []
     },
     {
+      "id": "6b598467-8c31-4693-b1eb-7ed683fcfc3a",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Base query: CostsByDay\n// Returns all cost records for the last 2 months (daily analysis)\n// Tiles aggregate by day for resource counts, SKU analysis, etc.\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -2)",
-      "id": "6b598467-8c31-4693-b1eb-7ed683fcfc3a",
       "usedVariables": []
     },
     {
+      "id": "4a1973bf-08e9-4e82-b8e6-6edff81cf0a5",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Base query: CostsByDayAHB\n// Returns cost records enriched with Azure Hybrid Benefit (AHB) columns\n// Used by 4 tile queries analyzing license utilization\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -2)\n| extend x_SkuCoreCount = toint(column_ifexists('x_SkuCoreCount', 0))\n| extend x_SkuLicenseUnusedQuantity = case(\n    column_ifexists('x_SkuLicenseStatus', '') == 'Enabled' and column_ifexists('x_SkuLicenseQuantity', 0) > 0,\n    column_ifexists('x_SkuLicenseQuantity', 0) - toint(ConsumedQuantity),\n    0)",
-      "id": "4a1973bf-08e9-4e82-b8e6-6edff81cf0a5",
       "usedVariables": []
     },
     {
+      "id": "eb9259cc-05b7-4441-a66d-a29026fe371b",
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
       "text": "// Base query: CostsPlus\n// Returns extended cost records for forecasting and running total analysis\n// Wider time range (6 months) for trend projection\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -6)",
-      "id": "eb9259cc-05b7-4441-a66d-a29026fe371b",
       "usedVariables": []
     },
     {
@@ -8175,33 +8196,6 @@
       "text": "Costs\r\n| where ChargePeriodStart >= monthsago(13)\r\n| where isnotempty(ProviderName)\r\n| distinct ProviderName\r\n| project Value = ProviderName, Label = ProviderName\r\n| order by Label asc",
       "id": "0c010001-3529-4e5f-6a7b-8c9d0e1f2a3b",
       "usedVariables": []
-    },
-    {
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nlet data = (\n    CostsByMonth\n    | summarize \n        EffectiveCost  = sum(EffectiveCost)\n        by\n        ChargePeriodStart,\n        ServiceCategory,\n        ServiceName\n    | as per\n    | union (\n        per\n        | summarize \n            EffectiveCost  = sum(EffectiveCost)\n            by\n            ServiceCategory,\n            ServiceName\n    )\n    | order by ChargePeriodStart asc\n    | extend EffectiveCost = todouble(round(EffectiveCost, 2))\n    | extend ChargePeriod = iff(isempty(ChargePeriodStart), strcat('Total'), strcat(format_datetime(ChargePeriodStart, 'yyyy-MM - '), monthname[monthofyear(ChargePeriodStart)]))\n);\ndata | evaluate pivot(ChargePeriod, sum(EffectiveCost), ServiceCategory)\n| order by column_ifexists('Total', 0.0) desc",
-      "id": "a7843e1d-7c76-4e4d-9a92-bc642d2f8506",
-      "usedVariables": [
-        "CostsByMonth"
-      ]
-    },
-    {
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nlet data = (\n    CostsByMonth\n    | summarize \n        BilledCost     = todouble(round(sum(BilledCost), 2)),\n        EffectiveCost  = todouble(round(sum(EffectiveCost), 2)),\n        ContractedCost = todouble(round(sum(ContractedCost), 2)),\n        ListCost       = todouble(round(sum(ListCost), 2))\n        by\n        BillingPeriodStart\n    | order by BillingPeriodStart asc\n    | extend CommitmentDiscountSavings = todouble(round(ContractedCost - EffectiveCost, 2))\n    | extend NegotiatedDiscountSavings = todouble(round(ListCost - ContractedCost, 2))\n    | extend BillingPeriod = strcat(format_datetime(BillingPeriodStart, 'yyyy-MM - '), monthname[monthofyear(BillingPeriodStart)])\n);\ndata | extend Data = 'Billed cost' | evaluate pivot(BillingPeriod, sum(BilledCost), Data)\n| union (data | extend Data = 'Effective cost'     | evaluate pivot(BillingPeriod, sum(EffectiveCost), Data))\n| union (data | extend Data = 'Negotiated savings' | evaluate pivot(BillingPeriod, sum(NegotiatedDiscountSavings), Data))\n| union (data | extend Data = 'Commitment savings' | evaluate pivot(BillingPeriod, sum(CommitmentDiscountSavings), Data))\n",
-      "id": "9d6635cd-503a-49bc-80c8-ac8157c6e923",
-      "usedVariables": [
-        "CostsByMonth"
-      ]
     }
-  ],
-  "autoRefresh": {
-    "minInterval": "5m",
-    "defaultInterval": "15m",
-    "enabled": true
-  }
+  ]
 }

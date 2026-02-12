@@ -466,23 +466,23 @@ This dashboard uses the following FOCUS columns that have deprecation notices in
 
 ### Microsoft Extended Columns
 
-The dashboard also uses Microsoft-specific extended columns (prefixed with `x_`):
+The dashboard also uses Microsoft-specific extended columns (prefixed with `x_`). Note that the Hub `Costs` function abstracts some of these into shorter aliases (e.g., `x_SkuMeterName` → `SkuMeter`). Dashboard queries reference the function output columns:
 
-| Column | Purpose | Stability |
-|--------|---------|-----------|
-| `x_PublisherCategory` | Filter Marketplace/Vendor vs Microsoft charges | ✅ Stable |
-| `x_SkuMeterName` | CPU architecture detection (AMD/Intel/Cobalt) | ✅ Stable |
-| `x_SkuMeterCategory` | Azure Hybrid Benefit license type detection | ✅ Stable |
-| `x_SkuMeterSubcategory` | Azure Hybrid Benefit license type detection | ✅ Stable |
-| `x_ResourceGroupName` | Resource group grouping for unit economics | ✅ Stable |
+| Column | Function Output | Purpose | Stability |
+|--------|----------------|---------|-----------|
+| `x_PublisherCategory` | `PublisherCategory` | Filter Marketplace/Vendor vs Microsoft charges | ✅ Stable |
+| `x_SkuMeterName` | `SkuMeter` | CPU architecture detection (AMD/Intel/Cobalt) | ✅ Stable |
+| `x_SkuMeterCategory` | `SkuMeterCategory` | Azure Hybrid Benefit license type detection | ✅ Stable |
+| `x_SkuMeterSubcategory` | `SkuMeterSubcategory` | Azure Hybrid Benefit license type detection | ✅ Stable |
+| `x_ResourceGroupName` | `ResourceGroupName` | Resource group grouping for unit economics | ✅ Stable |
 
 ### Forward Compatibility Strategy
 
 1. **Current State**: Microsoft Cost Management exports FOCUS 1.0 schema
-2. **Dashboard Approach**: Queries use FOCUS 1.0 columns for maximum compatibility
+2. **Dashboard Approach**: Queries reference the Hub `Costs` function output columns (e.g., `SkuMeter`, `ResourceType`) rather than raw `x_` prefixed export columns, ensuring abstraction from schema changes
 3. **Future Migration**: When Microsoft upgrades to FOCUS 1.2/1.3:
    - The FinOps Hub `Costs` function abstracts schema changes
-   - Dashboard queries will be updated to use new column names
+   - Dashboard queries already use function output aliases — only the function internals need updating
    - Backward compatibility will be maintained where possible
 
 > 💡 **Best Practice**: Monitor the [FOCUS changelog](https://github.com/FinOps-Open-Cost-and-Usage-Spec/FOCUS_Spec/blob/working_draft/CHANGELOG.md) and [Microsoft FOCUS documentation](https://learn.microsoft.com/azure/cost-management-billing/automate/focus-dataset-columns) for schema updates.
@@ -530,7 +530,7 @@ The following experimental features are candidates for promotion to the main das
 - ~~**Unit economics**: Add cost-per-unit efficiency metrics~~ → ✅ Done: Unit Economics page with cost/resource, cost/sub, cost/RG ratios
 - ~~**Budget tracking**: Add budget vs actual with variance thresholds~~ → ✅ Done: Budget parameter + 3 new tiles with 🟢/🟡/🔴 status
 - ~~**Chargeback & showback**: Add tag-based chargeback and department summaries~~ → ✅ Done: Tag Key parameter + 2 new tiles on Invoicing page
-- ~~**CPU architecture**: Cost breakdown by AMD/Intel/Cobalt~~ → ✅ Done: Pie chart on Summary page (community request #1594)
+- ~~**CPU architecture**: Cost breakdown by AMD/Intel/Arm64~~ → ✅ Done: Pie chart on Summary page using `SkuMeter` column with `ResourceType =~ 'Virtual machine'` filter (community request #1594)
 - ~~**Data quality warnings**: Flag EffectiveCost > ListCost anomalies~~ → ✅ Done: Warning table on Data Ingestion page
 - ~~**Service cross-filters**: Extend cross-filter mappings to ServiceName and ResourceGroup dimensions~~ → ✅ Done: 6 new cross-filters (ServiceName, ServiceCategory, ResourceGroupName)
 - ~~**Tag parameter filtering**: Add a dashboard parameter to filter all tiles by a specific tag key/value~~ → ✅ Done: Tag Key parameter on Invoicing + Tag Allocation pages
@@ -582,7 +582,7 @@ All analytics capabilities are built directly into the dashboard:
 - ✅ **Unit economics** - Cost-per-resource, cost-per-subscription, cost-per-RG efficiency metrics
 - ✅ **Budget tracking** - Budget vs actual with variance thresholds and 🟢/🟡/🔴 status
 - ✅ **Chargeback & showback** - Tag-based chargeback and department-level showback summaries
-- ✅ **CPU architecture** - AMD/Intel/Cobalt cost breakdown from SKU naming conventions
+- ✅ **CPU architecture** - AMD/Intel/Arm64 cost breakdown from `SkuMeter` column (VM resources filtered by `ResourceType =~ 'Virtual machine'`)
 - ✅ **Data quality warnings** - Flags EffectiveCost > ListCost anomalies
 - ✅ **SaaS tracking** - Full vendor/publisher/marketplace analysis
 - ✅ **Spot analysis** - Preemptible instance usage and savings
