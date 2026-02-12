@@ -6420,6 +6420,272 @@
       },
       "description": "6-month spending trend by subscription. Growing bands mean growing project costs — are they growing because the project is growing, or because of waste? That's the question to ask.",
       "visualOptions": {}
+    },
+    {
+      "id": "65b713d6-424a-4a79-931a-be4f8793c485",
+      "title": "",
+      "visualType": "markdownCard",
+      "pageId": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 22,
+        "height": 6
+      },
+      "markdownText": "# 🧪 Orphaned Resources (Heuristic Detection)\n\nIdentify likely orphaned and idle resources using **cost-based heuristic patterns** from your FOCUS cost data.\n\n## How It Works\n| Detection Rule | Logic | Confidence |\n|----------------|-------|------------|\n| **Unattached Disk** | `Microsoft.Compute/disks` with cost but no VM compute in the same resource group | 🟡 Medium |\n| **Unused Public IP** | `Microsoft.Network/publicIPAddresses` with charges but no associated VM or LB in the subscription | 🟠 Low |\n| **Idle Load Balancer** | `Microsoft.Network/loadBalancers` with minimal cost (<$50/mo) | 🟠 Low |\n\n> ⚠️ **Heuristic detection may produce false positives.** Resources flagged as orphaned may still be in use for DR, staging, or compliance. This does not replace [Azure Advisor](https://learn.microsoft.com/azure/advisor/) which has access to utilization metrics. See [#1602](https://github.com/microsoft/finops-toolkit/issues/1602) for the full Advisor integration roadmap.",
+      "visualOptions": {}
+    },
+    {
+      "id": "4361755a-074c-4a52-bb6e-7821ded339a6",
+      "title": "Waste summary (last 30 days)",
+      "visualType": "multistat",
+      "pageId": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "layout": {
+        "x": 0,
+        "y": 6,
+        "width": 22,
+        "height": 6
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "e975f824-6c9e-44ce-a539-083dadae47fd"
+      },
+      "description": "High-level waste metrics from heuristic orphan detection. Monthly waste estimate, count of flagged resources, and the most common orphan type.",
+      "visualOptions": {
+        "multiStat__textSize": "large",
+        "multiStat__valueColumn": null,
+        "colorRulesDisabled": true,
+        "multiStat__displayOrientation": "horizontal",
+        "multiStat__labelColumn": null,
+        "multiStat__slot": {
+          "width": 1,
+          "height": 2
+        },
+        "colorRules": []
+      }
+    },
+    {
+      "id": "f081b178-493c-43b8-a7fb-12299a8966ee",
+      "title": "Waste by detection rule",
+      "visualType": "pie",
+      "pageId": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "layout": {
+        "x": 0,
+        "y": 12,
+        "width": 8,
+        "height": 10
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "119e09db-a213-4ff2-95a9-da3894623da6"
+      },
+      "description": "Cost breakdown by orphan detection rule. Shows which type of orphaned resource is costing you the most.",
+      "visualOptions": {
+        "hideLegend": false,
+        "legendLocation": "right",
+        "xColumn": "DetectionRule",
+        "yColumns": null,
+        "seriesColumns": null,
+        "crossFilterDisabled": false,
+        "drillthroughDisabled": false,
+        "labelDisabled": false,
+        "pie__label": [
+          "name",
+          "percentage"
+        ],
+        "tooltipDisabled": false,
+        "pie__tooltip": [
+          "name",
+          "percentage",
+          "value"
+        ],
+        "pie__orderBy": "size",
+        "pie__kind": "pie",
+        "pie__topNSlices": null,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "bdcd2838-ddf4-4f86-9be7-4c01ffc9da31",
+      "title": "Projected annual waste",
+      "visualType": "table",
+      "pageId": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "layout": {
+        "x": 8,
+        "y": 12,
+        "width": 14,
+        "height": 10
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "a4e65583-94aa-498c-96cc-1155248a167e"
+      },
+      "description": "Annual cost projection per detection rule. Monthly waste x12 shows the budget impact if orphaned resources are not cleaned up.",
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": false,
+        "crossFilterDisabled": false,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": [
+          {
+            "id": "5e1cfd70-6fe2-45f6-b912-784a4bae2af1",
+            "ruleType": "colorByCondition",
+            "applyToColumn": "AnnualWaste",
+            "hideText": false,
+            "applyTo": "cells",
+            "conditions": [
+              {
+                "column": "AnnualWaste",
+                "operator": ">",
+                "values": [
+                  "1000"
+                ]
+              }
+            ],
+            "chainingOperator": "and",
+            "colorStyle": "bold",
+            "color": "red",
+            "tag": "",
+            "icon": "critical",
+            "ruleName": "High annual waste",
+            "visualType": "table"
+          },
+          {
+            "id": "d9169bfe-25ef-4765-a70c-dfdf7f20025c",
+            "ruleType": "colorByCondition",
+            "applyToColumn": "AnnualWaste",
+            "hideText": false,
+            "applyTo": "cells",
+            "conditions": [
+              {
+                "column": "AnnualWaste",
+                "operator": "<=",
+                "values": [
+                  "1000"
+                ]
+              }
+            ],
+            "chainingOperator": "and",
+            "colorStyle": "bold",
+            "color": "yellow",
+            "tag": "",
+            "icon": "warning",
+            "ruleName": "Low annual waste",
+            "visualType": "table"
+          }
+        ]
+      }
+    },
+    {
+      "id": "e8348976-c91e-433a-9482-f68a6daae2dd",
+      "title": "Orphaned resources detail",
+      "visualType": "table",
+      "pageId": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "layout": {
+        "x": 0,
+        "y": 22,
+        "width": 22,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "69fedb94-871f-4cac-a171-56156c9ad7d0"
+      },
+      "description": "Full list of resources flagged as likely orphaned. Review each before taking action - some may be intentional (DR, staging, compliance).",
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": false,
+        "crossFilterDisabled": false,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": [
+          {
+            "id": "8ca6a5bd-91a3-457a-9a99-b9de48c84328",
+            "ruleType": "colorByCondition",
+            "applyToColumn": "MonthlyCost",
+            "hideText": false,
+            "applyTo": "cells",
+            "conditions": [
+              {
+                "column": "MonthlyCost",
+                "operator": ">",
+                "values": [
+                  "100"
+                ]
+              }
+            ],
+            "chainingOperator": "and",
+            "colorStyle": "bold",
+            "color": "red",
+            "tag": "",
+            "icon": "critical",
+            "ruleName": "High cost orphan",
+            "visualType": "table"
+          }
+        ]
+      }
+    },
+    {
+      "id": "68b14c96-92fd-4914-af82-f7817ac7940a",
+      "title": "Monthly waste trend",
+      "visualType": "column",
+      "pageId": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "layout": {
+        "x": 0,
+        "y": 30,
+        "width": 22,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "ace6d8d9-df64-4a64-9b1c-55fcc7481eef"
+      },
+      "description": "Orphaned resource cost trend over time by detection rule. Rising trends indicate growing waste that needs attention.",
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "label": "",
+            "columns": [],
+            "yAxisMaximumValue": null,
+            "yAxisMinimumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": "Month",
+        "yColumns": [
+          "WasteCost"
+        ],
+        "seriesColumns": [
+          "DetectionRule"
+        ],
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "drillthroughDisabled": false,
+        "crossFilterDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "selectedDataOnLoad": {
+          "all": true,
+          "limit": 10
+        },
+        "dataPointsTooltip": {
+          "all": false,
+          "limit": 1
+        }
+      }
     }
   ],
   "baseQueries": [
@@ -6509,25 +6775,14 @@
     },
     {
       "kind": "int",
+      "selectionType": "freetext",
       "id": "50e8acdc-5d90-4937-96cb-53a9b0ad047f",
       "displayName": "📅 Monthly trend",
-      "description": "How many months should be shown in monthly trend charts and tables?",
       "variableName": "numberOfMonths",
-      "selectionType": "scalar",
-      "includeAllOption": false,
+      "description": "Number of months to look back in monthly trend charts. Enter 0 for current month only, 1 for this + last month, 6 for half a year, 12 for a full year.",
       "defaultValue": {
-        "kind": "query-result"
-      },
-      "dataSource": {
-        "kind": "query",
-        "columns": {
-          "value": "Value",
-          "label": "Label"
-        },
-        "queryRef": {
-          "kind": "query",
-          "queryId": "c9039243-968d-4e75-9899-8d4ab51a9896"
-        }
+        "kind": "value",
+        "value": 1
       },
       "showOnPages": {
         "kind": "all"
@@ -6539,7 +6794,7 @@
       "id": "c016c954-1d37-41fb-8c4e-7607a9be2e96",
       "displayName": "📊 Daily trend",
       "variableName": "numberOfDays",
-      "description": "How many days should be shown in daily trend charts and tables? Does not apply to \"this month and last\" queries.",
+      "description": "Number of days to look back in daily trend charts. Enter 7 for last week, 28 for last 4 weeks, 90 for last quarter.",
       "defaultValue": {
         "kind": "value",
         "value": 28
@@ -6554,7 +6809,7 @@
       "id": "55463317-2576-4d98-875e-85a1fa032c12",
       "displayName": "📋 Max groups",
       "variableName": "maxGroupCount",
-      "description": "How many groups should be shown in charts? Remaining will be in an \"others\" group.",
+      "description": "Max items to show in grouped charts. Remaining items are combined into an '(N others)' group. Try 5 for clean charts or 25 for more detail.",
       "defaultValue": {
         "kind": "value",
         "value": 9
@@ -6687,6 +6942,10 @@
     {
       "name": "🧪 Project Budgets",
       "id": "d9d88432-617f-445b-8f4b-d70c8a421507"
+    },
+    {
+      "id": "fb47b0be-7563-4ca6-8b8c-cf01f9a8a3c8",
+      "name": "🧪 Orphaned Resources"
     }
   ],
   "queries": [
@@ -6761,10 +7020,11 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nCostsPlus\n| where ChargePeriodStart >= startofmonth(ago(90d))\n| summarize EffectiveCost = sum(EffectiveCost) by ChargePeriodStart, Day = dayofmonth(ChargePeriodStart), Month = strcat(format_datetime(ChargePeriodStart, 'MM '), monthname[monthofyear(ChargePeriodStart)])\n| order by ChargePeriodStart asc\n| extend EffectiveCostRunningTotal = row_cumsum(EffectiveCost, prev(Month) != Month)\n| project Day, EffectiveCostRunningTotal, Month\n| render areachart  ",
+      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nCostsPlus\n| where ChargePeriodStart >= startofmonth(ago(numberOfDays * 1d))\n| summarize EffectiveCost = sum(EffectiveCost) by ChargePeriodStart, Day = dayofmonth(ChargePeriodStart), Month = strcat(format_datetime(ChargePeriodStart, 'MM '), monthname[monthofyear(ChargePeriodStart)])\n| order by ChargePeriodStart asc\n| extend EffectiveCostRunningTotal = row_cumsum(EffectiveCost, prev(Month) != Month)\n| project Day, EffectiveCostRunningTotal, Month\n| render areachart  ",
       "id": "d5ed469a-45ea-49a2-b305-b841050213cf",
       "usedVariables": [
-        "CostsPlus"
+        "CostsPlus",
+        "numberOfDays"
       ]
     },
     {
@@ -6783,10 +7043,11 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nCostsPlus\n| where ChargePeriodStart >= startofmonth(ago(90d))\n| summarize EffectiveCost = sum(EffectiveCost) by ChargePeriodStart, Day = dayofmonth(ChargePeriodStart), Month = strcat(format_datetime(ChargePeriodStart, 'MM '), monthname[monthofyear(ChargePeriodStart)])\n| order by ChargePeriodStart asc\n| project Day, EffectiveCost, Month\n| render columnchart",
+      "text": "let monthname = dynamic(['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);\nCostsPlus\n| where ChargePeriodStart >= startofmonth(ago(numberOfDays * 1d))\n| summarize EffectiveCost = sum(EffectiveCost) by ChargePeriodStart, Day = dayofmonth(ChargePeriodStart), Month = strcat(format_datetime(ChargePeriodStart, 'MM '), monthname[monthofyear(ChargePeriodStart)])\n| order by ChargePeriodStart asc\n| project Day, EffectiveCost, Month\n| render columnchart",
       "id": "9e41a624-d5f9-40c6-b47f-fef4b50ec3dd",
       "usedVariables": [
-        "CostsPlus"
+        "CostsPlus",
+        "numberOfDays"
       ]
     },
     {
@@ -6794,11 +7055,12 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "let costs = CostsPlus | where ChargePeriodStart >= startofmonth(ago(90d));\nlet all = costs | summarize sum(EffectiveCost) by SubAccountId;\nlet count = toscalar(all | order by sum_EffectiveCost desc | count);\nlet topX = all | order by sum_EffectiveCost desc | limit maxGroupCount;\nlet otherId = '(others)';\ncosts\n//\n// Group rows after max count\n| extend inTopX = SubAccountId in (topX)\n| extend SubAccountId = iff(inTopX, SubAccountId, otherId)\n| extend SubAccountName = iff(inTopX, SubAccountName, strcat('(', (count - maxGroupCount), ' others)'))\n//\n| summarize \n    EffectiveCost = round(sum(EffectiveCost), 2),\n    SubAccountName = take_any(SubAccountName)\n    by\n    ChargePeriodStart,\n    SubAccountId\n| project ChargePeriodStart, EffectiveCost, Sub = iff(SubAccountId == otherId, SubAccountName, strcat(SubAccountName, ' (', split(SubAccountId, '/')[2], ')'))\n| order by EffectiveCost desc\n| render columnchart",
+      "text": "let costs = CostsPlus | where ChargePeriodStart >= startofmonth(ago(numberOfDays * 1d));\nlet all = costs | summarize sum(EffectiveCost) by SubAccountId;\nlet count = toscalar(all | order by sum_EffectiveCost desc | count);\nlet topX = all | order by sum_EffectiveCost desc | limit maxGroupCount;\nlet otherId = '(others)';\ncosts\n//\n// Group rows after max count\n| extend inTopX = SubAccountId in (topX)\n| extend SubAccountId = iff(inTopX, SubAccountId, otherId)\n| extend SubAccountName = iff(inTopX, SubAccountName, strcat('(', (count - maxGroupCount), ' others)'))\n//\n| summarize \n    EffectiveCost = round(sum(EffectiveCost), 2),\n    SubAccountName = take_any(SubAccountName)\n    by\n    ChargePeriodStart,\n    SubAccountId\n| project ChargePeriodStart, EffectiveCost, Sub = iff(SubAccountId == otherId, SubAccountName, strcat(SubAccountName, ' (', split(SubAccountId, '/')[2], ')'))\n| order by EffectiveCost desc\n| render columnchart",
       "id": "f26e2204-270e-4219-8f68-5acef1c9393f",
       "usedVariables": [
         "CostsPlus",
-        "maxGroupCount"
+        "maxGroupCount",
+        "numberOfDays"
       ]
     },
     {
@@ -7479,11 +7741,12 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "let costs = CostsPlus | where ChargePeriodStart >= startofmonth(now(), -3) and ChargePeriodStart < startofday(ago(-1d));\nlet startOfPeriod = toscalar(costs | summarize min(startofday(ChargePeriodStart)));\nlet endOfPeriod = toscalar(costs | summarize max(startofday(ChargePeriodStart)));\nlet forecastHorizon = numberOfDays * 1d;\ncosts\n| make-series\n    EffectiveCost = sum(EffectiveCost)\n    on ChargePeriodStart\n    from startOfPeriod to endOfPeriod + forecastHorizon step 1d\n    // by SubAccountId\n| extend Forecast = series_decompose_forecast(EffectiveCost, numberOfDays)\n",
+      "text": "let costs = CostsPlus | where ChargePeriodStart >= startofmonth(now(), -numberOfMonths) and ChargePeriodStart < startofday(ago(-1d));\nlet startOfPeriod = toscalar(costs | summarize min(startofday(ChargePeriodStart)));\nlet endOfPeriod = toscalar(costs | summarize max(startofday(ChargePeriodStart)));\nlet forecastHorizon = numberOfDays * 1d;\ncosts\n| make-series\n    EffectiveCost = sum(EffectiveCost)\n    on ChargePeriodStart\n    from startOfPeriod to endOfPeriod + forecastHorizon step 1d\n    // by SubAccountId\n| extend Forecast = series_decompose_forecast(EffectiveCost, numberOfDays)\n",
       "id": "5fd3ea2a-8882-4438-9103-fa3945240604",
       "usedVariables": [
         "CostsPlus",
-        "numberOfDays"
+        "numberOfDays",
+        "numberOfMonths"
       ]
     },
     {
@@ -7803,17 +8066,8 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "// 90-day cost forecast using time-series decomposition\r\nlet costs = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -6) and ChargePeriodStart < startofday(now());\r\nlet startDate = toscalar(costs | summarize min(startofday(ChargePeriodStart)));\r\nlet endDate = toscalar(costs | summarize max(startofday(ChargePeriodStart)));\r\ncosts\r\n| make-series DailyCost = sum(EffectiveCost) on ChargePeriodStart from startDate to endDate + 90d step 1d\r\n| extend Forecast = series_decompose_forecast(DailyCost, 90)\r\n| mv-expand ChargePeriodStart to typeof(datetime), DailyCost to typeof(real), Forecast to typeof(real)\r\n| project Day = ChargePeriodStart,\r\n    Actual = iff(ChargePeriodStart <= endDate, round(DailyCost, 2), real(null)),\r\n    Forecast = iff(ChargePeriodStart >= endDate - 7d, round(Forecast, 2), real(null))",
+      "text": "// 90-day cost forecast using time-series decomposition\r\nlet costs = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths) and ChargePeriodStart < startofday(now());\r\nlet startDate = toscalar(costs | summarize min(startofday(ChargePeriodStart)));\r\nlet endDate = toscalar(costs | summarize max(startofday(ChargePeriodStart)));\r\ncosts\r\n| make-series DailyCost = sum(EffectiveCost) on ChargePeriodStart from startDate to endDate + 90d step 1d\r\n| extend Forecast = series_decompose_forecast(DailyCost, 90)\r\n| mv-expand ChargePeriodStart to typeof(datetime), DailyCost to typeof(real), Forecast to typeof(real)\r\n| project Day = ChargePeriodStart,\r\n    Actual = iff(ChargePeriodStart <= endDate, round(DailyCost, 2), real(null)),\r\n    Forecast = iff(ChargePeriodStart >= endDate - 7d, round(Forecast, 2), real(null))",
       "id": "fc010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "usedVariables": []
-    },
-    {
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "let history = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Actual = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart);\r\nlet recentAvg = toscalar(history | top 3 by Month desc | summarize avg(Actual));\r\nhistory\r\n| project Month, Actual = round(Actual, 0), Forecast = real(null)\r\n| union (print Month = startofmonth(datetime_add('month', 1, now())), Actual = real(null), Forecast = round(recentAvg, 0))\r\n| union (print Month = startofmonth(datetime_add('month', 2, now())), Actual = real(null), Forecast = round(recentAvg * 1.02, 0))\r\n| union (print Month = startofmonth(datetime_add('month', 3, now())), Actual = real(null), Forecast = round(recentAvg * 1.04, 0))\r\n| order by Month asc\r\n| project Month, Actual, Forecast",
-      "id": "fc010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
       "usedVariables": [
         "numberOfMonths"
       ]
@@ -7823,18 +8077,35 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -3) and ChargePeriodStart < startofday(now())\r\n| summarize DailyCost = sum(EffectiveCost) by Day = bin(ChargePeriodStart, 1d), SubAccountName\r\n| summarize AvgDaily = avg(DailyCost) by SubAccountName\r\n| top 10 by AvgDaily desc\r\n| extend ProjectedMonthly = round(AvgDaily * 30, 0), AvgDaily = round(AvgDaily, 0)\r\n| project SubAccountName, AvgDaily, ProjectedMonthly\r\n| order by ProjectedMonthly desc",
-      "id": "fc010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "usedVariables": []
+      "text": "let history = Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize Actual = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart);\r\nlet recentAvg = toscalar(history | top maxGroupCount by Month desc | summarize avg(Actual));\r\nhistory\r\n| project Month, Actual = round(Actual, 0), Forecast = real(null)\r\n| union (print Month = startofmonth(datetime_add('month', 1, now())), Actual = real(null), Forecast = round(recentAvg, 0))\r\n| union (print Month = startofmonth(datetime_add('month', 2, now())), Actual = real(null), Forecast = round(recentAvg * 1.02, 0))\r\n| union (print Month = startofmonth(datetime_add('month', 3, now())), Actual = real(null), Forecast = round(recentAvg * 1.04, 0))\r\n| order by Month asc\r\n| project Month, Actual, Forecast",
+      "id": "fc010003-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "usedVariables": [
+        "numberOfMonths",
+        "maxGroupCount"
+      ]
     },
     {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -6)\r\n| summarize MonthlyCost = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart)\r\n| order by Month asc\r\n| extend PrevMonth = prev(MonthlyCost)\r\n| extend MoMChange = iff(isnotnull(PrevMonth) and PrevMonth > 0, round((MonthlyCost - PrevMonth) / PrevMonth * 100, 1), 0.0)\r\n| project Month, MonthlyCost = round(MonthlyCost, 0), MoMChange = strcat(iff(MoMChange >= 0, '+', ''), tostring(MoMChange), '%'), Trend = iff(MonthlyCost > PrevMonth, '📈', iff(MonthlyCost < PrevMonth, '📉', '➡️'))",
+      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths) and ChargePeriodStart < startofday(now())\r\n| summarize DailyCost = sum(EffectiveCost) by Day = bin(ChargePeriodStart, 1d), SubAccountName\r\n| summarize AvgDaily = avg(DailyCost) by SubAccountName\r\n| top maxGroupCount by AvgDaily desc\r\n| extend ProjectedMonthly = round(AvgDaily * 30, 0), AvgDaily = round(AvgDaily, 0)\r\n| project SubAccountName, AvgDaily, ProjectedMonthly\r\n| order by ProjectedMonthly desc",
+      "id": "fc010004-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "usedVariables": [
+        "numberOfMonths",
+        "maxGroupCount"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize MonthlyCost = sum(EffectiveCost) by Month = startofmonth(ChargePeriodStart)\r\n| order by Month asc\r\n| extend PrevMonth = prev(MonthlyCost)\r\n| extend MoMChange = iff(isnotnull(PrevMonth) and PrevMonth > 0, round((MonthlyCost - PrevMonth) / PrevMonth * 100, 1), 0.0)\r\n| project Month, MonthlyCost = round(MonthlyCost, 0), MoMChange = strcat(iff(MoMChange >= 0, '+', ''), tostring(MoMChange), '%'), Trend = iff(MonthlyCost > PrevMonth, '📈', iff(MonthlyCost < PrevMonth, '📉', '➡️'))",
       "id": "fc010005-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "dataSource": {
@@ -7932,9 +8203,11 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -3)\r\n| extend Department = case(\r\n    isnotempty(Tags) and bag_has_key(Tags, 'Department'), tostring(Tags['Department']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'department'), tostring(Tags['department']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'CostCenter'), tostring(Tags['CostCenter']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'costcenter'), tostring(Tags['costcenter']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'BusinessUnit'), tostring(Tags['BusinessUnit']),\r\n    'Unassigned')\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId), Subscriptions = dcount(SubAccountName) by Department, Month = startofmonth(ChargePeriodStart)\r\n| project Month, Department, TotalCost = round(TotalCost, 0), Resources, Subscriptions\r\n| order by Month desc, TotalCost desc",
+      "text": "Costs\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| extend Department = case(\r\n    isnotempty(Tags) and bag_has_key(Tags, 'Department'), tostring(Tags['Department']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'department'), tostring(Tags['department']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'CostCenter'), tostring(Tags['CostCenter']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'costcenter'), tostring(Tags['costcenter']),\r\n    isnotempty(Tags) and bag_has_key(Tags, 'BusinessUnit'), tostring(Tags['BusinessUnit']),\r\n    'Unassigned')\r\n| summarize TotalCost = sum(EffectiveCost), Resources = dcount(ResourceId), Subscriptions = dcount(SubAccountName) by Department, Month = startofmonth(ChargePeriodStart)\r\n| project Month, Department, TotalCost = round(TotalCost, 0), Resources, Subscriptions\r\n| order by Month desc, TotalCost desc",
       "id": "c1910002-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "dataSource": {
@@ -8094,9 +8367,11 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "// Project Budgets - Monthly cost trend by subscription\r\nCosts\r\n| where ChargePeriodStart >= startofmonth(now(), -6)\r\n| summarize EffectiveCost = round(sum(EffectiveCost), 2) by Month = startofmonth(ChargePeriodStart), SubAccountName\r\n| order by Month asc\r\n| render stackedcolumnchart",
+      "text": "// Project Budgets - Monthly cost trend by subscription\r\nCosts\r\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)\r\n| summarize EffectiveCost = round(sum(EffectiveCost), 2) by Month = startofmonth(ChargePeriodStart), SubAccountName\r\n| order by Month asc\r\n| render stackedcolumnchart",
       "id": "582a801f-88e7-4005-95bc-2d750473bdf5",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "id": "43612ae4-c475-4f22-bb50-ce9d995abb8f",
@@ -8122,8 +8397,10 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "// Base query: CostsByMonth\n// Returns all cost records for the last 13 months (used by 44 tile queries)\n// Tiles aggregate this data by month, subscription, service, region, etc.\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -13)",
-      "usedVariables": []
+      "text": "// Base query: CostsByMonth\n// Returns all cost records for the last numberOfMonths months (used by 44 tile queries)\n// Tiles aggregate this data by month, subscription, service, region, etc.\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)",
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "id": "6b598467-8c31-4693-b1eb-7ed683fcfc3a",
@@ -8131,8 +8408,10 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "// Base query: CostsByDay\n// Returns all cost records for the last 2 months (daily analysis)\n// Tiles aggregate by day for resource counts, SKU analysis, etc.\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -2)",
-      "usedVariables": []
+      "text": "// Base query: CostsByDay\n// Returns all cost records for the last numberOfDays days (daily analysis)\n// Tiles aggregate by day for resource counts, SKU analysis, etc.\nCosts()\n| where ChargePeriodStart >= ago(numberOfDays * 1d)",
+      "usedVariables": [
+        "numberOfDays"
+      ]
     },
     {
       "id": "4a1973bf-08e9-4e82-b8e6-6edff81cf0a5",
@@ -8140,8 +8419,10 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "// Base query: CostsByDayAHB\n// Returns cost records enriched with Azure Hybrid Benefit (AHB) columns\n// Used by 4 tile queries analyzing license utilization\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -2)\n| extend x_SkuCoreCount = toint(column_ifexists('x_SkuCoreCount', 0))\n| extend x_SkuLicenseUnusedQuantity = case(\n    column_ifexists('x_SkuLicenseStatus', '') == 'Enabled' and column_ifexists('x_SkuLicenseQuantity', 0) > 0,\n    column_ifexists('x_SkuLicenseQuantity', 0) - toint(ConsumedQuantity),\n    0)",
-      "usedVariables": []
+      "text": "// Base query: CostsByDayAHB\n// Returns cost records enriched with Azure Hybrid Benefit (AHB) columns\n// Used by 4 tile queries analyzing license utilization\nCosts()\n| where ChargePeriodStart >= ago(numberOfDays * 1d)\n| extend x_SkuCoreCount = toint(column_ifexists('x_SkuCoreCount', 0))\n| extend x_SkuLicenseUnusedQuantity = case(\n    column_ifexists('x_SkuLicenseStatus', '') == 'Enabled' and column_ifexists('x_SkuLicenseQuantity', 0) > 0,\n    column_ifexists('x_SkuLicenseQuantity', 0) - toint(ConsumedQuantity),\n    0)",
+      "usedVariables": [
+        "numberOfDays"
+      ]
     },
     {
       "id": "eb9259cc-05b7-4441-a66d-a29026fe371b",
@@ -8149,53 +8430,109 @@
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "// Base query: CostsPlus\n// Returns extended cost records for forecasting and running total analysis\n// Wider time range (6 months) for trend projection\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -6)",
-      "usedVariables": []
+      "text": "// Base query: CostsPlus\n// Returns extended cost records for forecasting and running total analysis\n// Wider time range (numberOfMonths months) for trend projection\nCosts()\n| where ChargePeriodStart >= startofmonth(now(), -numberOfMonths)",
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(13)\r\n| where isnotempty(SubAccountName)\r\n| distinct SubAccountName, SubAccountId\r\n| project Value = SubAccountId, Label = SubAccountName\r\n| order by Label asc",
+      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(numberOfMonths)\r\n| where isnotempty(SubAccountName)\r\n| distinct SubAccountName, SubAccountId\r\n| project Value = SubAccountId, Label = SubAccountName\r\n| order by Label asc",
       "id": "a0b1c2d3-68b1-4e5f-6a7b-8c9d0e1f2a3b",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(13)\r\n| where isnotempty(RegionName)\r\n| distinct RegionName\r\n| project Value = RegionName, Label = RegionName\r\n| order by Label asc",
+      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(numberOfMonths)\r\n| where isnotempty(RegionName)\r\n| distinct RegionName\r\n| project Value = RegionName, Label = RegionName\r\n| order by Label asc",
       "id": "a0b1c2d3-5a11-4e5f-6a7b-8c9d0e1f2a3b",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "let maxMonths = toscalar(\r\n    Costs\r\n    | summarize minDate = min(ChargePeriodStart)\r\n    | project months = datetime_diff('month', now(), minDate)\r\n);\r\nlet options = range Value from 1 to maxMonths step 1\r\n| extend Label = strcat(Value, ' month', iff(Value > 1, 's', ''))\r\n| project Value = toint(Value), Label;\r\noptions",
-      "id": "c9039243-968d-4e75-9899-8d4ab51a9896",
-      "usedVariables": []
-    },
-    {
-      "dataSource": {
-        "kind": "inline",
-        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
-      },
-      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(3)\r\n| where ChargeCategory == 'Usage'\r\n| where isnotempty(Tags)\r\n| mv-apply TagPair = bag_keys(todynamic(Tags)) on (project TagKey = tostring(TagPair))\r\n| distinct TagKey\r\n| project Value = TagKey, Label = TagKey\r\n| order by Label asc",
+      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(numberOfMonths)\r\n| where ChargeCategory == 'Usage'\r\n| where isnotempty(Tags)\r\n| mv-apply TagPair = bag_keys(todynamic(Tags)) on (project TagKey = tostring(TagPair))\r\n| distinct TagKey\r\n| project Value = TagKey, Label = TagKey\r\n| order by Label asc",
       "id": "7e010001-c4d5-4e6f-7a8b-9c0d1e2f3a4b",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
     },
     {
       "dataSource": {
         "kind": "inline",
         "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
       },
-      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(13)\r\n| where isnotempty(ProviderName)\r\n| distinct ProviderName\r\n| project Value = ProviderName, Label = ProviderName\r\n| order by Label asc",
+      "text": "Costs\r\n| where ChargePeriodStart >= monthsago(numberOfMonths)\r\n| where isnotempty(ProviderName)\r\n| distinct ProviderName\r\n| project Value = ProviderName, Label = ProviderName\r\n| order by Label asc",
       "id": "0c010001-3529-4e5f-6a7b-8c9d0e1f2a3b",
-      "usedVariables": []
+      "usedVariables": [
+        "numberOfMonths"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "// Orphaned Resources - Summary KPIs (heuristic from Costs data)\nlet lookback = ago(numberOfDays * 1d);\nlet costs = Costs\n    | where ChargePeriodStart >= lookback\n    | where ChargeCategory == 'Usage'\n    | summarize MonthlyCost = sum(EffectiveCost) by ResourceId, ResourceType, x_ResourceType, SubAccountName, x_ResourceGroupName = column_ifexists('x_ResourceGroupName', '');\n// Unattached disks: disks with cost but no VM compute in same resource group\nlet vmRGs = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct x_ResourceGroupName;\nlet orphanedDisks = costs\n    | where x_ResourceType =~ 'Microsoft.Compute/disks'\n    | join kind=leftanti vmRGs on x_ResourceGroupName\n    | extend DetectionRule = 'Unattached Disk';\n// Unused public IPs: public IPs with no associated VM/LB\nlet vmSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct SubAccountName;\nlet lbSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | distinct SubAccountName;\nlet ipResources = costs\n    | where x_ResourceType =~ 'Microsoft.Network/publicIPAddresses'\n    | join kind=leftanti (vmSubAccounts | union lbSubAccounts) on SubAccountName\n    | extend DetectionRule = 'Unused Public IP';\n// Idle load balancers: LBs with minimal cost and no backend traffic\nlet orphanedLBs = costs\n    | where x_ResourceType =~ 'Microsoft.Network/loadBalancers'\n    | where MonthlyCost < 50\n    | extend DetectionRule = 'Idle Load Balancer';\n// Union all orphans\nlet allOrphans = union orphanedDisks, ipResources, orphanedLBs;\nlet totalWaste = toscalar(allOrphans | summarize round(sum(MonthlyCost), 2));\nlet resourceCount = toscalar(allOrphans | summarize dcount(ResourceId));\nlet topType = toscalar(allOrphans | summarize count() by ResourceType | top 1 by count_ | project ResourceType);\nprint json = pack_array(\n    pack('Label', 'Monthly Waste Estimate', 'Value', strcat('$', iff(isnull(totalWaste), '0', tostring(totalWaste)))),\n    pack('Label', 'Orphaned Resources', 'Value', tostring(iff(isnull(resourceCount), 0, resourceCount))),\n    pack('Label', 'Top Orphan Type', 'Value', iff(isempty(topType), 'None detected', tostring(topType)))\n)\n| mv-expand json\n| project Label = tostring(json.Label), Value = tostring(json.Value)",
+      "id": "e975f824-6c9e-44ce-a539-083dadae47fd",
+      "usedVariables": [
+        "numberOfDays"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "// Orphaned Resources - Waste by Type\nlet lookback = ago(numberOfDays * 1d);\nlet costs = Costs\n    | where ChargePeriodStart >= lookback\n    | where ChargeCategory == 'Usage'\n    | summarize MonthlyCost = sum(EffectiveCost) by ResourceId, ResourceType, x_ResourceType, SubAccountName, x_ResourceGroupName = column_ifexists('x_ResourceGroupName', '');\nlet vmRGs = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct x_ResourceGroupName;\nlet orphanedDisks = costs | where x_ResourceType =~ 'Microsoft.Compute/disks' | join kind=leftanti vmRGs on x_ResourceGroupName | extend DetectionRule = 'Unattached Disk';\nlet vmSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct SubAccountName;\nlet lbSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | distinct SubAccountName;\nlet ipResources = costs | where x_ResourceType =~ 'Microsoft.Network/publicIPAddresses' | join kind=leftanti (vmSubAccounts | union lbSubAccounts) on SubAccountName | extend DetectionRule = 'Unused Public IP';\nlet orphanedLBs = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | where MonthlyCost < 50 | extend DetectionRule = 'Idle Load Balancer';\nunion orphanedDisks, ipResources, orphanedLBs\n| summarize WasteCost = round(sum(MonthlyCost), 2) by DetectionRule\n| order by WasteCost desc",
+      "id": "119e09db-a213-4ff2-95a9-da3894623da6",
+      "usedVariables": [
+        "numberOfDays"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "// Orphaned Resources - Detail Table\nlet lookback = ago(numberOfDays * 1d);\nlet costs = Costs\n    | where ChargePeriodStart >= lookback\n    | where ChargeCategory == 'Usage'\n    | summarize MonthlyCost = sum(EffectiveCost) by ResourceId, ResourceName = column_ifexists('ResourceName', ''), ResourceType, x_ResourceType, SubAccountName, x_ResourceGroupName = column_ifexists('x_ResourceGroupName', '');\nlet vmRGs = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct x_ResourceGroupName;\nlet orphanedDisks = costs | where x_ResourceType =~ 'Microsoft.Compute/disks' | join kind=leftanti vmRGs on x_ResourceGroupName | extend DetectionRule = 'Unattached Disk', Confidence = 'Medium';\nlet vmSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct SubAccountName;\nlet lbSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | distinct SubAccountName;\nlet ipResources = costs | where x_ResourceType =~ 'Microsoft.Network/publicIPAddresses' | join kind=leftanti (vmSubAccounts | union lbSubAccounts) on SubAccountName | extend DetectionRule = 'Unused Public IP', Confidence = 'Low';\nlet orphanedLBs = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | where MonthlyCost < 50 | extend DetectionRule = 'Idle Load Balancer', Confidence = 'Low';\nunion orphanedDisks, ipResources, orphanedLBs\n| project ResourceName, ResourceType, SubAccountName, ResourceGroup = x_ResourceGroupName, MonthlyCost = round(MonthlyCost, 2), AnnualImpact = round(MonthlyCost * 12, 2), DetectionRule, Confidence\n| order by MonthlyCost desc",
+      "id": "69fedb94-871f-4cac-a171-56156c9ad7d0",
+      "usedVariables": [
+        "numberOfDays"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "// Orphaned Resources - Annual Waste Projection\nlet lookback = ago(numberOfDays * 1d);\nlet costs = Costs\n    | where ChargePeriodStart >= lookback\n    | where ChargeCategory == 'Usage'\n    | summarize MonthlyCost = sum(EffectiveCost) by ResourceId, ResourceType, x_ResourceType, SubAccountName, x_ResourceGroupName = column_ifexists('x_ResourceGroupName', '');\nlet vmRGs = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct x_ResourceGroupName;\nlet orphanedDisks = costs | where x_ResourceType =~ 'Microsoft.Compute/disks' | join kind=leftanti vmRGs on x_ResourceGroupName | extend DetectionRule = 'Unattached Disk';\nlet vmSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct SubAccountName;\nlet lbSubAccounts = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | distinct SubAccountName;\nlet ipResources = costs | where x_ResourceType =~ 'Microsoft.Network/publicIPAddresses' | join kind=leftanti (vmSubAccounts | union lbSubAccounts) on SubAccountName | extend DetectionRule = 'Unused Public IP';\nlet orphanedLBs = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | where MonthlyCost < 50 | extend DetectionRule = 'Idle Load Balancer';\nunion orphanedDisks, ipResources, orphanedLBs\n| summarize MonthlyWaste = round(sum(MonthlyCost), 2) by DetectionRule\n| extend AnnualWaste = round(MonthlyWaste * 12, 2)\n| project DetectionRule, MonthlyWaste, AnnualWaste\n| order by AnnualWaste desc",
+      "id": "a4e65583-94aa-498c-96cc-1155248a167e",
+      "usedVariables": [
+        "numberOfDays"
+      ]
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "23540be2-ffc9-4b61-8c4c-05e493e682a6"
+      },
+      "text": "// Orphaned Resources - Monthly Waste Trend\nlet costs = Costs\n    | where ChargePeriodStart >= ago(numberOfDays * 1d)\n    | where ChargeCategory == 'Usage'\n    | summarize MonthlyCost = sum(EffectiveCost) by ResourceId, ResourceType, x_ResourceType, SubAccountName, x_ResourceGroupName = column_ifexists('x_ResourceGroupName', ''), Month = startofmonth(ChargePeriodStart);\nlet vmRGsByMonth = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct x_ResourceGroupName, Month;\nlet orphanedDisks = costs | where x_ResourceType =~ 'Microsoft.Compute/disks' | join kind=leftanti vmRGsByMonth on x_ResourceGroupName, Month | extend DetectionRule = 'Unattached Disk';\nlet vmSubByMonth = costs | where x_ResourceType =~ 'Microsoft.Compute/virtualMachines' | distinct SubAccountName, Month;\nlet lbSubByMonth = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | distinct SubAccountName, Month;\nlet ipResources = costs | where x_ResourceType =~ 'Microsoft.Network/publicIPAddresses' | join kind=leftanti (vmSubByMonth | union lbSubByMonth) on SubAccountName, Month | extend DetectionRule = 'Unused Public IP';\nlet orphanedLBs = costs | where x_ResourceType =~ 'Microsoft.Network/loadBalancers' | where MonthlyCost < 50 | extend DetectionRule = 'Idle Load Balancer';\nunion orphanedDisks, ipResources, orphanedLBs\n| summarize WasteCost = round(sum(MonthlyCost), 2) by Month, DetectionRule\n| order by Month asc, DetectionRule asc",
+      "id": "ace6d8d9-df64-4a64-9b1c-55fcc7481eef",
+      "usedVariables": [
+        "numberOfDays"
+      ]
     }
   ]
 }
