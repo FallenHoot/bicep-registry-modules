@@ -4,9 +4,29 @@ This folder contains Azure Data Explorer (ADX) dashboards for visualizing FinOps
 
 ## Overview
 
-**Version**: 13.1 (February 2026)
+**Version**: 13.4 (February 2026)
 
 ADX dashboards provide interactive visualizations for analyzing cloud cost and usage data based on the [FinOps Open Cost and Usage Specification (FOCUS)](https://aka.ms/finops/focus). These dashboards are designed for central FinOps teams and finance stakeholders who need comprehensive visibility into cloud spending.
+
+### What's New in v13.4
+
+#### 🐛 Bug Fixes
+
+| Fix | Description |
+|-----|-------------|
+| **All parameters wired to queries** | Fixed all dashboard parameters (`numberOfMonths`, `numberOfDays`, `maxGroupCount`) — previously every query had hardcoded time ranges and `usedVariables: []`, meaning the filter bar had no effect. Now 31 queries use `numberOfMonths`, 13 use `numberOfDays`, and 22 use `maxGroupCount`. |
+| **Orphaned resources `x_ResourceType`** | Fixed orphaned resource queries using `ResourceType` (display name like "Disk") instead of `x_ResourceType` (ARM format like `Microsoft.Compute/disks`). Hub ingestion maps `ResourceType` to `SingularDisplayName`. |
+| **Multistat tile minimum height** | Fixed "Current tile size (22, 4) is smaller than the minimum supported tile size (3, 6)" error on orphaned resources summary by increasing tile height from 4 to 6. |
+
+#### 🔄 Improvements
+
+| Improvement | Description |
+|-------------|-------------|
+| **Parameter descriptions** | Updated `numberOfMonths`, `numberOfDays`, and `maxGroupCount` with helpful examples (e.g., "Enter 7 for last week, 28 for last 4 weeks, 90 for last quarter") |
+| **Freetext parameter inputs** | All three numeric parameters use freetext input so users can type any custom value |
+| **Removed invalid parameter queries** | Removed 3 `datatable` + `strcat()` queries that caused "Expected ] Token: strcat" syntax errors (`datatable` only supports literal values) |
+
+---
 
 ### What's New in v13.1
 
@@ -296,6 +316,29 @@ Preview capabilities, community-requested features, and items needing community 
 - **Use Cases**: Identifying top cost drivers per subscription, resource-level cost accountability, capacity planning
 - **FinOps Capability**: [Reporting & analytics](http://aka.ms/ftk/fx/reporting)
 
+#### Orphaned Resources
+- **Purpose**: Identify likely orphaned/idle resources and their associated costs using heuristic detection from cost data patterns
+- **Status**: 🧪 Heuristic-based — uses cost data patterns to flag likely orphaned resources (no Advisor API dependency)
+- **Approach**: The Hub `Recommendations()` table only contains reservation purchase recommendations, NOT Azure Advisor orphaned resource alerts. This experimental feature uses **cost-based heuristics** to detect likely orphans:
+  - **Unattached managed disks**: `ResourceType =~ 'Microsoft.Compute/disks'` with cost but no corresponding VM compute charges in the same resource group
+  - **Unused public IPs**: `ResourceType =~ 'Microsoft.Network/publicIPAddresses'` with charges but no associated VM/LB
+  - **Stopped VMs**: VMs with only disk/storage charges but zero compute charges over the lookback period
+  - **Idle load balancers**: `ResourceType =~ 'Microsoft.Network/loadBalancers'` with no backend pool traffic
+  - **Empty App Service plans**: `ResourceType =~ 'Microsoft.Web/serverFarms'` with cost but no associated web apps
+- **Key Visuals**:
+  - **Orphaned resource summary**: Total waste estimate, resource count, top resource types (multistat)
+  - **Waste by resource type**: Orphaned cost breakdown by type (pie chart)
+  - **Orphaned resources detail table**: ResourceName, ResourceType, SubAccountName, MonthlyCost, DetectionRule, x_ResourceGroupName
+  - **Projected annual waste**: Monthly orphaned cost × 12 for budget impact
+  - **Waste trend**: Monthly orphaned resource cost over time (stacked column)
+- **FOCUS Fields**: `ResourceId`, `ResourceName`, `ResourceType`, `SubAccountName`, `EffectiveCost`, `ChargeCategory`, `x_ResourceGroupName`
+- **Limitations**:
+  - Heuristic detection may produce false positives — resources flagged as "orphaned" may still be in use for DR, staging, or compliance
+  - Does not replace Azure Advisor — Advisor has access to utilization metrics that cost data alone cannot provide
+  - Detection accuracy depends on cost export granularity and resource tagging
+- **Use Cases**: Cost optimization reviews, identifying waste before budget cycles, subscription cleanup, governance reporting
+- **FinOps Capability**: [Workload Optimization](https://www.finops.org/framework/capabilities/workload-optimization/)
+
 #### Cloud Sustainability (Blocked)
 - **Purpose**: Track carbon emissions and environmental impact of cloud resources
 - **Status**: 🚧 Blocked — waiting for FOCUS carbon columns (`CarbonEmissions`, `CarbonIntensity`) in Azure cost exports
@@ -352,15 +395,15 @@ The dashboard includes configurable parameters (displayed in the filter bar):
 
 | Parameter | Label | Default | Description |
 |-----------|-------|---------|-------------|
-| `numberOfMonths` | 📅 Monthly trend | 6 | Months shown in monthly trend charts |
-| `numberOfDays` | 📊 Daily trend | 28 | Days shown in daily trend charts |
-| `maxGroupCount` | 📋 Max groups | 9 | Max groups in charts before "others" bucket |
+| `numberOfMonths` | 📅 Monthly trend | 1 | Number of months to look back in monthly trend charts. Enter 0 for current month only, 1 for this + last month, 6 for half a year, 12 for a full year. |
+| `numberOfDays` | 📊 Daily trend | 28 | Number of days to look back in daily trend charts. Enter 7 for last week, 28 for last 4 weeks, 90 for last quarter. |
+| `maxGroupCount` | 📋 Max groups | 9 | Max items to show in grouped charts. Remaining items are combined into an "(N others)" group. Try 5 for clean charts or 25 for more detail. |
 | `subscriptionFilter` | 🏢 Subscription | All | Filter all cost tiles by subscription name |
 | `regionFilter` | 🌍 Region | All | Filter all cost tiles by Azure region |
 | `monthlyBudget` | 💰 Monthly budget | 0 | Monthly cloud budget target for variance tracking (Budgeting + Forecasting pages) |
 | `tagKeyFilter` | 🏷️ Tag key | All | Filter chargeback/allocation data by a specific tag key (Invoicing + Tag Allocation pages) |
 
-> 💡 **Tip**: Parameters use icons for visual clarity. Use the filter bar at the top of the dashboard to adjust these values. Set `monthlyBudget` to your monthly cloud budget to enable budget vs actual tracking with 🟢/🟡/🔴 status indicators. The `tagKeyFilter` parameter drives the chargeback-by-tag tile on the Invoicing page.
+> 💡 **Tip**: Parameters use icons for visual clarity. Use the filter bar at the top of the dashboard to adjust these values. `numberOfMonths`, `numberOfDays`, and `maxGroupCount` accept any number — type a custom value to fine-tune your view. Set `monthlyBudget` to your monthly cloud budget to enable budget vs actual tracking with 🟢/🟡/🔴 status indicators. The `tagKeyFilter` parameter drives the chargeback-by-tag tile on the Invoicing page.
 
 ### Cross-Filter Interactivity
 
@@ -503,6 +546,7 @@ The following experimental features are candidates for promotion to the main das
 | **Tag Allocation** | 🧪 Experimental | Community feedback on tag-based cost analysis queries |
 | **Resource Drilldown** | 🧪 Experimental | Community feedback on resource-level drill-down UX |
 | **Provider Comparison** | 🧪 Experimental (v13.2) | Needs multi-cloud data ingestion to validate queries |
+| **Orphaned Resources** | 🧪 Experimental (v13.3) | Validate heuristic accuracy with real customer data; consider Advisor API integration ([#1602](https://github.com/microsoft/finops-toolkit/issues/1602)) |
 
 ### Completed Enhancements (v13.0)
 
@@ -544,7 +588,7 @@ The following experimental features are candidates for promotion to the main das
 - **Multi-select parameters**: Upgrade subscription/region filters from single-select to multi-select with `in()` operator
 - **Built-in time range picker**: Add ADX native `_startTime`/`_endTime` for ad-hoc date range selection
 - **Multi-cloud tags**: Normalize tag formats across Azure, AWS, and GCP providers
-- **Workload optimization**: Right-sizing and idle resource detection from Azure Advisor data ([#1602](https://github.com/microsoft/finops-toolkit/issues/1602))
+- **Workload optimization**: Right-sizing and idle resource detection from Azure Advisor data ([#1602](https://github.com/microsoft/finops-toolkit/issues/1602)) — see 🧪 Orphaned Resources for cost-based heuristic approach available now
 - **Predictive commitment models**: Forward-looking RI/SP savings projections ([#1060](https://github.com/microsoft/finops-toolkit/issues/1060))
 - **FinOps maturity scorecard**: Crawl/Walk/Run assessment with automated scoring
 - **Cross-provider sub-allocation**: FOCUS 1.3 external usage driver attribution ([#1970](https://github.com/microsoft/finops-toolkit/issues/1970))
@@ -564,7 +608,7 @@ This dashboard follows Azure Data Explorer dashboard best practices:
 | **Parameters** | 8 configurable filters | Budget, tag key, date ranges, grouping, subscription, region, and provider filters |
 | **Cross-Filters** | 19 tiles with column mappings | Click subscription, region, service, resource group, or provider to filter |
 | **Drillthroughs** | 6 tiles with page navigation | Click to navigate from Summary/Anomaly/Rate Opt/Budgeting to Resource Drilldown |
-| **Conditional Formatting** | 13 tiles with color rules | Budget status, KPIs, trends, and threshold highlights |
+| **Conditional Formatting** | 16 tiles with color rules | Budget status, KPIs, trends, and threshold highlights |
 | **Human-Readable JSON** | Formatted with indentation | Easy to version control and diff |
 
 ### Batteries Included
@@ -593,6 +637,7 @@ All analytics capabilities are built directly into the dashboard:
 - 🧪 **Resource drilldown** - Resource-level cost under each subscription (experimental)
 - 🧪 **MACC tracking** - Consumption commitment burn-down (experimental, manual setup)
 - 🧪 **Provider comparison** - Side-by-side cost trends, service breakdown, and savings rate across cloud providers (experimental)
+- 🧪 **Orphaned resources** - Heuristic detection of likely orphaned disks, IPs, stopped VMs, idle LBs with cost impact (experimental)
 
 **Roadmap (not yet implemented):**
 - 🔮 **SKU-level breakdown** - Resource SKU and pricing tier analysis per provider (requires FOCUS `SkuId` / `SkuPriceId` columns)
@@ -606,6 +651,8 @@ No separate query files needed - import the dashboard and everything works immed
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 13.4.0 | Feb 2026 | **Parameter wiring & UX fix:** All dashboard parameters (`numberOfMonths`, `numberOfDays`, `maxGroupCount`) now actually control query results — previously all 146 queries had hardcoded time ranges. Fixed orphaned resources `x_ResourceType` filter and multistat tile height. Updated parameter descriptions with helpful examples. Removed 3 invalid `datatable`+`strcat` parameter queries. |
+| 13.3.0 | Feb 2026 | **Orphaned Resources page:** 🧪 Experimental page with heuristic detection of likely orphaned disks, unused public IPs, and idle load balancers from FOCUS cost data patterns. Waste summary KPIs (multistat), waste by detection rule (pie), projected annual waste table with 🔴 color rules, orphaned resources detail table with cost highlighting, monthly waste trend (stacked column). No Advisor API dependency — works with standard Hub data. Adds 1 page, 5 queries, 6 tiles, 3 color rules. |
 | 13.2.0 | Feb 2026 | **Multi-cloud enhancements:** ☁️ Provider parameter filter (all pages), cross-filter on Provider tiles, provider breakdown on Summary page (pie + trend), billing account section on FOCUS page (bar + table), InvoiceIssuerName on Invoicing, FOCUS-neutral labels (sub accounts), provider-aware markdown headers, cumulative cost chart (this month vs last), Provider Comparison experimental page (monthly/daily trends, service breakdown, savings by provider). Adds 1 page, 13 queries, 17 tiles, 1 parameter. |
 | 13.1.0 | Feb 2026 | New Forecasting page (90-day projections), Unit Economics page (cost-per-unit ratios), Budget tracking (3 tiles + budget parameter), Chargeback/Showback (tag key param + 2 tiles), CPU Architecture breakdown, Data Quality warnings, 6 new cross-filters, 4 new drillthroughs, 22 legend optimizations, 3 experimental community items |
 | 13.0.1 | Feb 2026 | Fixed BillingPeriodStart queries, tag KQL, dead color rules. Added subscription/region filters, cross-filter mappings (11 tiles), drillthrough navigation (2 tiles), conditional formatting (10 tiles), Amortized vs Actual documentation |
