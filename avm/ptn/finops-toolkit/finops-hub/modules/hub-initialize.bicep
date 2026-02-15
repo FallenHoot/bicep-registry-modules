@@ -26,9 +26,6 @@ param location string = resourceGroup().location
 @description('Required. Managed identity resource ID for running the scripts.')
 param managedIdentityResourceId string
 
-@description('Optional. Existing storage account resource ID for deployment scripts. Uses the FinOps Hub storage account to avoid creating additional resources.')
-param storageAccountResourceId string = ''
-
 @description('Optional. Operation to perform: "stop" before deployment, "start" after deployment.')
 @allowed(['stop', 'start'])
 param operation string = 'start'
@@ -219,11 +216,6 @@ resource triggerScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
     retentionInterval: 'PT1H'
     cleanupPreference: 'OnSuccess'
     forceUpdateTag: forceRun
-    // Use existing storage account if provided (reuses FinOps Hub storage)
-    storageAccountSettings: !empty(storageAccountResourceId) ? {
-      storageAccountKey: null  // Use managed identity auth
-      storageAccountName: last(split(storageAccountResourceId, '/'))
-    } : null
     environmentVariables: [
       {
         name: 'ADF_NAME'

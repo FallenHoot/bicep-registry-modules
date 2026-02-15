@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.40.2.10011",
-      "templateHash": "16939044302251189556"
+      "templateHash": "13685753635555508671"
     },
     "name": "FinOps Hub",
     "description": "Deploys a FinOps Hub for cloud cost analytics using Azure Verified Modules.",
@@ -34544,9 +34544,6 @@
             "value": "[parameters('location')]"
           },
           "managedIdentityResourceId": "[if(variables('useExistingIdentity'), createObject('value', parameters('existingManagedIdentityResourceId')), createObject('value', reference('managedIdentity').outputs.resourceId.value))]",
-          "storageAccountResourceId": {
-            "value": "[reference('storageAccount').outputs.resourceId.value]"
-          },
           "operation": {
             "value": "stop"
           }
@@ -34558,7 +34555,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.40.2.10011",
-              "templateHash": "9868901521815016226"
+              "templateHash": "3136155839216829158"
             }
           },
           "parameters": {
@@ -34586,13 +34583,6 @@
               "type": "string",
               "metadata": {
                 "description": "Required. Managed identity resource ID for running the scripts."
-              }
-            },
-            "storageAccountResourceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Existing storage account resource ID for deployment scripts. Uses the FinOps Hub storage account to avoid creating additional resources."
               }
             },
             "operation": {
@@ -34651,7 +34641,6 @@
                 "retentionInterval": "PT1H",
                 "cleanupPreference": "OnSuccess",
                 "forceUpdateTag": "[parameters('forceRun')]",
-                "storageAccountSettings": "[if(not(empty(parameters('storageAccountResourceId'))), createObject('storageAccountKey', null(), 'storageAccountName', last(split(parameters('storageAccountResourceId'), '/'))), null())]",
                 "environmentVariables": [
                   {
                     "name": "ADF_NAME",
@@ -34708,8 +34697,7 @@
       },
       "dependsOn": [
         "identityStorageRoleAssignment",
-        "managedIdentity",
-        "storageAccount"
+        "managedIdentity"
       ]
     },
     "dataFactoryResources": {
@@ -44161,9 +44149,6 @@
             "value": "[parameters('location')]"
           },
           "managedIdentityResourceId": "[if(variables('useExistingIdentity'), createObject('value', parameters('existingManagedIdentityResourceId')), createObject('value', reference('managedIdentity').outputs.resourceId.value))]",
-          "storageAccountResourceId": {
-            "value": "[reference('storageAccount').outputs.resourceId.value]"
-          },
           "operation": {
             "value": "start"
           }
@@ -44175,7 +44160,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.40.2.10011",
-              "templateHash": "9868901521815016226"
+              "templateHash": "3136155839216829158"
             }
           },
           "parameters": {
@@ -44203,13 +44188,6 @@
               "type": "string",
               "metadata": {
                 "description": "Required. Managed identity resource ID for running the scripts."
-              }
-            },
-            "storageAccountResourceId": {
-              "type": "string",
-              "defaultValue": "",
-              "metadata": {
-                "description": "Optional. Existing storage account resource ID for deployment scripts. Uses the FinOps Hub storage account to avoid creating additional resources."
               }
             },
             "operation": {
@@ -44268,7 +44246,6 @@
                 "retentionInterval": "PT1H",
                 "cleanupPreference": "OnSuccess",
                 "forceUpdateTag": "[parameters('forceRun')]",
-                "storageAccountSettings": "[if(not(empty(parameters('storageAccountResourceId'))), createObject('storageAccountKey', null(), 'storageAccountName', last(split(parameters('storageAccountResourceId'), '/'))), null())]",
                 "environmentVariables": [
                   {
                     "name": "ADF_NAME",
@@ -44330,8 +44307,7 @@
         "dataFactoryResources",
         "managedIdentity",
         "remoteHubPull",
-        "remoteHubPush",
-        "storageAccount"
+        "remoteHubPush"
       ]
     },
     "hubDeploymentScript": {

@@ -650,7 +650,6 @@ module stopTriggers 'modules/hub-initialize.bicep' = if (enableTriggerManagement
     resourceGroupName: resourceGroup().name
     location: location
     managedIdentityResourceId: effectiveIdentityResourceId
-    storageAccountResourceId: storageAccount.outputs.resourceId  // Reuse FinOps Hub storage
     operation: 'stop'
   }
 }
@@ -965,7 +964,6 @@ module startTriggers 'modules/hub-initialize.bicep' = if (enableTriggerManagemen
     resourceGroupName: resourceGroup().name
     location: location
     managedIdentityResourceId: effectiveIdentityResourceId
-    storageAccountResourceId: storageAccount.outputs.resourceId  // Reuse FinOps Hub storage
     operation: 'start'
   }
 }
