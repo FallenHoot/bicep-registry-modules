@@ -13,3 +13,7 @@ The latest version of the changelog can be found [here](https://github.com/Azure
 - Added trigger management for idempotent deployments
 - Added ADX managed network and private endpoint approval modules
 - Improved ingestion transforms with enhanced data quality checks
+
+### Breaking Changes
+
+- None
