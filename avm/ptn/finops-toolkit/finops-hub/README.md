@@ -388,6 +388,7 @@ module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
     ]
     enablePrivateDnsZoneGroups: true
     enableTelemetry: true
+    keyVaultSku: 'premium'
     location: '<location>'
     networkIsolationMode: 'BringYourOwn'
     tags: {
@@ -461,6 +462,9 @@ module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
     "enableTelemetry": {
       "value": true
     },
+    "keyVaultSku": {
+      "value": "premium"
+    },
     "location": {
       "value": "<location>"
     },
@@ -510,6 +514,7 @@ param diagnosticSettings = [
 ]
 param enablePrivateDnsZoneGroups = true
 param enableTelemetry = true
+param keyVaultSku = 'premium'
 param location = '<location>'
 param networkIsolationMode = 'BringYourOwn'
 param tags = {
@@ -661,6 +666,7 @@ module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
     fabricIngestionUri: '<fabricIngestionUri>'
     fabricQueryUri: '<fabricQueryUri>'
     keyVaultPrivateDnsZoneId: '<keyVaultPrivateDnsZoneId>'
+    keyVaultSku: 'premium'
     location: '<location>'
     privateEndpointSubnetId: '<privateEndpointSubnetId>'
     storageBlobPrivateDnsZoneId: '<storageBlobPrivateDnsZoneId>'
@@ -717,6 +723,9 @@ module finopsHub 'br/public:avm/ptn/finops-toolkit/finops-hub:<version>' = {
     "keyVaultPrivateDnsZoneId": {
       "value": "<keyVaultPrivateDnsZoneId>"
     },
+    "keyVaultSku": {
+      "value": "premium"
+    },
     "location": {
       "value": "<location>"
     },
@@ -763,6 +772,7 @@ param fabricDatabaseName = 'finops'
 param fabricIngestionUri = '<fabricIngestionUri>'
 param fabricQueryUri = '<fabricQueryUri>'
 param keyVaultPrivateDnsZoneId = '<keyVaultPrivateDnsZoneId>'
+param keyVaultSku = 'premium'
 param location = '<location>'
 param privateEndpointSubnetId = '<privateEndpointSubnetId>'
 param storageBlobPrivateDnsZoneId = '<storageBlobPrivateDnsZoneId>'
@@ -1165,6 +1175,7 @@ param tags = {
 | [`fabricIngestionUri`](#parameter-fabricingestionuri) | string | Microsoft Fabric eventhouse ingestion URI. Used for data ingestion pipelines. |
 | [`ingestionRetentionInMonths`](#parameter-ingestionretentioninmonths) | int | Number of months of data to retain in the ingestion container. Default: 13. |
 | [`keyVaultPrivateDnsZoneId`](#parameter-keyvaultprivatednszoneid) | string | Note: This is a deprecated property, please use `byoVaultDnsZoneId` instead. |
+| [`keyVaultSku`](#parameter-keyvaultsku) | string | Key Vault SKU. Use `standard` for cost optimization or `premium` for HSM-backed keys. Default: `standard`. |
 | [`location`](#parameter-location) | string | Azure region for all resources. Default: resource group location. |
 | [`lock`](#parameter-lock) | object | The lock settings of the service. |
 | [`managedSubnetAddressPrefix`](#parameter-managedsubnetaddressprefix) | string | Address prefix for the private endpoints subnet. Only used when networkIsolationMode is "Managed". Default: 10.0.0.0/26. |
@@ -1679,6 +1690,21 @@ Note: This is a deprecated property, please use `byoVaultDnsZoneId` instead.
 - Required: No
 - Type: string
 - Default: `''`
+
+### Parameter: `keyVaultSku`
+
+Key Vault SKU. Use `standard` for cost optimization or `premium` for HSM-backed keys. Default: `standard`.
+
+- Required: No
+- Type: string
+- Default: `'standard'`
+- Allowed:
+  ```Bicep
+  [
+    'premium'
+    'standard'
+  ]
+  ```
 
 ### Parameter: `location`
 

@@ -97,6 +97,9 @@ module testDeployment '../../../main.bicep' = [
       // Telemetry
       enableTelemetry: true
       
+      // WAF: Use premium Key Vault SKU for HSM-backed keys
+      keyVaultSku: 'premium'
+      
       // Tags following WAF recommendations
       tags: {
         SecurityControl: 'Ignore'

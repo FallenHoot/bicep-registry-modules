@@ -233,6 +233,13 @@ param diagnosticSettings diagnosticSettingFullType[]?
 @description('Optional. Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on storage. Default: true.')
 param enableTriggerManagement bool = true
 
+@description('Optional. Key Vault SKU. Use `standard` for cost optimization or `premium` for HSM-backed keys. Default: `standard`.')
+@allowed([
+  'standard'
+  'premium'
+])
+param keyVaultSku string = 'standard'
+
 // ============================================================================
 // VARIABLES
 // ============================================================================
@@ -510,7 +517,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.13.3' = {
     enableSoftDelete: true
     softDeleteRetentionInDays: 90
     publicNetworkAccess: effectivePublicAccess ? 'Enabled' : 'Disabled'
-    sku: 'premium'
+    sku: keyVaultSku
     roleAssignments: enableRbacAuthorization ? [
       {
         principalId: effectiveIdentityPrincipalId

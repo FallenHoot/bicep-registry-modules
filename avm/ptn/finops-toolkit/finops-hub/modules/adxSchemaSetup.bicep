@@ -10,10 +10,10 @@
 // 3. Ingestion DB: Common functions
 // 4. Ingestion DB: Hub infrastructure
 // 5. Ingestion DB: Raw tables (Costs_raw, Prices_raw, etc.)
-// 6. Ingestion DB: Versioned scripts (v1_0, v1_2)
+// 6. Ingestion DB: Versioned scripts (v1_0, v1_2, v1_3)
 // 7. Hub DB: Common functions
 // 8. Hub DB: OpenData functions
-// 9. Hub DB: Versioned scripts (v1_0, v1_2)
+// 9. Hub DB: Versioned scripts (v1_0, v1_2, v1_3)
 // 10. Hub DB: Latest functions (Costs, Prices, etc.)
 // ============================================================================
 
@@ -134,6 +134,7 @@ module ingestion_VersionedScripts 'hub-database.bicep' = {
     scripts: {
       v1_0: loadTextContent('scripts/IngestionSetup_v1_0.kql')
       v1_2: loadTextContent('scripts/IngestionSetup_v1_2.kql')
+      v1_3: loadTextContent('scripts/IngestionSetup_v1_3.kql')
     }
     continueOnErrors: continueOnErrors
     forceUpdateTag: forceUpdateTag
@@ -175,6 +176,7 @@ module hub_VersionedScripts 'hub-database.bicep' = {
     scripts: {
       v1_0: loadTextContent('scripts/HubSetup_v1_0.kql')
       v1_2: loadTextContent('scripts/HubSetup_v1_2.kql')
+      v1_3: loadTextContent('scripts/HubSetup_v1_3.kql')
     }
     continueOnErrors: continueOnErrors
     forceUpdateTag: forceUpdateTag
@@ -224,9 +226,11 @@ output deployedComponents array = [
   'Raw tables (Costs_raw, Prices_raw, etc.)'
   'Ingestion v1.0 schema'
   'Ingestion v1.2 schema'
+  'Ingestion v1.3 schema'
   'MACC tables and functions (MACC_Lots, MACC_Events)'
   'Hub v1.0 functions'
   'Hub v1.2 functions'
+  'Hub v1.3 functions'
   'Latest wrapper functions (Costs, Prices, etc.)'
   'MACC dashboard queries (status, trends, forecasting)'
 ]

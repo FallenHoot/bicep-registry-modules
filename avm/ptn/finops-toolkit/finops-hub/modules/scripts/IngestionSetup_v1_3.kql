@@ -1,0 +1,505 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+//======================================================================================================================
+// Ingestion database / FOCUS 1.3 transforms
+// Extends v1_2 transforms with FOCUS 1.3 columns.
+// New CostAndUsage columns: ServiceProviderName, HostProviderName, ContractApplied,
+//   AllocatedMethodDetails, AllocatedMethodId, AllocatedResourceId, AllocatedResourceName, AllocatedTags
+// Deprecated columns retained for backward compatibility: ProviderName, PublisherName
+//======================================================================================================================
+
+// For allowed commands, see https://learn.microsoft.com/azure/data-explorer/database-script
+
+
+//===| Prices |=========================================================================================================
+// Prices schema is unchanged in FOCUS 1.3 — wrap v1.2 transform directly.
+//======================================================================================================================
+
+// Prices_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms Prices_raw into FOCUS 1.3.', folder='Prices')
+Prices_transform_v1_3()
+{
+    Prices_transform_v1_2()
+}
+
+// Prices_final_v1_3 table — same schema as v1_2
+.create-merge table Prices_final_v1_3 (
+    BillingAccountId:                    string,
+    BillingAccountName:                  string,
+    BillingCurrency:                     string,
+    ChargeCategory:                      string,
+    CommitmentDiscountCategory:          string,
+    CommitmentDiscountType:              string,
+    CommitmentDiscountUnit:              string,
+    ContractedUnitPrice:                 real,
+    ListUnitPrice:                       real,
+    PricingCategory:                     string,
+    PricingCurrency:                     string,
+    PricingUnit:                         string,
+    SkuId:                               string,
+    SkuMeter:                            string,
+    SkuPriceId:                          string,
+    SkuPriceIdv2:                        string,
+    x_BaseUnitPrice:                     real,
+    x_BillingAccountAgreement:           string,
+    x_BillingAccountId:                  string,
+    x_BillingProfileId:                  string,
+    x_CommitmentDiscountNormalizedRatio: real,
+    x_CommitmentDiscountSpendEligibility:  string,
+    x_CommitmentDiscountUsageEligibility:  string,
+    x_ContractedUnitPriceDiscount:       real,
+    x_ContractedUnitPriceDiscountPercent:real,
+    x_EffectivePeriodEnd:                datetime,
+    x_EffectivePeriodStart:              datetime,
+    x_EffectiveUnitPrice:                real,
+    x_EffectiveUnitPriceDiscount:        real,
+    x_EffectiveUnitPriceDiscountPercent: real,
+    x_IngestionTime:                     datetime,
+    x_PricingBlockSize:                  real,
+    x_PricingSubcategory:                string,
+    x_PricingUnitDescription:            string,
+    x_SkuDescription:                    string,
+    x_SkuId:                             string,
+    x_SkuIncludedQuantity:               real,
+    x_SkuMeterCategory:                  string,
+    x_SkuMeterId:                        string,
+    x_SkuMeterSubcategory:               string,
+    x_SkuMeterType:                      string,
+    x_SkuPriceType:                      string,
+    x_SkuProductId:                      string,
+    x_SkuRegion:                         string,
+    x_SkuServiceFamily:                  string,
+    x_SkuOfferId:                        string,
+    x_SkuPartNumber:                     string,
+    x_SkuTerm:                           int,
+    x_SkuTier:                           real,
+    x_SourceName:                        string,
+    x_SourceProvider:                    string,
+    x_SourceType:                        string,
+    x_SourceVersion:                     string,
+    x_TotalUnitPriceDiscount:            real,
+    x_TotalUnitPriceDiscountPercent:     real
+)
+
+// Update policy for Prices_raw -> Prices_final_v1_3
+.alter table Prices_final_v1_3 policy update
+```
+[{
+    "IsEnabled": true,
+    "Source": "Prices_raw",
+    "Query": "Prices_transform_v1_3()",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": true,
+    "ManagedIdentity": null
+}]
+```
+
+
+//===| Costs |==========================================================================================================
+// FOCUS 1.3 adds: ServiceProviderName, HostProviderName, ContractApplied,
+//   AllocatedMethodDetails, AllocatedMethodId, AllocatedResourceId, AllocatedResourceName, AllocatedTags
+//======================================================================================================================
+
+// Costs_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms Costs_raw into FOCUS 1.3.', folder='Costs')
+Costs_transform_v1_3()
+{
+    Costs_transform_v1_2()
+    // Add FOCUS 1.3 columns
+    | extend ServiceProviderName = ProviderName
+    | extend HostProviderName = PublisherName
+    | extend ContractApplied = ''
+    | extend AllocatedMethodDetails = ''
+    | extend AllocatedMethodId = ''
+    | extend AllocatedResourceId = ''
+    | extend AllocatedResourceName = ''
+    | extend AllocatedTags = dynamic({})
+}
+
+// ActualCosts_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms ActualCosts_raw into FOCUS 1.3.', folder='Costs')
+ActualCosts_transform_v1_3()
+{
+    ActualCosts_transform_v1_2()
+    // Add FOCUS 1.3 columns
+    | extend ServiceProviderName = ProviderName
+    | extend HostProviderName = PublisherName
+    | extend ContractApplied = ''
+    | extend AllocatedMethodDetails = ''
+    | extend AllocatedMethodId = ''
+    | extend AllocatedResourceId = ''
+    | extend AllocatedResourceName = ''
+    | extend AllocatedTags = dynamic({})
+}
+
+// AmortizedCosts_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms AmortizedCosts_raw into FOCUS 1.3.', folder='Costs')
+AmortizedCosts_transform_v1_3()
+{
+    AmortizedCosts_transform_v1_2()
+    // Add FOCUS 1.3 columns
+    | extend ServiceProviderName = ProviderName
+    | extend HostProviderName = PublisherName
+    | extend ContractApplied = ''
+    | extend AllocatedMethodDetails = ''
+    | extend AllocatedMethodId = ''
+    | extend AllocatedResourceId = ''
+    | extend AllocatedResourceName = ''
+    | extend AllocatedTags = dynamic({})
+}
+
+// Costs_final_v1_3 table — v1_2 columns + 8 new FOCUS 1.3 columns
+.create-merge table Costs_final_v1_3 (
+    AllocatedMethodDetails:     string,
+    AllocatedMethodId:          string,
+    AllocatedResourceId:        string,
+    AllocatedResourceName:      string,
+    AllocatedTags:              dynamic,
+    AvailabilityZone:           string,
+    BilledCost:                 real,
+    BillingAccountId:           string,
+    BillingAccountName:         string,
+    BillingAccountType:         string,
+    BillingCurrency:            string,
+    BillingPeriodEnd:           datetime,
+    BillingPeriodStart:         datetime,
+    CapacityReservationId:      string,
+    CapacityReservationStatus:  string,
+    ChargeCategory:             string,
+    ChargeClass:                string,
+    ChargeDescription:          string,
+    ChargeFrequency:            string,
+    ChargePeriodEnd:            datetime,
+    ChargePeriodStart:          datetime,
+    CommitmentDiscountCategory: string,
+    CommitmentDiscountId:       string,
+    CommitmentDiscountName:     string,
+    CommitmentDiscountQuantity: real,
+    CommitmentDiscountStatus:   string,
+    CommitmentDiscountType:     string,
+    CommitmentDiscountUnit:     string,
+    ConsumedQuantity:           real,
+    ConsumedUnit:               string,
+    ContractApplied:            string,
+    ContractedCost:             real,
+    ContractedUnitPrice:        real,
+    EffectiveCost:              real,
+    HostProviderName:           string,
+    InvoiceId:                  string,
+    InvoiceIssuerName:          string,
+    ListCost:                   real,
+    ListUnitPrice:              real,
+    PricingCategory:            string,
+    PricingCurrency:            string,
+    PricingQuantity:            real,
+    PricingUnit:                string,
+    ProviderName:               string,
+    PublisherName:              string,
+    RegionId:                   string,
+    RegionName:                 string,
+    ResourceId:                 string,
+    ResourceName:               string,
+    ResourceType:               string,
+    ServiceCategory:            string,
+    ServiceName:                string,
+    ServiceProviderName:        string,
+    ServiceSubcategory:         string,
+    SkuId:                      string,
+    SkuMeter:                   string,
+    SkuPriceDetails:            dynamic,
+    SkuPriceId:                 string,
+    SubAccountId:               string,
+    SubAccountName:             string,
+    SubAccountType:             string,
+    Tags:                       dynamic,
+    x_AccountId:                string,
+    x_AccountName:              string,
+    x_AccountOwnerId:           string,
+    x_AmortizationClass:        string,
+    x_BilledCostInUsd:          real,
+    x_BilledUnitPrice:          real,
+    x_BillingAccountAgreement:  string,
+    x_BillingAccountId:         string,
+    x_BillingAccountName:       string,
+    x_BillingExchangeRate:      real,
+    x_BillingExchangeRateDate:  datetime,
+    x_BillingItemCode:          string,
+    x_BillingItemName:          string,
+    x_BillingProfileId:         string,
+    x_BillingProfileName:       string,
+    x_ChargeId:                 string,
+    x_CommitmentDiscountNormalizedRatio:      real,
+    x_CommitmentDiscountPercent:              real,
+    x_CommitmentDiscountSavings:              real,
+    x_CommitmentDiscountSpendEligibility:     string,
+    x_CommitmentDiscountUsageEligibility:     string,
+    x_CommitmentDiscountUtilizationAmount:    real,
+    x_CommitmentDiscountUtilizationPotential: real,
+    x_CommodityCode:            string,
+    x_CommodityName:            string,
+    x_ComponentName:            string,
+    x_ComponentType:            string,
+    x_ConsumedCoreHours:        real,
+    x_ContractedCostInUsd:      real,
+    x_CostAllocationRuleName:   string,
+    x_CostCategories:           dynamic,
+    x_CostCenter:               string,
+    x_CostType:                 string,
+    x_Credits:                  dynamic,
+    x_CurrencyConversionRate:   real,
+    x_CustomerId:               string,
+    x_CustomerName:             string,
+    x_Discount:                 dynamic,
+    x_EffectiveCostInUsd:       real,
+    x_EffectiveUnitPrice:       real,
+    x_ExportTime:               datetime,
+    x_IngestionTime:            datetime,
+    x_InstanceID:               string,
+    x_InvoiceIssuerId:          string,
+    x_InvoiceSectionId:         string,
+    x_InvoiceSectionName:       string,
+    x_ListCostInUsd:            real,
+    x_Location:                 string,
+    x_NegotiatedDiscountPercent:real,
+    x_NegotiatedDiscountSavings:real,
+    x_Operation:                string,
+    x_OwnerAccountID:           string,
+    x_PartnerCreditApplied:     string,
+    x_PartnerCreditRate:        string,
+    x_PricingBlockSize:         real,
+    x_PricingSubcategory:       string,
+    x_PricingUnitDescription:   string,
+    x_Project:                  string,
+    x_PublisherCategory:        string,
+    x_PublisherId:              string,
+    x_ResellerId:               string,
+    x_ResellerName:             string,
+    x_ResourceGroupName:        string,
+    x_ResourceType:             string,
+    x_ServiceCode:              string,
+    x_ServiceId:                string,
+    x_ServiceModel:             string,
+    x_ServicePeriodEnd:         datetime,
+    x_ServicePeriodStart:       datetime,
+    x_SkuCoreCount:             int,
+    x_SkuDescription:           string,
+    x_SkuDetails:               dynamic,
+    x_SkuInstanceType:          string,
+    x_SkuIsCreditEligible:      bool,
+    x_SkuLicenseQuantity:       int,
+    x_SkuLicenseStatus:         string,
+    x_SkuLicenseType:           string,
+    x_SkuLicenseUnit:           string,
+    x_SkuMeterCategory:         string,
+    x_SkuMeterId:               string,
+    x_SkuMeterSubcategory:      string,
+    x_SkuOfferId:               string,
+    x_SkuOperatingSystem:       string,
+    x_SkuOrderId:               string,
+    x_SkuOrderName:             string,
+    x_SkuPartNumber:            string,
+    x_SkuPlanName:              string,
+    x_SkuRegion:                string,
+    x_SkuServiceFamily:         string,
+    x_SkuTerm:                  int,
+    x_SkuTier:                  string,
+    x_SourceChanges:            string,
+    x_SourceName:               string,
+    x_SourceProvider:           string,
+    x_SourceType:               string,
+    x_SourceValues:             dynamic,
+    x_SourceVersion:            string,
+    x_SubproductName:           string,
+    x_TotalDiscountPercent:     real,
+    x_TotalSavings:             real,
+    x_UsageType:                string
+)
+
+// Update policy for Costs_raw -> Costs_final_v1_3 table
+.alter table Costs_final_v1_3 policy update
+```
+[{
+    "IsEnabled": true,
+    "Source": "Costs_raw",
+    "Query": "Costs_transform_v1_3()",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": true,
+    "ManagedIdentity": null
+}]
+```
+
+
+//===| CommitmentDiscountUsage |========================================================================================
+// CDU schema is unchanged in FOCUS 1.3 — wrap v1.2 transform directly.
+//======================================================================================================================
+
+// CommitmentDiscountUsage_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms CommitmentDiscountUsage_raw into FOCUS 1.3.', folder='CommitmentDiscountUsage')
+CommitmentDiscountUsage_transform_v1_3()
+{
+    CommitmentDiscountUsage_transform_v1_2()
+}
+
+// CommitmentDiscountUsage_final_v1_3 table — same schema as v1_2
+.create-merge table CommitmentDiscountUsage_final_v1_3 (
+    ChargePeriodEnd:                    datetime,
+    ChargePeriodStart:                  datetime,
+    CommitmentDiscountCategory:         string,
+    CommitmentDiscountId:               string,
+    CommitmentDiscountQuantity:         real,
+    CommitmentDiscountType:             string,
+    CommitmentDiscountUnit:             string,
+    ConsumedQuantity:                   real,
+    ProviderName:                       string,
+    ResourceId:                         string,
+    ResourceName:                       string,
+    ResourceType:                       string,
+    ServiceCategory:                    string,
+    ServiceName:                        string,
+    ServiceSubcategory:                 string,
+    SubAccountId:                       string,
+    x_CommitmentDiscountCommittedCount: real,
+    x_CommitmentDiscountCommittedAmount:real,
+    x_CommitmentDiscountNormalizedGroup:string,
+    x_CommitmentDiscountNormalizedRatio:real,
+    x_IngestionTime:                    datetime,
+    x_ResourceGroupName:               string,
+    x_ResourceType:                     string,
+    x_ServiceModel:                     string,
+    x_SkuOrderId:                       string,
+    x_SkuSize:                          string,
+    x_SourceName:                       string,
+    x_SourceProvider:                   string,
+    x_SourceType:                       string,
+    x_SourceVersion:                    string
+)
+
+// Update policy for CommitmentDiscountUsage_raw -> CommitmentDiscountUsage_final_v1_3
+.alter table CommitmentDiscountUsage_final_v1_3 policy update
+```
+[{
+    "IsEnabled": true,
+    "Source": "CommitmentDiscountUsage_raw",
+    "Query": "CommitmentDiscountUsage_transform_v1_3()",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": true,
+    "ManagedIdentity": null
+}]
+```
+
+
+//===| Recommendations |================================================================================================
+// Recommendations schema is unchanged in FOCUS 1.3 — wrap v1.2 transform directly.
+//======================================================================================================================
+
+// Recommendations_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms Recommendations_raw into FOCUS 1.3.', folder='Recommendations')
+Recommendations_transform_v1_3()
+{
+    Recommendations_transform_v1_2()
+}
+
+// Recommendations_final_v1_3 table — same schema as v1_2
+.create-merge table Recommendations_final_v1_3 (
+    ProviderName:               string,
+    SubAccountId:               string,
+    x_IngestionTime:            datetime,
+    x_EffectiveCostAfter:       real,
+    x_EffectiveCostBefore:      real,
+    x_EffectiveCostSavings:     real,
+    x_RecommendationDate:       datetime,
+    x_RecommendationDetails:    dynamic,
+    x_SourceName:               string,
+    x_SourceProvider:           string,
+    x_SourceType:               string,
+    x_SourceVersion:            string
+)
+
+// Update policy for Recommendations_raw -> Recommendations_final_v1_3
+.alter table Recommendations_final_v1_3 policy update
+```
+[{
+    "IsEnabled": true,
+    "Source": "Recommendations_raw",
+    "Query": "Recommendations_transform_v1_3()",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": true,
+    "ManagedIdentity": null
+}]
+```
+
+
+//===| Transactions |===================================================================================================
+// Transactions schema is unchanged in FOCUS 1.3 — wrap v1.2 transform directly.
+//======================================================================================================================
+
+// Transactions_transform_v1_3 function
+.create-or-alter function
+with (docstring='Transforms Transactions_raw into FOCUS 1.3.', folder='Transactions')
+Transactions_transform_v1_3()
+{
+    Transactions_transform_v1_2()
+}
+
+// Transactions_final_v1_3 table — same schema as v1_2
+.create-merge table Transactions_final_v1_3 (
+    BilledCost:                  real,
+    BillingAccountId:            string,
+    BillingAccountName:          string,
+    BillingCurrency:             string,
+    BillingPeriodEnd:            datetime,
+    BillingPeriodStart:          datetime,
+    ChargeCategory:              string,
+    ChargeClass:                 string,
+    ChargeDescription:           string,
+    ChargeFrequency:             string,
+    ChargePeriodStart:           datetime,
+    InvoiceId:                   string,
+    PricingQuantity:             real,
+    PricingUnit:                 string,
+    ProviderName:                string,
+    RegionId:                    string,
+    RegionName:                  string,
+    SubAccountId:                string,
+    SubAccountName:              string,
+    x_AccountName:               string,
+    x_AccountOwnerId:            string,
+    x_CostCenter:                string,
+    x_InvoiceNumber:             string,
+    x_InvoiceSectionId:          string,
+    x_InvoiceSectionName:        string,
+    x_IngestionTime:             datetime,
+    x_MonetaryCommitment:        real,
+    x_Overage:                   real,
+    x_PurchasingBillingAccountId:string,
+    x_SkuOrderId:                string,
+    x_SkuOrderName:              string,
+    x_SkuSize:                   string,
+    x_SkuTerm:                   int,
+    x_SourceName:                string,
+    x_SourceProvider:            string,
+    x_SourceType:                string,
+    x_SourceVersion:             string,
+    x_SubscriptionId:            string,
+    x_TransactionType:           string
+)
+
+// Update policy for Transactions_raw -> Transactions_final_v1_3
+.alter table Transactions_final_v1_3 policy update
+```
+[{
+    "IsEnabled": true,
+    "Source": "Transactions_raw",
+    "Query": "Transactions_transform_v1_3()",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": true,
+    "ManagedIdentity": null
+}]
+```
