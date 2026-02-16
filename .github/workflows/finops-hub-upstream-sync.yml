@@ -1,0 +1,313 @@
+# ────────────────────────────────────────────────────────────
+# Workflow: FinOps Hub Upstream Sync (Phase 1)
+#
+# Polls microsoft/finops-toolkit `dev` branch daily for new
+# versions.  When a bump is detected it:
+#   1. Creates a sync/<version> branch
+#   2. Updates the AVM module scaffolding
+#   3. Opens a **draft** PR labelled `upstream-sync`
+#
+# Phase 2 (finops-hub-release-gate.yml) watches for the same
+# version to appear on upstream `main` and marks the PR ready.
+# ────────────────────────────────────────────────────────────
+
+name: "FinOps Hub – Upstream Sync"
+
+on:
+  schedule:
+    # Run daily at 06:00 UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force sync even if versions match"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  MODULE_PATH: "avm/ptn/finops-toolkit/finops-hub"
+  UPSTREAM_REPO: "microsoft/finops-toolkit"
+  UPSTREAM_VERSION_FILE: "src/templates/finops-hub/modules/fx/ftkver.txt"
+  LOCAL_TRACKER_FILE: "avm/ptn/finops-toolkit/finops-hub/.upstream-version"
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    name: "Check upstream dev for new version"
+    outputs:
+      new_version: ${{ steps.compare.outputs.new_version }}
+      current_version: ${{ steps.compare.outputs.current_version }}
+      needs_sync: ${{ steps.compare.outputs.needs_sync }}
+    steps:
+      - name: "Checkout fork"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Fetch upstream dev version"
+        id: upstream
+        run: |
+          DEV_VERSION=$(curl -sf \
+            "https://raw.githubusercontent.com/${{ env.UPSTREAM_REPO }}/refs/heads/dev/${{ env.UPSTREAM_VERSION_FILE }}" \
+            | tr -d '[:space:]')
+          echo "dev_version=$DEV_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📡 Upstream dev version: $DEV_VERSION"
+
+      - name: "Read local tracked version"
+        id: local
+        run: |
+          if [ -f "${{ env.LOCAL_TRACKER_FILE }}" ]; then
+            LOCAL_VERSION=$(cat "${{ env.LOCAL_TRACKER_FILE }}" | tr -d '[:space:]')
+          else
+            LOCAL_VERSION="0.0"
+          fi
+          echo "local_version=$LOCAL_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📌 Local tracked version: $LOCAL_VERSION"
+
+      - name: "Compare versions"
+        id: compare
+        run: |
+          DEV="${{ steps.upstream.outputs.dev_version }}"
+          LOCAL="${{ steps.local.outputs.local_version }}"
+          FORCE="${{ github.event.inputs.force }}"
+
+          echo "new_version=$DEV" >> "$GITHUB_OUTPUT"
+          echo "current_version=$LOCAL" >> "$GITHUB_OUTPUT"
+
+          if [ "$DEV" != "$LOCAL" ] || [ "$FORCE" = "true" ]; then
+            echo "needs_sync=true" >> "$GITHUB_OUTPUT"
+            echo "🔄 Sync required: $LOCAL → $DEV"
+          else
+            echo "needs_sync=false" >> "$GITHUB_OUTPUT"
+            echo "✅ Already up to date ($LOCAL)"
+          fi
+
+  sync-module:
+    needs: check-upstream
+    if: needs.check-upstream.outputs.needs_sync == 'true'
+    runs-on: ubuntu-latest
+    name: "Create sync branch & draft PR"
+    steps:
+      - name: "Checkout fork"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Configure git"
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: "Clone upstream sparse checkout"
+        run: |
+          NEW_VERSION="${{ needs.check-upstream.outputs.new_version }}"
+          echo "📥 Cloning upstream dev (sparse) for version $NEW_VERSION..."
+
+          git clone --depth 1 --branch dev --no-checkout \
+            "https://github.com/${{ env.UPSTREAM_REPO }}.git" /tmp/upstream
+
+          cd /tmp/upstream
+          git sparse-checkout init --cone
+          git sparse-checkout set \
+            src/templates/finops-hub/modules/fx \
+            src/templates/finops-hub/modules/Microsoft.FinOpsHubs \
+            src/templates/finops-hub/modules/Microsoft.CostManagement
+          git checkout
+
+      - name: "Create or update sync branch"
+        id: branch
+        run: |
+          NEW_VERSION="${{ needs.check-upstream.outputs.new_version }}"
+          # Sanitize version for branch name (e.g., 14.0-dev → 14.0-dev)
+          BRANCH_NAME="sync/finops-hub-v${NEW_VERSION}"
+          echo "branch_name=$BRANCH_NAME" >> "$GITHUB_OUTPUT"
+
+          # Check if branch already exists on remote
+          if git ls-remote --exit-code origin "refs/heads/$BRANCH_NAME" >/dev/null 2>&1; then
+            echo "🔀 Branch $BRANCH_NAME exists, checking out..."
+            git fetch origin "$BRANCH_NAME"
+            git checkout "$BRANCH_NAME"
+          else
+            echo "🌿 Creating new branch: $BRANCH_NAME"
+            git checkout -b "$BRANCH_NAME"
+          fi
+
+      - name: "Sync upstream KQL scripts"
+        run: |
+          echo "📋 Syncing KQL scripts from upstream..."
+
+          # Upstream Analytics scripts → local modules/scripts/
+          UPSTREAM_ANALYTICS="/tmp/upstream/src/templates/finops-hub/modules/Microsoft.FinOpsHubs/Analytics/scripts"
+          LOCAL_SCRIPTS="${{ env.MODULE_PATH }}/modules/scripts"
+
+          if [ -d "$UPSTREAM_ANALYTICS" ]; then
+            # Copy all KQL files, preserving existing structure
+            for kql in "$UPSTREAM_ANALYTICS"/*.kql; do
+              [ -f "$kql" ] || continue
+              BASENAME=$(basename "$kql")
+              echo "  → $BASENAME"
+              cp "$kql" "$LOCAL_SCRIPTS/$BASENAME"
+            done
+          fi
+
+          # Also sync shared KQL (Common.kql, etc.) from fx/
+          UPSTREAM_FX="/tmp/upstream/src/templates/finops-hub/modules/fx"
+          if [ -d "$UPSTREAM_FX" ]; then
+            for kql in "$UPSTREAM_FX"/*.kql; do
+              [ -f "$kql" ] || continue
+              BASENAME=$(basename "$kql")
+              echo "  → (fx) $BASENAME"
+              cp "$kql" "$LOCAL_SCRIPTS/$BASENAME"
+            done
+          fi
+
+      - name: "Sync upstream version file"
+        run: |
+          NEW_VERSION="${{ needs.check-upstream.outputs.new_version }}"
+
+          # Update the local tracker
+          echo "$NEW_VERSION" > "${{ env.LOCAL_TRACKER_FILE }}"
+
+          # Log what the upstream ftkver.txt says
+          UPSTREAM_FTKVER="/tmp/upstream/src/templates/finops-hub/modules/fx/ftkver.txt"
+          if [ -f "$UPSTREAM_FTKVER" ]; then
+            echo "📌 Upstream ftkver.txt: $(cat $UPSTREAM_FTKVER)"
+          fi
+
+      - name: "Normalize line endings to LF"
+        run: |
+          echo "🔧 Normalizing KQL files to LF..."
+          find "${{ env.MODULE_PATH }}" -name "*.kql" -exec sed -i 's/\r$//' {} +
+          echo "✅ Line endings normalized"
+
+      - name: "Generate diff summary"
+        id: diff
+        run: |
+          DIFF=$(git diff --stat)
+          NEW_FILES=$(git ls-files --others --exclude-standard)
+          echo "📊 Changes:"
+          echo "$DIFF"
+          if [ -n "$NEW_FILES" ]; then
+            echo "📄 New files:"
+            echo "$NEW_FILES"
+          fi
+
+          # Build summary for PR body
+          {
+            echo "diff_summary<<EOF"
+            echo '```'
+            echo "$DIFF"
+            if [ -n "$NEW_FILES" ]; then
+              echo ""
+              echo "New files:"
+              echo "$NEW_FILES"
+            fi
+            echo '```'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: "Commit changes"
+        run: |
+          NEW_VERSION="${{ needs.check-upstream.outputs.new_version }}"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "⚠️ No changes to commit"
+            exit 0
+          fi
+          git commit -m "sync(finops-hub): update from upstream v${NEW_VERSION}
+
+          Automated sync from microsoft/finops-toolkit dev branch.
+          Upstream version: ${NEW_VERSION}
+          Previous version: ${{ needs.check-upstream.outputs.current_version }}"
+
+      - name: "Push sync branch"
+        run: |
+          BRANCH="${{ steps.branch.outputs.branch_name }}"
+          git push origin "$BRANCH"
+
+      - name: "Check for existing PR"
+        id: existing_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ steps.branch.outputs.branch_name }}"
+          PR_NUMBER=$(gh pr list --head "$BRANCH" --state open --json number -q '.[0].number' || echo "")
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          if [ -n "$PR_NUMBER" ]; then
+            echo "📌 Existing PR found: #$PR_NUMBER"
+          else
+            echo "📝 No existing PR, will create one"
+          fi
+
+      - name: "Create draft PR"
+        if: steps.existing_pr.outputs.pr_number == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION="${{ needs.check-upstream.outputs.new_version }}"
+          BRANCH="${{ steps.branch.outputs.branch_name }}"
+          PREV_VERSION="${{ needs.check-upstream.outputs.current_version }}"
+
+          gh pr create \
+            --base "feature/finops-hub-v14" \
+            --head "$BRANCH" \
+            --title "sync(finops-hub): upstream v${NEW_VERSION}" \
+            --draft \
+            --label "upstream-sync" \
+            --body "## 🔄 Upstream Sync: FinOps Hub v${NEW_VERSION}
+
+          **Status**: ⏳ Waiting for upstream \`main\` release
+
+          This PR was automatically created to sync changes from
+          [microsoft/finops-toolkit](https://github.com/microsoft/finops-toolkit)
+          \`dev\` branch.
+
+          | Property | Value |
+          |----------|-------|
+          | Upstream version | \`${NEW_VERSION}\` |
+          | Previous version | \`${PREV_VERSION}\` |
+          | Source branch | \`dev\` |
+          | Released on \`main\`? | ❌ Not yet |
+
+          ### Changes from upstream
+
+          ${{ steps.diff.outputs.diff_summary }}
+
+          ### What happens next?
+
+          1. ⏳ The **release gate** workflow checks daily if this version
+             appears on upstream \`main\`
+          2. ✅ Once released, this PR will be automatically marked
+             **ready for review**
+          3. 👤 A maintainer reviews the AVM-specific changes and merges
+
+          ### Manual steps required after merge
+
+          - [ ] Run \`bicep build\` to regenerate \`main.json\`
+          - [ ] Run \`Set-ModuleReadMe\` to regenerate \`README.md\`
+          - [ ] Update \`CHANGELOG.md\` with new version entry
+          - [ ] Update \`version.json\` if needed
+          - [ ] Validate CI passes
+
+          ---
+          *Automated by [finops-hub-upstream-sync.yml](../.github/workflows/finops-hub-upstream-sync.yml)*"
+
+      - name: "Update existing PR"
+        if: steps.existing_pr.outputs.pr_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER="${{ steps.existing_pr.outputs.pr_number }}"
+          NEW_VERSION="${{ needs.check-upstream.outputs.new_version }}"
+
+          gh pr comment "$PR_NUMBER" --body \
+            "🔄 **Sync update**: Re-synced with upstream \`dev\` branch (v${NEW_VERSION}).
+
+          ${{ steps.diff.outputs.diff_summary }}
+
+          Upstream \`main\` release status: ⏳ still waiting"

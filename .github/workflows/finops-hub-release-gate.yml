@@ -1,0 +1,129 @@
+# ────────────────────────────────────────────────────────────
+# Workflow: FinOps Hub Release Gate (Phase 2)
+#
+# Checks daily whether the upstream `main` branch of
+# microsoft/finops-toolkit has released the version that
+# a draft sync PR is waiting for.
+#
+# When the version appears on `main`:
+#   1. Marks the draft PR as ready for review
+#   2. Adds a comment notifying maintainers
+#   3. Updates the PR body with release confirmation
+# ────────────────────────────────────────────────────────────
+
+name: "FinOps Hub – Release Gate"
+
+on:
+  schedule:
+    # Run daily at 08:00 UTC (2 hours after sync check)
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  UPSTREAM_REPO: "microsoft/finops-toolkit"
+  UPSTREAM_VERSION_FILE: "src/templates/finops-hub/modules/fx/ftkver.txt"
+
+jobs:
+  check-release:
+    runs-on: ubuntu-latest
+    name: "Check upstream main for release"
+    steps:
+      - name: "Checkout fork"
+        uses: actions/checkout@v4
+
+      - name: "Fetch upstream main version"
+        id: upstream_main
+        run: |
+          MAIN_VERSION=$(curl -sf \
+            "https://raw.githubusercontent.com/${{ env.UPSTREAM_REPO }}/refs/heads/main/${{ env.UPSTREAM_VERSION_FILE }}" \
+            | tr -d '[:space:]')
+          echo "main_version=$MAIN_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📡 Upstream main version: $MAIN_VERSION"
+
+      - name: "Find open sync PRs"
+        id: find_prs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Find all open draft PRs with the upstream-sync label
+          PRS=$(gh pr list \
+            --state open \
+            --label "upstream-sync" \
+            --draft \
+            --json number,headRefName,title \
+            --jq '.[] | "\(.number)|\(.headRefName)|\(.title)"')
+
+          if [ -z "$PRS" ]; then
+            echo "✅ No open sync PRs waiting for release"
+            echo "has_prs=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "📋 Found waiting PRs:"
+            echo "$PRS"
+            echo "has_prs=true" >> "$GITHUB_OUTPUT"
+            # Save to file for next step
+            echo "$PRS" > /tmp/sync_prs.txt
+          fi
+
+      - name: "Gate PRs against main release"
+        if: steps.find_prs.outputs.has_prs == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MAIN_VERSION="${{ steps.upstream_main.outputs.main_version }}"
+
+          while IFS='|' read -r PR_NUMBER BRANCH TITLE; do
+            # Extract version from branch name: sync/finops-hub-v14.0 → 14.0
+            PR_VERSION=$(echo "$BRANCH" | sed 's/sync\/finops-hub-v//')
+
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "PR #$PR_NUMBER: $TITLE"
+            echo "  Branch version: $PR_VERSION"
+            echo "  Main version:   $MAIN_VERSION"
+
+            # Compare: is the PR version present on main?
+            # We check if main_version >= pr_version using sort -V
+            HIGHER=$(printf '%s\n%s' "$PR_VERSION" "$MAIN_VERSION" | sort -V | tail -1)
+
+            if [ "$MAIN_VERSION" = "$PR_VERSION" ] || [ "$HIGHER" = "$MAIN_VERSION" ]; then
+              echo "  ✅ Version $PR_VERSION is released on main!"
+
+              # Mark PR as ready for review
+              gh pr ready "$PR_NUMBER"
+
+              # Add release notification comment
+              gh pr comment "$PR_NUMBER" --body \
+                "## ✅ Upstream Release Detected!
+
+              **FinOps toolkit v${MAIN_VERSION}** is now live on the upstream \`main\` branch.
+
+              This PR has been automatically marked as **ready for review**.
+
+              ### Next steps for the maintainer:
+
+              1. Review the synced changes against the AVM module
+              2. Run \`bicep build\` to regenerate \`main.json\`
+              3. Run \`Set-ModuleReadMe\` to regenerate \`README.md\`
+              4. Update \`CHANGELOG.md\` with the new version entry
+              5. Verify CI passes
+              6. Merge when ready
+
+              ---
+              *Automated by [finops-hub-release-gate.yml](../.github/workflows/finops-hub-release-gate.yml)*"
+
+              # Update PR title to reflect released status
+              gh pr edit "$PR_NUMBER" --title "sync(finops-hub): upstream v${PR_VERSION} ✅ released"
+
+            else
+              echo "  ⏳ Version $PR_VERSION NOT yet on main (main=$MAIN_VERSION)"
+            fi
+
+          done < /tmp/sync_prs.txt
+
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🏁 Release gate check complete"
