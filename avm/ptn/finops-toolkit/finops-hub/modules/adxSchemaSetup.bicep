@@ -122,9 +122,9 @@ module ingestion_InitScripts 'hub-database.bicep' = {
   }
 }
 
-// Step 3: Deploy versioned transform functions and final tables
-module ingestion_VersionedScripts 'hub-database.bicep' = {
-  name: 'FinOpsHub_Ingestion_Versioned'
+// Step 3a: Deploy v1.0 versioned transform functions and final tables
+module ingestion_VersionedScripts_v1_0 'hub-database.bicep' = {
+  name: 'FinOpsHub_Ingestion_Versioned_v1_0'
   dependsOn: [
     ingestion_InitScripts
   ]
@@ -133,7 +133,39 @@ module ingestion_VersionedScripts 'hub-database.bicep' = {
     databaseName: ingestionDb.name
     scripts: {
       v1_0: loadTextContent('scripts/IngestionSetup_v1_0.kql')
+    }
+    continueOnErrors: continueOnErrors
+    forceUpdateTag: forceUpdateTag
+  }
+}
+
+// Step 3b: Deploy v1.2 versioned scripts (depends on v1.0 functions)
+module ingestion_VersionedScripts_v1_2 'hub-database.bicep' = {
+  name: 'FinOpsHub_Ingestion_Versioned_v1_2'
+  dependsOn: [
+    ingestion_VersionedScripts_v1_0
+  ]
+  params: {
+    clusterName: cluster.name
+    databaseName: ingestionDb.name
+    scripts: {
       v1_2: loadTextContent('scripts/IngestionSetup_v1_2.kql')
+    }
+    continueOnErrors: continueOnErrors
+    forceUpdateTag: forceUpdateTag
+  }
+}
+
+// Step 3c: Deploy v1.3 versioned scripts (depends on v1.2 functions - e.g., Transactions_transform_v1_3 calls Transactions_transform_v1_2)
+module ingestion_VersionedScripts_v1_3 'hub-database.bicep' = {
+  name: 'FinOpsHub_Ingestion_Versioned_v1_3'
+  dependsOn: [
+    ingestion_VersionedScripts_v1_2
+  ]
+  params: {
+    clusterName: cluster.name
+    databaseName: ingestionDb.name
+    scripts: {
       v1_3: loadTextContent('scripts/IngestionSetup_v1_3.kql')
     }
     continueOnErrors: continueOnErrors
@@ -163,11 +195,11 @@ module hub_InitScripts 'hub-database.bicep' = {
   }
 }
 
-// Step 5: Deploy Hub versioned query functions
-module hub_VersionedScripts 'hub-database.bicep' = {
-  name: 'FinOpsHub_Hub_Versioned'
+// Step 5a: Deploy Hub v1.0 query functions
+module hub_VersionedScripts_v1_0 'hub-database.bicep' = {
+  name: 'FinOpsHub_Hub_Versioned_v1_0'
   dependsOn: [
-    ingestion_VersionedScripts
+    ingestion_VersionedScripts_v1_3
     hub_InitScripts
   ]
   params: {
@@ -175,7 +207,39 @@ module hub_VersionedScripts 'hub-database.bicep' = {
     databaseName: hubDb.name
     scripts: {
       v1_0: loadTextContent('scripts/HubSetup_v1_0.kql')
+    }
+    continueOnErrors: continueOnErrors
+    forceUpdateTag: forceUpdateTag
+  }
+}
+
+// Step 5b: Deploy Hub v1.2 query functions (depends on v1.0)
+module hub_VersionedScripts_v1_2 'hub-database.bicep' = {
+  name: 'FinOpsHub_Hub_Versioned_v1_2'
+  dependsOn: [
+    hub_VersionedScripts_v1_0
+  ]
+  params: {
+    clusterName: cluster.name
+    databaseName: hubDb.name
+    scripts: {
       v1_2: loadTextContent('scripts/HubSetup_v1_2.kql')
+    }
+    continueOnErrors: continueOnErrors
+    forceUpdateTag: forceUpdateTag
+  }
+}
+
+// Step 5c: Deploy Hub v1.3 query functions (depends on v1.2 — cross-database table references)
+module hub_VersionedScripts_v1_3 'hub-database.bicep' = {
+  name: 'FinOpsHub_Hub_Versioned_v1_3'
+  dependsOn: [
+    hub_VersionedScripts_v1_2
+  ]
+  params: {
+    clusterName: cluster.name
+    databaseName: hubDb.name
+    scripts: {
       v1_3: loadTextContent('scripts/HubSetup_v1_3.kql')
     }
     continueOnErrors: continueOnErrors
@@ -187,7 +251,7 @@ module hub_VersionedScripts 'hub-database.bicep' = {
 module hub_LatestScripts 'hub-database.bicep' = {
   name: 'FinOpsHub_Hub_Latest'
   dependsOn: [
-    hub_VersionedScripts
+    hub_VersionedScripts_v1_3
   ]
   params: {
     clusterName: cluster.name

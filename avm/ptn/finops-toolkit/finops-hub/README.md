@@ -1166,7 +1166,7 @@ param tags = {
 | [`enablePurgeProtection`](#parameter-enablepurgeprotection) | bool | Enable Key Vault purge protection. Automatically enabled for waf-aligned. |
 | [`enableRbacAuthorization`](#parameter-enablerbacauthorization) | bool | Enable RBAC authorization for Key Vault (recommended). |
 | [`enableTelemetry`](#parameter-enabletelemetry) | bool | Enable/Disable usage telemetry for module. |
-| [`enableTriggerManagement`](#parameter-enabletriggermanagement) | bool | Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on storage. Default: true. |
+| [`enableTriggerManagement`](#parameter-enabletriggermanagement) | bool | Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on auto-provisioned storage. Disable in environments with Azure Policy blocking key-based auth on storage accounts. Default: false. |
 | [`existingDataExplorerClusterId`](#parameter-existingdataexplorerclusterid) | string | Resource ID of an existing Azure Data Explorer cluster to use. When provided, no new cluster is created. |
 | [`existingManagedIdentityResourceId`](#parameter-existingmanagedidentityresourceid) | string | Resource ID of an existing user-assigned managed identity. When provided, no new identity is created. Use this for strict security policies where identities must be pre-created. |
 | [`exportRetentionInDays`](#parameter-exportretentionindays) | int | Number of days of data to retain in the msexports container. Default: 0 (delete after ingestion). |
@@ -1619,11 +1619,11 @@ Enable/Disable usage telemetry for module.
 
 ### Parameter: `enableTriggerManagement`
 
-Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on storage. Default: true.
+Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on auto-provisioned storage. Disable in environments with Azure Policy blocking key-based auth on storage accounts. Default: false.
 
 - Required: No
 - Type: bool
-- Default: `True`
+- Default: `False`
 
 ### Parameter: `existingDataExplorerClusterId`
 

@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.40.2.10011",
-      "templateHash": "13685753635555508671"
+      "templateHash": "10661578102458539781"
     },
     "name": "FinOps Hub",
     "description": "Deploys a FinOps Hub for cloud cost analytics using Azure Verified Modules.",
@@ -593,9 +593,9 @@
     },
     "enableTriggerManagement": {
       "type": "bool",
-      "defaultValue": true,
+      "defaultValue": false,
       "metadata": {
-        "description": "Optional. Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on storage. Default: true."
+        "description": "Optional. Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on auto-provisioned storage. Disable in environments with Azure Policy blocking key-based auth on storage accounts. Default: false."
       }
     },
     "keyVaultSku": {
@@ -34696,6 +34696,7 @@
         }
       },
       "dependsOn": [
+        "identityAdfRoleAssignment",
         "identityStorageRoleAssignment",
         "managedIdentity"
       ]
@@ -41007,7 +41008,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.40.2.10011",
-              "templateHash": "12737117844082946785"
+              "templateHash": "16511940279714627243"
             }
           },
           "parameters": {
@@ -41306,7 +41307,7 @@
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2025-04-01",
-              "name": "FinOpsHub_Ingestion_Versioned",
+              "name": "FinOpsHub_Ingestion_Versioned_v1_0",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -41321,9 +41322,7 @@
                   },
                   "scripts": {
                     "value": {
-                      "v1_0": "[variables('$fxv#9')]",
-                      "v1_2": "[variables('$fxv#10')]",
-                      "v1_3": "[variables('$fxv#11')]"
+                      "v1_0": "[variables('$fxv#9')]"
                     }
                   },
                   "continueOnErrors": {
@@ -41420,6 +41419,240 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Ingestion_Init')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "FinOpsHub_Ingestion_Versioned_v1_2",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "clusterName": {
+                    "value": "[parameters('clusterName')]"
+                  },
+                  "databaseName": {
+                    "value": "[variables('ingestionDbName')]"
+                  },
+                  "scripts": {
+                    "value": {
+                      "v1_2": "[variables('$fxv#10')]"
+                    }
+                  },
+                  "continueOnErrors": {
+                    "value": "[parameters('continueOnErrors')]"
+                  },
+                  "forceUpdateTag": {
+                    "value": "[parameters('forceUpdateTag')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.40.2.10011",
+                      "templateHash": "12152535787010550020"
+                    }
+                  },
+                  "parameters": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the Azure Data Explorer cluster."
+                      }
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the database to run scripts on."
+                      }
+                    },
+                    "scripts": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Required. Dictionary of scripts to run. Key = script name, Value = KQL script content."
+                      }
+                    },
+                    "continueOnErrors": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. If true, script execution continues even if some commands fail. Default: true."
+                      }
+                    },
+                    "forceUpdateTag": {
+                      "type": "string",
+                      "defaultValue": "[utcNow()]",
+                      "metadata": {
+                        "description": "Optional. Force script re-execution by changing this value. Uses current UTC time by default."
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "cluster::database::script",
+                        "count": "[length(items(parameters('scripts')))]"
+                      },
+                      "type": "Microsoft.Kusto/clusters/databases/scripts",
+                      "apiVersion": "2024-04-13",
+                      "name": "[format('{0}/{1}/{2}', parameters('clusterName'), parameters('databaseName'), items(parameters('scripts'))[copyIndex()].key)]",
+                      "properties": {
+                        "scriptContent": "[items(parameters('scripts'))[copyIndex()].value]",
+                        "continueOnErrors": "[parameters('continueOnErrors')]",
+                        "forceUpdateTag": "[parameters('forceUpdateTag')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Cluster name where scripts were deployed."
+                      },
+                      "value": "[parameters('clusterName')]"
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Database name where scripts were deployed."
+                      },
+                      "value": "[parameters('databaseName')]"
+                    },
+                    "scriptCount": {
+                      "type": "int",
+                      "metadata": {
+                        "description": "Number of scripts deployed."
+                      },
+                      "value": "[length(items(parameters('scripts')))]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Ingestion_Versioned_v1_0')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "FinOpsHub_Ingestion_Versioned_v1_3",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "clusterName": {
+                    "value": "[parameters('clusterName')]"
+                  },
+                  "databaseName": {
+                    "value": "[variables('ingestionDbName')]"
+                  },
+                  "scripts": {
+                    "value": {
+                      "v1_3": "[variables('$fxv#11')]"
+                    }
+                  },
+                  "continueOnErrors": {
+                    "value": "[parameters('continueOnErrors')]"
+                  },
+                  "forceUpdateTag": {
+                    "value": "[parameters('forceUpdateTag')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.40.2.10011",
+                      "templateHash": "12152535787010550020"
+                    }
+                  },
+                  "parameters": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the Azure Data Explorer cluster."
+                      }
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the database to run scripts on."
+                      }
+                    },
+                    "scripts": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Required. Dictionary of scripts to run. Key = script name, Value = KQL script content."
+                      }
+                    },
+                    "continueOnErrors": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. If true, script execution continues even if some commands fail. Default: true."
+                      }
+                    },
+                    "forceUpdateTag": {
+                      "type": "string",
+                      "defaultValue": "[utcNow()]",
+                      "metadata": {
+                        "description": "Optional. Force script re-execution by changing this value. Uses current UTC time by default."
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "cluster::database::script",
+                        "count": "[length(items(parameters('scripts')))]"
+                      },
+                      "type": "Microsoft.Kusto/clusters/databases/scripts",
+                      "apiVersion": "2024-04-13",
+                      "name": "[format('{0}/{1}/{2}', parameters('clusterName'), parameters('databaseName'), items(parameters('scripts'))[copyIndex()].key)]",
+                      "properties": {
+                        "scriptContent": "[items(parameters('scripts'))[copyIndex()].value]",
+                        "continueOnErrors": "[parameters('continueOnErrors')]",
+                        "forceUpdateTag": "[parameters('forceUpdateTag')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Cluster name where scripts were deployed."
+                      },
+                      "value": "[parameters('clusterName')]"
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Database name where scripts were deployed."
+                      },
+                      "value": "[parameters('databaseName')]"
+                    },
+                    "scriptCount": {
+                      "type": "int",
+                      "metadata": {
+                        "description": "Number of scripts deployed."
+                      },
+                      "value": "[length(items(parameters('scripts')))]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Ingestion_Versioned_v1_2')]"
               ]
             },
             {
@@ -41543,7 +41776,7 @@
             {
               "type": "Microsoft.Resources/deployments",
               "apiVersion": "2025-04-01",
-              "name": "FinOpsHub_Hub_Versioned",
+              "name": "FinOpsHub_Hub_Versioned_v1_0",
               "properties": {
                 "expressionEvaluationOptions": {
                   "scope": "inner"
@@ -41558,9 +41791,7 @@
                   },
                   "scripts": {
                     "value": {
-                      "v1_0": "[variables('$fxv#14')]",
-                      "v1_2": "[variables('$fxv#15')]",
-                      "v1_3": "[variables('$fxv#16')]"
+                      "v1_0": "[variables('$fxv#14')]"
                     }
                   },
                   "continueOnErrors": {
@@ -41657,7 +41888,241 @@
               },
               "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Hub_Init')]",
-                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Ingestion_Versioned')]"
+                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Ingestion_Versioned_v1_3')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "FinOpsHub_Hub_Versioned_v1_2",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "clusterName": {
+                    "value": "[parameters('clusterName')]"
+                  },
+                  "databaseName": {
+                    "value": "[variables('hubDbName')]"
+                  },
+                  "scripts": {
+                    "value": {
+                      "v1_2": "[variables('$fxv#15')]"
+                    }
+                  },
+                  "continueOnErrors": {
+                    "value": "[parameters('continueOnErrors')]"
+                  },
+                  "forceUpdateTag": {
+                    "value": "[parameters('forceUpdateTag')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.40.2.10011",
+                      "templateHash": "12152535787010550020"
+                    }
+                  },
+                  "parameters": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the Azure Data Explorer cluster."
+                      }
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the database to run scripts on."
+                      }
+                    },
+                    "scripts": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Required. Dictionary of scripts to run. Key = script name, Value = KQL script content."
+                      }
+                    },
+                    "continueOnErrors": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. If true, script execution continues even if some commands fail. Default: true."
+                      }
+                    },
+                    "forceUpdateTag": {
+                      "type": "string",
+                      "defaultValue": "[utcNow()]",
+                      "metadata": {
+                        "description": "Optional. Force script re-execution by changing this value. Uses current UTC time by default."
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "cluster::database::script",
+                        "count": "[length(items(parameters('scripts')))]"
+                      },
+                      "type": "Microsoft.Kusto/clusters/databases/scripts",
+                      "apiVersion": "2024-04-13",
+                      "name": "[format('{0}/{1}/{2}', parameters('clusterName'), parameters('databaseName'), items(parameters('scripts'))[copyIndex()].key)]",
+                      "properties": {
+                        "scriptContent": "[items(parameters('scripts'))[copyIndex()].value]",
+                        "continueOnErrors": "[parameters('continueOnErrors')]",
+                        "forceUpdateTag": "[parameters('forceUpdateTag')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Cluster name where scripts were deployed."
+                      },
+                      "value": "[parameters('clusterName')]"
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Database name where scripts were deployed."
+                      },
+                      "value": "[parameters('databaseName')]"
+                    },
+                    "scriptCount": {
+                      "type": "int",
+                      "metadata": {
+                        "description": "Number of scripts deployed."
+                      },
+                      "value": "[length(items(parameters('scripts')))]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Hub_Versioned_v1_0')]"
+              ]
+            },
+            {
+              "type": "Microsoft.Resources/deployments",
+              "apiVersion": "2025-04-01",
+              "name": "FinOpsHub_Hub_Versioned_v1_3",
+              "properties": {
+                "expressionEvaluationOptions": {
+                  "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                  "clusterName": {
+                    "value": "[parameters('clusterName')]"
+                  },
+                  "databaseName": {
+                    "value": "[variables('hubDbName')]"
+                  },
+                  "scripts": {
+                    "value": {
+                      "v1_3": "[variables('$fxv#16')]"
+                    }
+                  },
+                  "continueOnErrors": {
+                    "value": "[parameters('continueOnErrors')]"
+                  },
+                  "forceUpdateTag": {
+                    "value": "[parameters('forceUpdateTag')]"
+                  }
+                },
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "metadata": {
+                    "_generator": {
+                      "name": "bicep",
+                      "version": "0.40.2.10011",
+                      "templateHash": "12152535787010550020"
+                    }
+                  },
+                  "parameters": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the Azure Data Explorer cluster."
+                      }
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Required. Name of the database to run scripts on."
+                      }
+                    },
+                    "scripts": {
+                      "type": "object",
+                      "metadata": {
+                        "description": "Required. Dictionary of scripts to run. Key = script name, Value = KQL script content."
+                      }
+                    },
+                    "continueOnErrors": {
+                      "type": "bool",
+                      "defaultValue": true,
+                      "metadata": {
+                        "description": "Optional. If true, script execution continues even if some commands fail. Default: true."
+                      }
+                    },
+                    "forceUpdateTag": {
+                      "type": "string",
+                      "defaultValue": "[utcNow()]",
+                      "metadata": {
+                        "description": "Optional. Force script re-execution by changing this value. Uses current UTC time by default."
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "copy": {
+                        "name": "cluster::database::script",
+                        "count": "[length(items(parameters('scripts')))]"
+                      },
+                      "type": "Microsoft.Kusto/clusters/databases/scripts",
+                      "apiVersion": "2024-04-13",
+                      "name": "[format('{0}/{1}/{2}', parameters('clusterName'), parameters('databaseName'), items(parameters('scripts'))[copyIndex()].key)]",
+                      "properties": {
+                        "scriptContent": "[items(parameters('scripts'))[copyIndex()].value]",
+                        "continueOnErrors": "[parameters('continueOnErrors')]",
+                        "forceUpdateTag": "[parameters('forceUpdateTag')]"
+                      }
+                    }
+                  ],
+                  "outputs": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Cluster name where scripts were deployed."
+                      },
+                      "value": "[parameters('clusterName')]"
+                    },
+                    "databaseName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "Database name where scripts were deployed."
+                      },
+                      "value": "[parameters('databaseName')]"
+                    },
+                    "scriptCount": {
+                      "type": "int",
+                      "metadata": {
+                        "description": "Number of scripts deployed."
+                      },
+                      "value": "[length(items(parameters('scripts')))]"
+                    }
+                  }
+                }
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Hub_Versioned_v1_2')]"
               ]
             },
             {
@@ -41774,7 +42239,7 @@
                 }
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Hub_Versioned')]"
+                "[resourceId('Microsoft.Resources/deployments', 'FinOpsHub_Hub_Versioned_v1_3')]"
               ]
             }
           ],

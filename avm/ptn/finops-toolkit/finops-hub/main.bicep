@@ -230,8 +230,8 @@ param lock lockType?
 @description('Optional. The diagnostic settings of the service. Applies to Storage Account and Key Vault.')
 param diagnosticSettings diagnosticSettingFullType[]?
 
-@description('Optional. Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on storage. Default: true.')
-param enableTriggerManagement bool = true
+@description('Optional. Enable automatic trigger start/stop for idempotent redeployments. Requires shared key access on auto-provisioned storage. Disable in environments with Azure Policy blocking key-based auth on storage accounts. Default: false.')
+param enableTriggerManagement bool = false
 
 @description('Optional. Key Vault SKU. Use `standard` for cost optimization or `premium` for HSM-backed keys. Default: `standard`.')
 @allowed([
@@ -644,6 +644,7 @@ module stopTriggers 'modules/hub-initialize.bicep' = if (enableTriggerManagement
   name: '${uniqueString(deployment().name, location)}-stop-triggers'
   dependsOn: [
     identityStorageRoleAssignment  // Identity needs storage access for deployment scripts
+    identityAdfRoleAssignment      // Identity needs ADF Contributor to manage triggers
   ]
   params: {
     dataFactoryName: dataFactoryName  // The EXPECTED name (may not exist yet on first deploy)
